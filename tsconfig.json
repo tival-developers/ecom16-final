@@ -22,6 +22,30 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "types.d.ts",
+    ".next/types/**/*.ts",
+    "components1/pageComponents/jokes.jsx",
+    "components1/pageComponents/hompage/titleBasedColumns.jsx",
+    "components1/card.tsx",
+    "app/otp",
+    "lib/db/dbConnection.js",
+    "components1/forms/addProductForm.jsx",
+    "components1/pageComponents/login-form.jsx",
+    "components1/pageComponents/signupform.jsx",
+    "app/(auth)/login/page.tsx",
+    "app/(auth)/sign-up/page.tsx",
+    "app/api/users/route.js",
+    "lib/db/models/user.model.ts",
+    "app/api/register/route.ts",
+    "app/(admin-side)/admin/comparison/apiUsers/page.jsx",
+    "app/(admin-side)/admin/dashboard1/products/create/page.tsx",
+    "lib/db/models/product.model.ts",
+    "../seed.ts",
+    "app/(admin-side)/admin/dashboard1/profile/page.tsx"
+, "app/api/auth/[...nextauth]/route.ts"  ],
   "exclude": ["node_modules"]
 }
