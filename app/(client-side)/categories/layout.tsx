@@ -11,7 +11,7 @@ export default function Productslayout({
   return (
     <div className='bg-white min-h-screen px-2 py-8'>
       <div className='max-w-full mx-auto'>
-        <h1 className='text-3xl font-bold text-yellow-600 mb-6'>
+        <h1 className='text-3xl font-bold text-amber-600 mb-6'>
           Explore All Products
         </h1>
 
@@ -37,11 +37,6 @@ export default function Productslayout({
 
           {/* Product Cards */}
           <div className='md:col-span-5'>{children}</div>
-        </div>
-
-        {/* Load More Button */}
-        <div className='flex justify-center mt-10'>
-          <Button variant='outline'>Load more</Button>
         </div>
       </div>
     </div>

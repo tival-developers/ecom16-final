@@ -7,7 +7,9 @@ export async function getProductsByCategory(categorySlug: string, query?: string
   if (!category) return []; // no matching category
 
   // 2. Use category._id to find products
+
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filter: any = { category: category._id };
 
   if (query) {

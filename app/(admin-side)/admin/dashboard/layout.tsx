@@ -9,12 +9,12 @@ export default function DashboardLayout({
 }) {
   return (
     <div className='[--header-height:calc(theme(spacing.14))]'>
-      <SidebarProvider className='flex flex-col'>
+      <SidebarProvider className='flex flex-col '>
         <SiteHeader />
         <div className='flex flex-1'>
-          <AppSidebar className='bg-amber-400' />
+          <AppSidebar />
           <SidebarInset>
-            <div className='flex-1  mt-3.5 mb-2.5'>{children}</div>
+            <div className='flex-1  mb-2.5'>{children}</div>
           </SidebarInset>
         </div>
       </SidebarProvider>

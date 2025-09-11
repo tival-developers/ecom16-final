@@ -28,7 +28,7 @@ export default function PreviousOrderCard({ order }: OrderCardProps) {
 
   // Calculate total
   const totalAmount = order.items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+    (acc, item) => acc + item.originalPrice * item.quantity,
     0
   )
 
@@ -111,7 +111,7 @@ export default function PreviousOrderCard({ order }: OrderCardProps) {
                             {item.name}
                           </td>
                           <td className="px-4 py-3 font-medium text-black text-right">
-                            <Price amount={item.price} /> &times; {item.quantity}
+                            <Price amount={item.originalPrice} /> &times; {item.quantity}
                           </td>
                           <td className="px-4 py-3 font-medium text-black text-right">
                             <Link href={`/product/${item.productId}`}>
@@ -163,7 +163,7 @@ export default function PreviousOrderCard({ order }: OrderCardProps) {
                           {item.name} × {item.quantity}
                         </span>
                         <span>
-                          <Price amount={item.price} />
+                          <Price amount={item.originalPrice} />
                         </span>
                       </div>
                       <Link href={`/product/${item.productId}`}>

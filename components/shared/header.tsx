@@ -1,6 +1,4 @@
-import { MenuIcon, ShoppingCart, User } from 'lucide-react'
 import Marquee from 'react-fast-marquee'
-
 import Link from 'next/link'
 import { auth } from '@/auth'
 import { CartIcon } from '@/app/(client-side)/cart/cartIcon'
@@ -8,14 +6,16 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import SearchComponent from '@/components/shared/searcher'
 import { Button } from '../ui/button'
 import { FavIcon } from '../ux/favIcon'
-import DepartmentSection from '../pageComponents/hompage/departmentSection'
+import DepartmentSection from './departmentSection'
+import MobileHeader from './mobile-header'
+import { Settings } from 'lucide-react'
 
 const links = [
-  { name: 'Home', href: '/home' },
+  { name: 'Home', href: '/' },
   { name: 'All Products', href: '/categories' },
   { name: 'Blogs', href: '/blogs' },
-  { name: 'About us', href: '/about-us' },
-  { name: 'contacts', href: '/contacts' },
+  { name: 'About Us', href: '/about-us' },
+  { name: 'Contact Us', href: '/contacts' },
 ]
 
 export default async function NavMenu() {
@@ -24,7 +24,7 @@ export default async function NavMenu() {
     <div className='sticky top-0 z-50'>
       {/* Desktop Header */}
       {/* Top bar */}
-      <nav className='hidden md:flex items-center justify-between px-4 py-1.5  w-full bg-gray-100'>
+      <nav className='hidden md:flex items-center justify-between px-4 py-1.5  w-full bg-amber-200'>
         <Link href='/admin/dashboard'>
           <Button
             variant={'outline'}
@@ -66,8 +66,8 @@ export default async function NavMenu() {
         </div>
       </nav>
       {/* Header */}
-      <header className='sticky top-0 z-30 bg-gray-100 backdrop-blur border-b'>
-        <div className='max-w-7xl mx-auto px-4 py-4 flex items-center gap-4'>
+      <header className='hidden md:block sticky top-0 z-30  backdrop-blur border-b'>
+        <div className='flex max-w-7xl mx-auto px-4 py-4 items-center gap-4'>
           <h2 className='text-2xl font-bold text-amber-600'>
             ST<span className='text-black'>REAM</span>
           </h2>
@@ -75,8 +75,11 @@ export default async function NavMenu() {
           <div className='p-3'>
             <FavIcon />
           </div>
-          <Button variant='outline' className='rounded-xl gap-2'>
-            <ShoppingCart className='h-4 w-4' /> Cart (0)
+          <CartIcon />
+          <Button variant={'outline'} className='items-center'>
+            <Link href='/settings'>
+              <Settings />
+            </Link>
           </Button>
         </div>
 
@@ -91,9 +94,14 @@ export default async function NavMenu() {
                     <TabsTrigger
                       key={link.name}
                       value={link.name}
-                      className='rounded-xl '
+                      className='rounded-xl  '
                     >
-                      <Link href={link.href}>{link.name}</Link>
+                      <Link
+                        className='hover:text-black text-white'
+                        href={link.href}
+                      >
+                        {link.name}{' '}
+                      </Link>
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -104,24 +112,7 @@ export default async function NavMenu() {
       </header>
 
       {/* Mobile Header */}
-      <header className='flex md:hidden items-center justify-between px-4 py-3 bg-amber-600 w-full'>
-        <div>
-          <h2 className='text-xl font-bold text-yellow-500'>
-            <Link href='/'>
-              ST<span className='text-black'>REAM</span>
-            </Link>
-          </h2>
-        </div>
-
-        <div className='px-1.5'>
-          <SearchComponent />
-        </div>
-
-        <div className='flex items-center gap-3'>
-          <CartIcon />
-          <MenuIcon className='w-5 h-5 text-white' aria-label='Menu' />
-        </div>
-      </header>
+      <MobileHeader />
     </div>
   )
 }

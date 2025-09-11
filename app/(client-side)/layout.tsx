@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <NavMenu />
         <SessionProvider>
-          <main className='min-h-screen mx-1.5'>{children}</main>
+          <div className='min-h-screen mx-1.5'>{children}</div>
         </SessionProvider>
         <Toaster position='top-center' richColors />
         <Footer />

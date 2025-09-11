@@ -12,41 +12,30 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-
-
-
-
 const colours = [
   { name: 'Light Green', hex: '#1BAA8D' },
   { name: 'White', hex: '#FFFFFF' },
   { name: 'Brown', hex: '#5B3B1D' },
   { name: 'Yellow', hex: '#F7C948' },
-];
-const products =[
+]
+const products = [
   {
-     index: "1" 
-  },
-  { 
-      index: "2" 
+    index: '1',
   },
   {
-      index: "3" 
+    index: '2',
   },
   {
-      index: "4" 
+    index: '3',
+  },
+  {
+    index: '4',
   },
 ]
 
-
-
 export default function Productfallback() {
   const [currentImage, setCurrentImage] = useState(0)
-  
-  
-  
-  
-  
-  
+
   const [selectedColour, setSelectedColour] = useState(colours[0])
   const [selectedSize, setSelectedSize] = useState('Ultra Slim')
 
@@ -57,7 +46,7 @@ export default function Productfallback() {
         <div>
           <Card className='flex justify-center items-center p-1.5 mb-2'>
             <CardContent>
-            <div className='w-full h-[535px]'></div>
+              <div className='w-full h-[535px]'></div>
             </CardContent>
           </Card>
           {/* Thumbnails */}
@@ -73,9 +62,7 @@ export default function Productfallback() {
                 }`}
               >
                 <div className=' w-[40px] h-[40px] md:w-[80px] md:h-[80px] rounded'>
-                  <div className='w-[40px] h-[40px]'>
-
-                  </div>
+                  <div className='w-[40px] h-[40px]'></div>
                 </div>
               </button>
             ))}
@@ -85,16 +72,12 @@ export default function Productfallback() {
         {/* Product Info */}
         <div className='space-y-4'>
           <h1 className='text-3xl font-bold text-yellow-600'> Product: ...</h1>
-          <h2 className='text-2xl font-bold text-yellow-600'>
-           ...
-          </h2>
-          <p className='text-xl text-green-700 font-medium'>
-          Price:
-          </p>
+          <h2 className='text-2xl font-bold text-yellow-600'>...</h2>
+          <p className='text-xl text-green-700 font-medium'>Price:</p>
           <p className='text-sm'>
             Colour: <span className='font-medium'>{selectedColour.name}</span>
           </p>
-          <p className='text-sm text-gray-600'>  Reliable product</p>
+          <p className='text-sm text-gray-600'> Reliable product</p>
 
           {/* Colour Selection */}
           <div className='flex gap-2 items-center'>
@@ -126,9 +109,8 @@ export default function Productfallback() {
 
           {/* Add to Cart */}
           <div className='flex flex-col sm:flex-row gap-3 items-center justify-between py-4 px-6  rounded-b'>
-            
-             <Button>Add to Cart</Button>
-            
+            <Button>Add to Cart</Button>
+
             <Button>Add to Favorite</Button>
             <Button
               variant='link'
@@ -145,10 +127,7 @@ export default function Productfallback() {
             <li>Signature packaging & personalised card</li>
           </ul>
         </div>
-        <div>
-        
-        </div>
-       
+        <div></div>
       </div>
 
       {/* Footer Section */}

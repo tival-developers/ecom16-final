@@ -6,6 +6,7 @@ export type ProductType = {
   brand: string
   category: string
   serialNumber: string
+  newPrice: number
   originalPrice: number
   stock: number
   isTrending: boolean

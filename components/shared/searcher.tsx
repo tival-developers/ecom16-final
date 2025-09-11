@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
@@ -13,7 +14,7 @@ interface Product {
 
 export default function SearchComponent() {
   const router = useRouter()
-  const [setProductId] = useState('')
+  const [productId, setProductId] = useState('') // ✅ fixed
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<Product[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
@@ -26,6 +27,7 @@ export default function SearchComponent() {
     }
 
     let cancelled = false
+    //console.log(productId)
 
     async function fetchProducts() {
       try {
@@ -47,7 +49,7 @@ export default function SearchComponent() {
     return () => {
       cancelled = true
     }
-  }, [searchQuery])
+  }, [searchQuery, productId])
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -65,7 +67,7 @@ export default function SearchComponent() {
   }, [])
 
   const handleSelect = (product: Product) => {
-    setProductId(product._id)
+    setProductId(product._id) // ✅ now works
     setSearchQuery(product.name)
     setShowDropdown(false)
     router.push(`/product/${product._id}`)
@@ -74,12 +76,11 @@ export default function SearchComponent() {
 
   return (
     <>
-      <div className='hidden md:flex  items-center gap-2 flex-1  mx-4'>
-        
+      <div className='hidden md:flex items-center gap-2 flex-1 mx-4'>
         <Input
           id='product-search'
           placeholder='Search entire store...'
-          className=' rounded-xl border-amber-600'
+          className='rounded-xl border-amber-600'
           aria-label='Search Input'
           value={searchQuery}
           onChange={(e) => {
@@ -102,10 +103,9 @@ export default function SearchComponent() {
             ))}
           </ul>
         )}
-        {/* <Button className='bg-yellow-400 text-black'>Search</Button> */}
       </div>
 
-      {/*mobile */}
+      {/* Mobile */}
       <div className='flex md:hidden'>
         <Input
           id='product-search'
@@ -133,7 +133,6 @@ export default function SearchComponent() {
             ))}
           </ul>
         )}
-        {/* <Button className='bg-yellow-400 text-black'>Search</Button> */}
       </div>
     </>
   )

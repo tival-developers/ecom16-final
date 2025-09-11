@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { useSidebar } from '@/components/ui/sidebar'
 import { MainNav } from './main-nav'
 import { Search } from './search'
-import { MailUser } from './mail-user'
+import MailUser from './mail-user'
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar()

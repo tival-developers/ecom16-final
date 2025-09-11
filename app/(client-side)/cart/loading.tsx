@@ -1,3 +1,5 @@
-export default function Loading() {
-    return <div>Loading...</div>;
-  }
+export default function LoadingPage ({ }) {
+  return (
+    <span className="loading loading-dots loading-lg m-auto block"></span>
+  );
+}

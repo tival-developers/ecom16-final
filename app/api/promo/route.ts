@@ -9,43 +9,7 @@ export async function GET() {
   return NextResponse.json(promos)
 }
 
-// export async function POST(req: NextRequest) {
-//   await connectToDatabase
-//   const data = await req.json()
-//   console.log(data, "datadatadata;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;")
-//   const { productId, name, newPrice, originalPrice, imageUrls,  discountPercent,discountAmount, } = data
 
-//   try {
-//     //Check if product already exists
-//     const exists = await Promo.findOne({ productId })
-//     if (exists) {
-//       console.log("product exist bitch")
-//       return NextResponse.json(
-//         { message: 'Product already in promo list' },
-//         { status: 409 }
-//       )
-//     }
-
-// const promo = await Promo.create({
-//   productId,
-//   name,
-//   newPrice,
-//   originalPrice,
-//   imageUrls,
-//   discountAmount,
-//   discountPercent,
-
-// })
-
-//     return NextResponse.json(promo)
-//   } catch (error) {
-//     console.error('Error creating promoProduct:', error)
-//     return NextResponse.json(
-//       { error: 'Failed to create product' },
-//       { status: 500 }
-//     )
-//   }
-// }
 
 export async function POST(req: NextRequest) {
   await connectToDatabase
@@ -96,6 +60,16 @@ export async function POST(req: NextRequest) {
       discountAmount,
       discountPercent,
     })
+    // // 5) Create notification only for NEW review
+    // if (!exists) {
+    //   const product = await Product.findById(productId).select('name')
+    //   await Notification.create({
+    //     type: 'REVIEW',
+    //     customerId: user._id,
+    //     productId,
+    //     message: `New review by ${user.name || user.email} on ${product?.name || 'a product'}`,
+    //   })
+    // }
 
     return NextResponse.json(promo)
   } catch (error) {

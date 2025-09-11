@@ -2,23 +2,23 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-
-import Price from '@/lib/utils/format'
-import AddToCartButton from '@/components/cartadd'
-
 import ReviewButton from '@/components/ux/addReview'
 import FavAddButton from '@/components/ux/favAdd'
+import { ProductPrice } from '@/lib/utils/product-price'
+import { AddToCart } from '@/components/ux/cartadd'
 
 interface Product {
   _id: string
   name: string
   originalPrice: number
+  newPrice: number
   imageUrls: string[]
   description: string
   variations: string[]
   variation: string
+  category: string
+  quantity: number
 }
 function getColor(index: number) {
   const colors = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#8b5cf6']
@@ -88,28 +88,28 @@ export default function ProductDetail({ product }: { product: Product }) {
                     ></span>
 
                     {/* Variation text */}
-                    <span className='capitalize text-lg '>
-                      <strong>{key}:</strong> {value}
+                    <span className='capitalize text-lg font-medium text-amber-600 '>
+                      <strong className='text-lg font-medium text-gray-600'>
+                        {key}:{' '}
+                      </strong>
+                      {value}
                     </span>
                   </div>
                 ))}
             </div>
           </div>
-          <p className='text-xl text-green-700 font-medium'>
-            <Price amount={product.originalPrice} />
-          </p>
+          <div className='text-lg font-medium text-gray-600 flex gap-3'>
+            Price:
+            <ProductPrice
+              originalPrice={product.originalPrice}
+              newPrice={product.newPrice}
+            />
+          </div>
 
           {/* Add to Cart */}
-          <div className='flex flex-col sm:flex-row gap-3 items-center justify-between py-4 px-6  rounded-b'>
-            <AddToCartButton product={product} />
-
+          <div className='flex flex-col sm:flex-row gap-3 items-center justify-around py-4 px-6  rounded-b'>
+            <AddToCart product={product} />
             <FavAddButton variant='outline' product={product} />
-            <Button
-              variant='link'
-              className='w-full sm:w-auto text-yellow-700 font-medium hover:underline'
-            >
-              Shop Now
-            </Button>
           </div>
 
           {/* Delivery & Shipping Info */}

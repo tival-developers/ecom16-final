@@ -1,11 +1,13 @@
 // import ProductCategorySection from '@/components/cards/allCategories'
 
-import AddToCartButton from '@/components/cartadd'
+
 import Search from '@/components/shared/search'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { getProducts } from '@/lib/actions/getProducts'
 import Image from 'next/image'
 import Link from 'next/link'
+import AddToCartButton from '../ux/cartadd'
+import { ProductType } from './product-card'
 
 export default async function ProductsPage({
   searchParams,
@@ -29,7 +31,7 @@ export default async function ProductsPage({
           gap-6
         '
       >
-        {products.map((product) => (
+        {products.map((product:ProductType) => (
           <Card
             key={product._id}
             className='

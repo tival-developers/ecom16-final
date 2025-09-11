@@ -1,10 +1,10 @@
-
-import { getCategoriesWithProducts } from '@/lib/actions/homepage'
+//import { getCategoriesWithProducts } from '@/lib/actions/homepage'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import HomeCatProd from '../fallbacks/homeCatProd'
-import { ProductCard } from '@/app/(client-side)/1/page'
 import { Button } from '../ui/button'
+import ProductCard from './product-card'
+import { getCategoriesWithProducts } from '@/lib/actions/homepage'
 
 export default async function HomePageData() {
   const data = await getCategoriesWithProducts()
@@ -16,10 +16,7 @@ export default async function HomePageData() {
           <div className='flex items-center justify-between mb-6'>
             <h2 className='text-xl md:text-2xl font-bold'> {category.name}</h2>
             <Button variant='ghost' className='rounded-xl'>
-              <Link
-                href={`/categories/${category.slug}`}
-              
-              >
+              <Link href={`/categories/${category.slug}`}>
                 View all products
               </Link>
             </Button>

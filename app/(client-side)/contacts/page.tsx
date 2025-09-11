@@ -5,37 +5,58 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { LocateIcon, Mail, PhoneCall } from 'lucide-react'
 import { FaFacebookSquare, FaInstagramSquare, FaTiktok } from 'react-icons/fa'
+import { useTransition, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { ContactUs } from '@/lib/actions/contacts'
-import { useFormState } from 'react-dom'
-import { useEffect, useRef } from 'react'
-import { toast } from 'sonner'
-import { SubmitButton } from '@/components/ux/submit-button'
 
 export default function ContactPage() {
-  const [state, formAction] = useFormState(ContactUs, { success: null })
+  const [isPending, startTransition] = useTransition()
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
+  const [success, setSuccess] = useState(false)
 
-  // show toast when form submits
-  const formRef = useRef<HTMLFormElement>(null)
+  // ✅ Controlled state
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
+  })
 
-  useEffect(() => {
-    if (state.success === true) {
-      toast('Your message has been sent!', {
-        description: 'We will get back to you as soon as possible',
-      })
-      formRef.current?.reset()
-    }
-    if (state.success === false) {
-      toast('Failed to send your message', {
-        description: 'Kindly try again',
-      })
-    }
-  }, [state])
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+  }
+
+  async function handleSubmit(formData: FormData) {
+    startTransition(async () => {
+      const res = await ContactUs(formData)
+      if ('errors' in res) {
+        setErrors(res.errors)
+        setSuccess(false)
+      } else {
+        setErrors({})
+        setSuccess(true)
+        setForm({ name: '', email: '', phone: '', subject: '', message: '' }) // ✅ reset
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(false), 3000)
+      }
+    })
+  }
+
+  const email = process.env.NEXT_PUBLIC_ADMIN_EMAIL
+  const phone = process.env.NEXT_PUBLIC_ADMIN_PHONE
+  const address = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
 
   return (
-    <div className='w-full mt-7 bg-gradient-to-br from-yellow-50 to-white'>
+    <div className='w-full  bg-gradient-to-br from-yellow-50 to-white'>
       {/* Header Banner */}
-      <div className='w-full bg-yellow-500 text-white py-20 text-center'>
-        <h1 className='text-4xl font-bold text-gray-700'>Contact Us</h1>
+      <div className='w-full bg-gradient-to-r from-gray-200 via-white to-gray-100 shadow-lg overflow-hidden py-15 md:py-25 text-center mx-auto'>
+        <h1 className='text-4xl font-bold text-amber-600'>Contact Us</h1>
         <p className='mt-2 text-xl font-medium max-w-4xl mx-auto'>
           Your satisfaction is our priority. For inquiries related to products,
           services, or orders, our dedicated support team is available to
@@ -57,7 +78,7 @@ export default function ContactPage() {
               </div>
               <div className='flex flex-col'>
                 <strong>Phone:</strong>
-                <span>+254 712 345678</span>
+                <span>{phone}</span>
               </div>
             </div>
             <div className='flex items-center gap-4'>
@@ -66,12 +87,13 @@ export default function ContactPage() {
               </div>
               <div className='flex flex-col'>
                 <strong>Email:</strong>
-                <a
-                  href='mailto:support@tivaldevelopers.com'
+                <Link
+                  href={`mailto:${email}`}
+                  target='_blank'
                   className='text-blue-600 underline'
                 >
-                  support@tivaldevelopers.com
-                </a>
+                 {email}
+                </Link>
               </div>
             </div>
             <div className='flex items-center gap-4'>
@@ -80,7 +102,7 @@ export default function ContactPage() {
               </div>
               <div className='flex flex-col'>
                 <strong>Address:</strong>
-                <span>Nairobi, Luthuli Street</span>
+                <span>{address}</span>
               </div>
             </div>
           </div>
@@ -102,19 +124,85 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Form */}
-        <div className='bg-gray-800 text-white p-6 rounded-lg shadow'>
+        <div className='bg-gradient-to-r from-gray-200 via-white to-gray-100 shadow-lg overflow-hidden  p-6 rounded-lg '>
           <h2 className='mb-4'>Need Assistance? Send us a Message</h2>
-          <form ref={formRef} action={formAction} className='space-y-4'>
+          <form action={handleSubmit} className='space-y-4'>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-              <Input placeholder='Email' type='email' name='email' required />
-              <Input placeholder='Name' type='text' name='name' required />
+              <div>
+                <Input
+                  placeholder='Email'
+                  type='email'
+                  name='email'
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.email && (
+                  <p className='text-red-500 text-sm'>{errors.email[0]}</p>
+                )}
+              </div>
+              <div>
+                <Input
+                  placeholder='Name'
+                  type='text'
+                  name='name'
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+                />
+                {errors.name && (
+                  <p className='text-red-500 text-sm'>{errors.name[0]}</p>
+                )}
+              </div>
             </div>
-            <Input placeholder='Phone' type='tel' name='phone' required />
-            <Input placeholder='Subject' type='text' name='subject' required />
-            <Textarea placeholder='Message' rows={4} name='message' required />
-            <SubmitButton />
+            <div>
+              <Input
+                placeholder='Phone'
+                type='tel'
+                name='phone'
+                value={form.phone}
+                onChange={handleChange}
+                required
+              />
+              {errors.phone && (
+                <p className='text-red-500 text-sm'>{errors.phone[0]}</p>
+              )}
+            </div>
+            <div>
+              <Input
+                placeholder='Subject'
+                type='text'
+                name='subject'
+                value={form.subject}
+                onChange={handleChange}
+                required
+              />
+              {errors.subject && (
+                <p className='text-red-500 text-sm'>{errors.subject[0]}</p>
+              )}
+            </div>
+            <div>
+              <Textarea
+                placeholder='Message'
+                rows={4}
+                name='message'
+                value={form.message}
+                onChange={handleChange}
+                required
+              />
+              {errors.message && (
+                <p className='text-red-500 text-sm'>{errors.message[0]}</p>
+              )}
+            </div>
 
-            
+            {errors._form && (
+              <p className='text-red-500 text-sm'>{errors._form[0]}</p>
+            )}
+            {success && <p className='text-green-600 text-sm'>Message Sent!</p>}
+
+            <Button type='submit' disabled={isPending}>
+              {isPending ? 'Sending...' : 'Send Message'}
+            </Button>
           </form>
         </div>
       </div>

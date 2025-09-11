@@ -3,10 +3,11 @@ import { NextResponse } from 'next/server'
 import connectToDatabase from '@/lib/db/dbConnection'
 import { Review } from '@/lib/db/models/review'
 import { auth } from '@/auth'
-import { Notification } from '@/lib/db/models/notification'
 import User from '@/lib/db/models/user.model'
 import { canUserReviewProduct } from '@/lib/helper/reviews'
 import Product from '@/lib/db/models/product.model'
+import Notification from '@/lib/db/models/notification'
+
 
 export async function POST(req: Request) {
   const session = await auth()
@@ -63,15 +64,17 @@ export async function POST(req: Request) {
     )
 
     // 5) Create notification only for NEW review
+    
     if (!existingReview) {
       const product = await Product.findById(productId).select('name')
       await Notification.create({
-        type: 'REVIEW',
+        type: 'review',
+        title: 'New Review',
         customerId: user._id,
-        productId,
         message: `New review by ${user.name || user.email} on ${product?.name || 'a product'}`,
       })
     }
+    
 
     return NextResponse.json({
       success: true,
@@ -90,33 +93,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to save review' }, { status: 500 })
   }
 }
-/////////////////////fetch dta from the database//////////
 
-// export async function GET() {
-//   await connectToDatabase
-
-//   try {
-//     const reviews = await Review.find()
-//       .populate("customerId", "name email")
-//       .populate("productId", "name") // assuming Product model has `name`
-//       .sort({ createdAt: -1 })
-
-//     return NextResponse.json(
-//       reviews.map(r => ({
-//         _id: r._id.toString(),
-//         product: r.productId?.name || "Unknown",
-//         user: r.customerId?.name || r.customerId?.email || "Unknown",
-//         rating: r.rating,
-//         feedback: r.feedback,
-//         status: r.status,
-//         createdAt: r.createdAt,
-//       }))
-//     )
-//   } catch (err) {
-//     console.error(err)
-//     return NextResponse.json({ error: "Failed to fetch reviews" }, { status: 500 })
-//   }
-// }
 export async function GET(req: Request) {
   await connectToDatabase
 
@@ -124,7 +101,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const productId = searchParams.get("productId")
     const customerId = searchParams.get("customerId")
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filter: any = {}
     if (productId) filter.productId = productId
     if (customerId) filter.customerId = customerId

@@ -218,34 +218,6 @@ export default function FlashSaleManager() {
       control={form.control}
       name={name}
       render={({ field }) => (
-        // <FormItem className='flex flex-col'>
-        //   <FormLabel className='mb-1 font-medium'>{label}</FormLabel>
-        //   <Popover>
-        //     <PopoverTrigger asChild>
-        //       <FormControl>
-        //         <Button
-        //           variant='outline'
-        //           className={cn(
-        //             'w-[240px] pl-3 text-left font-normal',
-        //             !field.value && 'text-muted-foreground'
-        //           )}
-        //         >
-        //           {field.value ? format(field.value, 'PPP') : 'Pick a date'}
-        //           <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-        //         </Button>
-        //       </FormControl>
-        //     </PopoverTrigger>
-        //     <PopoverContent className='w-auto p-0' align='start'>
-        //       <Calendar
-        //         mode='single'
-        //         selected={field.value}
-        //         onSelect={field.onChange}
-        //         initialFocus
-        //       />
-        //     </PopoverContent>
-        //   </Popover>
-        //   <FormMessage />
-        // </FormItem>
         <FormItem className='flex flex-col'>
           <FormLabel className='mb-1 font-medium'>{label}</FormLabel>
           <Popover>
@@ -381,13 +353,14 @@ export default function FlashSaleManager() {
           return (
             <Card key={item._id} className='relative'>
               <CardContent className='p-4 space-y-2'>
-                <Image
-                  src={item.imageUrls}
-                  alt={item.name}
-                  width={100}
-                  height={128}
-                  className='w-full h-32 object-cover rounded'
-                />
+                <div className='relative w-full aspect-[3/3]'>
+                  <Image
+                    src={item.imageUrls}
+                    alt={item.name}
+                    fill
+                    className='object-contain'
+                  />
+                </div>
                 <h2 className='font-semibold'>{item.name}</h2>
                 <p className='text-sm text-gray-500 line-through'>
                   {formatPrice(item.originalPrice)}

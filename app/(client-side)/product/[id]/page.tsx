@@ -1,21 +1,24 @@
-
-
 import connectToDatabase from '@/lib/db/dbConnection'
 import Product from '@/lib/db/models/product.model'
 import ProductDetail from './productDetail'
 import RelatedProducts from '@/components/cards/relatedProducts'
 import { ReviewSummary } from '@/components/cards/reviewCard'
 
-export default async function ProductPage(
-  context: { params: Promise<{ id: string }> }
-) {
+
+export async function generateStaticParams() {
+  const products = await Product.find().lean()
+
+  return products.map((product) => ({
+    id: String(product._id),
+  }))
+}
+
+export default async function ProductPage(context: {params: Promise<{ id: string }>}) {
   const { id } = await context.params // ✅ Await params
 
   await connectToDatabase
 
-  const productData = await Product.findById(id)
-    .populate('category')
-    .lean()
+  const productData = await Product.findById(id).populate('category').lean()
 
   if (!productData) {
     return (
@@ -39,12 +42,13 @@ export default async function ProductPage(
         <ProductDetail product={product} />
       </main>
       <section className='max-w-5xl mx-auto py-10 px-4'>
-        <ReviewSummary product={product} /> 
+        <ReviewSummary product={product} />
       </section>
       <section className='mt-10'>
-        {/* If product.category is populated, you may need product.category.name here */}
-        <RelatedProducts  categoryName={product.category?.name || product.category} />
         
+        <RelatedProducts
+          categoryId={product.category?.id || product.category}
+        />
       </section>
     </>
   )

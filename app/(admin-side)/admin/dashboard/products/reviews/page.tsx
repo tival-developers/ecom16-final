@@ -23,7 +23,7 @@ type Review = {
 
 export default function AdminReviewsTable() {
   const [reviews, setReviews] = useState<Review[]>([])
-
+  
   // Load reviews from backend
   useEffect(() => {
     const fetchReviews = async () => {
@@ -31,7 +31,8 @@ export default function AdminReviewsTable() {
         const res = await fetch('/api/reviews')
         const data = await res.json()
         setReviews(data.reviews)
-      } catch (err) {
+      } catch (error) {
+        console.log(error)
         toast.error('Failed to load reviews')
       }
     }
@@ -46,7 +47,8 @@ export default function AdminReviewsTable() {
       if (!res.ok) throw new Error('Failed to delete')
         setReviews(prev => prev.filter(r => r._id !== id))
       toast.success('Review deleted')
-    } catch (err) {
+    } catch (error) {
+      console.log(error)
       toast.error('Could not delete review')
     }
   }
@@ -62,7 +64,8 @@ export default function AdminReviewsTable() {
       const updated = await res.json()
       setReviews(reviews.map((r) => (r._id === id ? updated.review : r)))
       toast.success(`Review ${status}`)
-    } catch (err) {
+    } catch (error) {
+      console.log(error)
       toast.error('Could not update review')
     }
   }
@@ -93,7 +96,7 @@ export default function AdminReviewsTable() {
                 </TableCell>
                 <TableCell>
                   <Badge variant={
-                    review.status === 'approved' ? 'success' :
+                    review.status === 'approved' ? 'secondary' :
                     review.status === 'rejected' ? 'destructive' : 'outline'
                   }>
                     {review.status}

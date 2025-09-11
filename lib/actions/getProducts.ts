@@ -9,6 +9,9 @@ export async function getProducts(query?: string) {
       name: { $regex: query, $options: 'i' }, // case-insensitive
     });
   }
-  return await Product.find();
+  const fetchProducts = await Product.find().lean()
+  const products = JSON.parse(JSON.stringify(fetchProducts))
+  return await products;
+  
 }
 

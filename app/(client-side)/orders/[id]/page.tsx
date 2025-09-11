@@ -1,16 +1,23 @@
 import connectToDatabase from '@/lib/db/dbConnection'
 import { Order } from '@/lib/db/models/order'
 import PreviousOrderCard from './orderDetail'
+export async function generateStaticParams() {
+  await connectToDatabase
+  const orders = await Order.find({}, '_id').lean()
+
+  return orders.map((order) => ({
+    id: String(order._id),
+  }))
+  
+}
 
 
-export default async function OrderPage({
-  params,
-}: {
-  params: { id: string }
-}) {
+
+export default async function OrderPage(context: {params: Promise<{ id: string }>}) {
+  const { id } = await context.params // ✅ Await params
   await connectToDatabase
 
-  const orderData = await Order.findById(params.id).lean()
+  const orderData = await Order.findById(id).lean()
 
   if (!orderData) {
     return (

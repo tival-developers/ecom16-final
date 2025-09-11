@@ -1,12 +1,11 @@
 'use server'
-
 import connectToDatabase from '@/lib/db/dbConnection'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import { z } from 'zod'
-
 import bcrypt from 'bcryptjs'
 import User from '../db/models/user.model'
+
+
 
 const FormSchema = z
   .object({
@@ -31,6 +30,7 @@ const CreateUser = FormSchema
 //*****************create**********************
 
 export async function userCreate(formData: FormData) {
+
   const { name, email, password, confirmPassword } = CreateUser.parse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -63,12 +63,15 @@ export async function userCreate(formData: FormData) {
     })
 
     await newUser.save()
+    
+    return { email, password } // ✅ return credentials for auto-login
+
   } catch (error) {
     console.error('Error creating user:', error)
   }
 
   revalidatePath('/admin/dashboard/customers')
-  redirect('/admin/dashboard/customers')
+  
 }
 
 
@@ -85,7 +88,7 @@ export async function updateUser(id: string, formData: FormData) {
     const password = formData.get('password')?.toString()
 
     await connectToDatabase
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: Record<string, any> = {}
     if (name) updateData.name = name
     if (email) updateData.email = email

@@ -1,17 +1,32 @@
+import { Card, CardContent } from '@/components/ui/card'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Blog from '@/lib/db/models/blog'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
+type postType = {
+  _id: string
+  title: string
+  content: string
+  updatedAt: Date
+  imageurl: string
+  author: string
+}
 
-  
-  export default async function Example() {
-    await connectToDatabase
+export const metadata: Metadata = {
+  title: 'Blogs',
+  description: 'view blogs',
+}
+
+export default async function Blogs() {
+  await connectToDatabase
 
   const fetchPosts = await Blog.find().lean()
   const posts = JSON.parse(JSON.stringify(fetchPosts))
+  console.log('uuuuuuuuuuuuuuuuuuuuu', posts)
 
-  if (posts.length=== 0) {
+  if (posts.length === 0) {
     return (
       <div className='container mx-auto p-4'>
         <p>Blogs will be added soon.</p>
@@ -19,38 +34,45 @@ import Link from 'next/link'
     )
   }
 
-    return (
-      <div className="bg-white py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl lg:mx-0">
-            <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-5xl">From the blog</h2>
-            <p className="mt-2 text-lg/8 text-gray-600">Learn matters relating to tech with our expert advice.</p>
-          </div>
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {posts.map((post) => (
-              <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
-                <div className="flex items-center gap-x-4 text-xs">
-                  <time dateTime={post.updatedAt} className="text-gray-500">
-                  {new Date(post.updatedAt).toLocaleString()}
-                  </time>
-                  
-                </div>
-                <div className="group relative">
-                  <h3 className="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-                    <Link href={post.href}>
-                      <span className="absolute inset-0" />
-                      {post.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">{post.content}</p>
-                </div>
-                
-                {/* </div> */}
-              </article>
-            ))}
-          </div>
-        </div>
+  return (
+    <div className='container mx-auto p-6'>
+      <h1 className='text-3xl font-bold mb-8'>Latest Posts</h1>
+
+      <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        {posts.map((post: postType) => (
+          <Card
+            key={post._id}
+            className='rounded-2xl shadow-md hover:shadow-lg transition-all'
+          >
+            <div className='relative flex items-center w-full justify-center m-1.5'>
+              <Image
+                src={post.imageurl}
+                alt={post.title}
+                width={400}
+                height={400}
+                className=' object-contain  flex items-center w-[280px] '
+              />
+            </div>
+
+            <CardContent className='p-4'>
+              <h2 className='text-xl font-semibold mb-2'>{post.title}</h2>
+              <p className='text-sm text-muted-foreground mb-2'>
+                By {post.author} •
+                {new Date(post.updatedAt).toLocaleDateString()}
+              </p>
+              <p className='text-muted-foreground mb-4 line-clamp-2'>
+                {post.content}
+              </p>
+              <Link
+                href={`/blogs/${post._id}`}
+                className='text-blue-600 font-medium  hover:text-amber-600'
+              >
+                Read more →
+              </Link>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-    )
-  }
-  
+    </div>
+  )
+}

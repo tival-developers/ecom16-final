@@ -1,25 +1,28 @@
 
-import { Card, CardContent } from '@mui/material'
-import Image from 'next/image'
-import { CardFooter } from '../ui/card'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Product from '@/lib/db/models/product.model'
 import Category from '@/lib/db/models/category.model'
 import mongoose from 'mongoose'
-import AddToCartButton from '../cartadd'
 import Link from 'next/link'
-
-import Price from '@/lib/utils/format'
 import AddToFavoriteButton from '../ux/favAdd'
 import { Button } from '../ui/button'
 import { ArrowRight } from 'lucide-react'
+import AddToCartButton from '../ux/cartadd'
+import { ProductPrice } from '@/lib/utils/product-price'
+import { Badge } from '../ui/badge'
+import Image from 'next/image'
+import { Card, CardContent } from '../ui/card'
 
 interface ProductType {
   _id: string
   name: string
   originalPrice: number
+  newPrice: number
   imageUrls: string[]
   description: string
+  category: string
+  stock: number
+  brand: string
 }
 
 interface CategoryDoc {
@@ -28,17 +31,17 @@ interface CategoryDoc {
 }
 
 interface Props {
-  categoryName: string
+  categoryId: string
 }
 
-export default async function RelatedProducts({ categoryName }: Props) {
+export default async function RelatedProducts({ categoryId }: Props) {
   await connectToDatabase
 
   const ProductModel = mongoose.models.Product || Product
   const CategoryModel = mongoose.models.Category || Category
 
   const category = (await CategoryModel.findOne({
-    name: categoryName,
+    _id: categoryId,
   }).lean()) as CategoryDoc | null
 
   if (!category) {
@@ -46,14 +49,14 @@ export default async function RelatedProducts({ categoryName }: Props) {
   }
 
   const productsData = await ProductModel.find({ category: category._id })
-    .select('name originalPrice imageUrls description')
+    .select('name originalPrice imageUrls description brand stock')
     .limit(4)
     .lean()
 
   const products: ProductType[] = JSON.parse(JSON.stringify(productsData))
   return (
     <div>
-      <section className='relative px-4 py-6 bg-gray-100 mt-10 rounded-2xl border-2 '>
+      <section className='relative px-4 py-6 bg-gradient-to-r from-gray-100 via-white to-gray-50 shadow-lg overflow-hidden mt-10 rounded-2xl border-2 '>
         <div className='mb-6 flex items-center justify-between'>
           <div className='hidden md:flex'></div>
           <h2 className='text-xl font-bold text-yellow-600 mb-1.5 '>
@@ -61,7 +64,7 @@ export default async function RelatedProducts({ categoryName }: Props) {
           </h2>
 
           <Link
-            href={`/categories/${categoryName}`}
+            href={`/categories/${category.name}`}
             className=' flex items-center gap-1.5 text-gray-800 hover:text-yellow-600'
           >
             <Button
@@ -86,49 +89,53 @@ export default async function RelatedProducts({ categoryName }: Props) {
           {products.map((product) => (
             <Card
               key={product._id}
-              className='
-                border border-gray-200
-                flex flex-col
-                justify-between
-                bg-white
-                shadow-sm
-                rounded-lg
-                overflow-hidden
-                h-full
-              '
+              className='hover:shadow-lg transition-shadow rounded-2xl overflow-hidden'
             >
-              <CardContent className='p-4 flex flex-col flex-1'>
-                <div className='relative w-full h-48 sm:h-56 mb-4 rounded overflow-hidden group'>
-                  <Link href={`/product/${product._id}`} className='h-full'>
-                    <Image
-                      src={product.imageUrls?.[0] || '/placeholder.jpg'}
-                      alt={product.name}
-                      fill
-                      priority
-                      className='object-contain p-2'
-                    />
+              <CardContent className='p-0'>
+                <div className='aspect-[4/3] bg-muted/30'>
+                  <Link
+                    href={`/product/${product._id}`}
+                    className='relative aspect-square w-full mb-2 overflow-hidden rounded'
+                  >
+                    <div className='relative w-full aspect-[3/3]'>
+                      <Image
+                        src={product.imageUrls?.[0]}
+                        alt={product.name}
+                        fill
+                        className=' object-cover w-full'
+                      />
+                    </div>
                   </Link>
                 </div>
-                <div className='flex items-center justify-between'>
-                  <p className='text-xl font-semibold mb-2 line-clamp-1'>
-                    {product.name}
-                  </p>
-                  <AddToFavoriteButton variant='icon' product={product} />
-                </div>
+                <div className='p-4 space-y-1.5 relative'>
+                  <div>
+                    <AddToFavoriteButton variant='icon' product={product} />
+                  </div>
 
-                <p className='text-[18px] text-green-600 flex-grow line-clamp-3'>
-                  {product.description}
-                </p>
-              </CardContent>
+                  <div className='flex items-center justify-between'>
+                    <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
+                      {product.name}
+                    </h3>
+                    <Badge variant={'secondary'} className='uppercase'>
+                      {product.brand}
+                    </Badge>
+                  </div>
 
-              <CardFooter className='px-4 py-3 mt-auto'>
-                <div className='flex justify-between items-center w-full'>
-                  <p className='text-green-600 font-bold text-lg'>
-                    <Price amount={product.originalPrice} />
+                  <p className='text-muted-foreground text-sm'>
+                    Stock: {product.stock}
                   </p>
+                  <ProductPrice
+                    originalPrice={product.originalPrice}
+                    newPrice={product.newPrice}
+                  />
+
                   <AddToCartButton product={product} />
+
+                  <Button className='rounded-xl w-full mt-2.5'>
+                    <Link href={`/product/${product._id}`}>View Product </Link>
+                  </Button>
                 </div>
-              </CardFooter>
+              </CardContent>
             </Card>
           ))}
         </div>

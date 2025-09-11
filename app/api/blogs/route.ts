@@ -1,3 +1,4 @@
+import { auth } from '@/auth'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Blog from '@/lib/db/models/blog'
 
@@ -6,20 +7,27 @@ import { NextResponse } from 'next/server'
 export async function GET() {
   await connectToDatabase
   const blogs = await Blog.find()
-    .select('title content imageurl status tags updatedAt')
+    .select('title content imageurl status tags updatedAt, author')
     .lean()
   return NextResponse.json(blogs)
 }
 
 export async function POST(req: Request) {
+  const session = await auth()
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
   try {
     await connectToDatabase
-    const { title, content, imageurl, status, tags } = await req.json()
+    const data = await req.json()
 
-    const newBlog = new Blog({ title, content, imageurl, status, tags })
-    await newBlog.save()
+    // 👇 override the author with logged-in user
+    const blog = await Blog.create({
+      ...data,
+      author: session.user?.name || session.user?.email,
+    })
 
-    return NextResponse.json({ message: 'Blog created' }, { status: 201 })
+    return NextResponse.json(blog, { status: 201 })
   } catch (err) {
     console.error(err)
     return NextResponse.json(
@@ -28,3 +36,5 @@ export async function POST(req: Request) {
     )
   }
 }
+
+

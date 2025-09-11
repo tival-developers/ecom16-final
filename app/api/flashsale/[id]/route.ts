@@ -3,19 +3,24 @@ import connectToDatabase from '@/lib/db/dbConnection'
 import FlashSale from '@/lib/db/models/flashsale'
 import { NextResponse } from 'next/server'
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  _: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params // ✅ Await params
   await connectToDatabase
-  const flashsaleProduct = await FlashSale.findById(params.id)
+  const flashsaleProduct = await FlashSale.findById(id)
   return NextResponse.json(flashsaleProduct)
 }
 //update PromoProduct details
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params // ✅ Await params
   await connectToDatabase
   const body = await req.json()
-  const updated = await FlashSale.findByIdAndUpdate(params.id, body, {
+  const updated = await FlashSale.findByIdAndUpdate(id, body, {
     new: true,
   })
   return NextResponse.json(updated)
@@ -23,10 +28,11 @@ export async function PUT(
 //delete PromoProduct
 export async function DELETE(
   _: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params // ✅ Await params
   await connectToDatabase
-  await FlashSale.findByIdAndDelete(params.id)
+  await FlashSale.findByIdAndDelete(id)
   return NextResponse.json(
     { message: 'flashsale item removed' },
     { status: 200 }

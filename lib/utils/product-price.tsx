@@ -10,7 +10,7 @@ export function ProductPrice({ originalPrice, newPrice }: ProductPriceProps) {
     <div className='flex items-center gap-2'>
       {newPrice ? (
         <>
-          <span className='text-gray-500 line-through text-sm'>
+          <span className='text-amber-600 font-medium  line-through text-sm'>
             <Price amount={originalPrice} />
           </span>
           <span className='text-lg font-semibold text-red-600'>
@@ -18,11 +18,10 @@ export function ProductPrice({ originalPrice, newPrice }: ProductPriceProps) {
           </span>
         </>
       ) : (
-        <span className='text-lg font-semibold text-gray-900'>
+        <span className='text-amber-600 font-medium text-lg'>
           <Price amount={originalPrice} />
         </span>
       )}
     </div>
   )
 }
-

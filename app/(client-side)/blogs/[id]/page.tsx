@@ -1,10 +1,28 @@
+import { Card } from '@/components/ui/card'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Blog from '@/lib/db/models/blog'
+import Image from 'next/image'
 
-export default async function BlogPage({ params }: { params: { id: string } }) {
+// Generate static params for all blog posts
+export async function generateStaticParams() {
   await connectToDatabase
+  const posts = await Blog.find({}, '_id').lean()
 
-  const Post = await Blog.findById(params.id).lean()
+  return posts.map((post) => ({
+    id: String(post._id),
+  }))
+  
+}
+
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  await connectToDatabase
+  const { id } = await params
+
+  const Post = await Blog.findById(id).lean()
 
   if (!Post) {
     return (
@@ -15,45 +33,27 @@ export default async function BlogPage({ params }: { params: { id: string } }) {
   }
 
   const post = JSON.parse(JSON.stringify(Post))
-  console.log('orderdata', post)
+  console.log('posts', post)
 
   return (
-    <main className='max-w-6xl'>
-      <article
-        key={post.id}
-        className='flex max-w-xl flex-col items-start justify-between'
-      >
-        <div className='flex items-center gap-x-4 text-xs'>
-          <time dateTime={post.datetime} className='text-gray-500'>
-            {post.date}
-          </time>
-          <a
-            href={post.category.href}
-            className='relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100'
-          >
-            {post.category.title}
-          </a>
-        </div>
-        <div className='group relative'>
-          <h3 className='mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600'>
-            <a href={post.href}>
-              <span className='absolute inset-0' />
-              {post.title}
-            </a>
-          </h3>
-          <p className='mt-5 line-clamp-3 text-sm/6 text-gray-600'>
-            {post.description}
-          </p>
-        </div>
-        <div className='relative mt-8 flex items-center gap-x-4'>
-          <img
-            alt=''
-            src={post.author.imageUrl}
-            className='size-10 rounded-full bg-gray-50'
+    <Card className='max-w-4xl mx-auto p-6 prose border-2 bg-amber-100 '>
+      <article key={post._id} className=' p-3 prose lg:prose-xl '>
+        <div className='relative flex items-center w-full justify-center m-1.5'>
+          <Image
+            src={post.imageurl}
+            alt={post.title}
+            width={400}
+            height={200}
+            className=' object-contain  flex items-center w-[400px] '
           />
-          
         </div>
+
+        <h1 className='text-4xl font-bold mb-2'>{post.title}</h1>
+        <p className='text-muted-foreground text-sm mb-6'>
+          By Trendz • {new Date(post.updatedAt).toLocaleDateString()}
+        </p>
+        <div className='prose'> {post.content} </div>
       </article>
-    </main>
+    </Card>
   )
 }

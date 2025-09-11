@@ -8,7 +8,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 import { toast } from 'sonner'
 import { useSession } from 'next-auth/react'
 import { useCartStore } from '@/stores/cart'
-import { Suspense} from 'react'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Price from '@/lib/utils/format'
 import { useRef, useEffect } from 'react'
@@ -27,21 +27,18 @@ const Cartpage = () => {
     }
   }, [session, status, loadCart, mergeGuestCart])
 
+  const effectRan = useRef(false)
 
+  useEffect(() => {
+    if (effectRan.current) return
+    effectRan.current = true
 
-const effectRan = useRef(false)
+    if (status === 'loading') return
 
-useEffect(() => {
-  if (effectRan.current) return
-  effectRan.current = true
-
-  if (status === 'loading') return
-
-  if (session?.user) {
-    mergeGuestCart(session)
-  }
-}, [status, session, mergeGuestCart])
-
+    if (session?.user) {
+      mergeGuestCart(session)
+    }
+  }, [status, session, mergeGuestCart])
 
   const {
     items,
@@ -60,14 +57,14 @@ useEffect(() => {
   return (
     <main className='p-4 bg-gradient-to-br from-yellow-50 to-white min-h-screen'>
       <CardHeader className='mb-4'>
-        <h2 className='text-3xl font-bold text-yellow-600'>🛒 Shopping Cart</h2>
+        <h2 className='text-3xl font-bold text-amber-600'>🛒 Shopping Cart</h2>
         <p className='text-sm text-gray-500'>
           Review your items before checkout
         </p>
       </CardHeader>
       <Suspense>
         {/* Mobile View */}
-        <div className='cart-mobile space-y-4'>
+        <div className='cart-mobile space-y-4 md:hidden'>
           {items.length === 0 ? (
             <p className='text-center p-3 text-2xl font-medium'>
               Your cart is empty.
@@ -116,6 +113,37 @@ useEffect(() => {
               </Card>
             ))
           )}
+
+          {/* Mobile Summary Section */}
+          {items.length > 0 && (
+            <Card className='bg-gradient-to-r from-gray-100 via-white to-gray-50 shadow-lg overflow-hidden text-amber-600 p-2 rounded-2xl'>
+              <CardHeader>
+                <h2 className='text-lg font-semibold'>Order Summary</h2>
+              </CardHeader>
+              <CardContent className='space-y-3'>
+                <div className='flex justify-between'>
+                  <span>Subtotal</span>
+                  <Price amount={total} />
+                </div>
+                <Separator className='bg-gray-600' />
+                <div className='flex justify-between'>
+                  <span>Total Quantity</span>
+                  {totalQuantity}
+                </div>
+                <Separator className='bg-gray-600' />
+                <div className='flex justify-between'>
+                  <span>Order Total</span>
+                  <Price amount={total} />
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button className='w-full bg-yellow-500 text-white'>
+                  <Link href='/checkout'>Proceed to Checkout</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          )}
+
           {items.length > 0 && (
             <Button
               onClick={() => {
@@ -156,7 +184,7 @@ useEffect(() => {
                       className='grid grid-cols-4 items-center gap-5 p-4 border-b last:border-none hover:bg-gray-50 transition'
                     >
                       {/* Product Image */}
-                      <div className='bg-white p-2 rounded-lg shadow-sm'>
+                      <div className='bg-white items-center'>
                         <Image
                           src={item.imageUrl}
                           alt={item.name}
@@ -228,9 +256,6 @@ useEffect(() => {
                   >
                     Clear Cart
                   </Button>
-                  <Link href='/checkout'>
-                    <Button>Proceed to Checkout</Button>
-                  </Link>
                 </CardFooter>
               </Card>
             )}
@@ -238,7 +263,7 @@ useEffect(() => {
 
           {/* Right side - Order Summary */}
           <div className='w-full md:w-[400px]'>
-            <Card className='bg-gray-800 text-white mt-5'>
+            <Card className='bg-gradient-to-r from-gray-100 via-white to-gray-50 shadow-lg overflow-hidden text-amber-600 p-2 rounded-2xl mt-5'>
               <CardHeader>
                 <h2 className='text-xl font-semibold mt-2'>Order Summary</h2>
               </CardHeader>

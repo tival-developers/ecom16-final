@@ -1,17 +1,12 @@
 import connectToDatabase from '@/lib/db/dbConnection'
-import BlogsDashboard from './dashboard'
 import Blog from '@/lib/db/models/blog'
+import mongoose from 'mongoose'
+import BlogList from '../components/lists/blog-list'
 
-
-export default async function BlogsPage() {
+export default async function Home() {
   await connectToDatabase
+  const blogModel = mongoose.models.Blog || Blog
+  const blogs = await blogModel.find().lean()
 
-  const blogsData = await Blog.find()
-    .select('title content imageurl status tags updatedAt')
-    .limit(10)
-    .lean()
-
-  const blogs = JSON.parse(JSON.stringify(blogsData))
-
-  return <BlogsDashboard blogs={blogs} />
+  return <BlogList blogs={JSON.parse(JSON.stringify(blogs))} />
 }

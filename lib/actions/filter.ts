@@ -17,6 +17,7 @@ export async function getFilteredProducts({
 }): Promise<ProductType[]> {
   await connectToDatabase // ✅ FIXED: add parentheses to call the function
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filter: Record<string, any> = {}
 
   if (category && category !== 'All') {

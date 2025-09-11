@@ -5,8 +5,8 @@ import Favorite from '@/lib/db/models/favorite'
 
 import { NextRequest } from 'next/server'
 
-//import { getServerSession } from 'next-auth';
-export async function GET(req: NextRequest) {
+
+export async function GET() {
   await connectToDatabase
 
   // TODO: Replace with real session user ID
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
   return Response.json({ success: true, items: favorite.items })
 }
 
-export async function DELETE(req: NextRequest) {
+export async function DELETE() {
   await connectToDatabase
   const session = await auth()
   console.log('Session:', session)

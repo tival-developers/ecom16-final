@@ -1,4 +1,3 @@
-
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -13,10 +12,14 @@ interface Props {
     originalPrice: number
     imageUrls: string[]
     description: string
+    category: string
   }
   variant: string
 }
-export default function AddToFavoriteButton({ product, variant = 'icon' }: Props) {
+export default function AddToFavoriteButton({
+  product,
+  variant = 'icon',
+}: Props) {
   const addFav = useFavStore((state) => state.addToFav)
   const removeFav = useFavStore((state) => state.removeFromFav)
   const isFav = useFavStore((state) =>
@@ -29,8 +32,9 @@ export default function AddToFavoriteButton({ product, variant = 'icon' }: Props
       toast('Removed from Favorites')
     } else {
       addFav({
-        _id: product._id,
+        _id: product._id.toString() || product._id,
         name: product.name,
+        category: product.category,
         originalPrice: product.originalPrice,
         description: product.description,
         imageUrl: product.imageUrls[0],
@@ -43,7 +47,12 @@ export default function AddToFavoriteButton({ product, variant = 'icon' }: Props
   return (
     <>
       {variant === 'icon' ? (
-        <Button variant='ghost' size='icon' onClick={handleClick} className='w-4 h-4 -top-5 absolute'>
+        <Button
+          variant='ghost'
+          size='icon'
+          onClick={handleClick}
+          className='w-4 h-4 -top-5 absolute'
+        >
           <Heart fill={isFav ? 'red' : 'none'} color='red' />
         </Button>
       ) : (
@@ -56,7 +65,6 @@ export default function AddToFavoriteButton({ product, variant = 'icon' }: Props
         >
           {isFav ? '★ In Favorites' : '☆ Add to Favorites'}
         </Button>
-        
       )}
     </>
   )

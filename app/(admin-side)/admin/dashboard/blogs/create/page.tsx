@@ -1,106 +1,105 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useTransition } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { toast } from 'sonner'
+import { CreateBlog } from '@/lib/actions/blogs'
+import { useRouter } from 'next/navigation'
 
 export default function CreateBlogPage() {
+  const [isPending, startTransition] = useTransition()
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
+  const [success, setSuccess] = useState(false)
+
+  // Controlled inputs
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [imageurl, setImageurl] = useState('')
-  const [status, setStatus] = useState('Pending')
-  const [tagInput, setTagInput] = useState('')
-  const [tags, setTags] = useState<string[]>([])
-
   const router = useRouter()
 
-  const handleAddTag = () => {
-    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      setTags([...tags, tagInput.trim()])
-      setTagInput('')
-    }
-  }
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('content', content)
+    formData.append('imageurl', imageurl)
 
-  const handleSubmit = async () => {
-    if (!title || !content || !imageurl) {
-      toast.error('Please fill all fields')
-      return
-    }
+    startTransition(async () => {
+      const res = await CreateBlog(formData)
+      if ('errors' in res) {
+        setErrors(res.errors)
+        setSuccess(false)
+      } else {
+        setErrors({})
+        setSuccess(true)
 
-    const res = await fetch('/api/blogs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, imageurl, status, tags }),
+        // reset only on success
+        setTitle('')
+        setContent('')
+        setImageurl('')
+        router.push('/admin/dashboard/blogs')
+      }
     })
-
-    if (res.ok) {
-      toast.success('Blog created successfully')
-      router.push('/admin/dashboard/blogs')
-    } else {
-      toast.error('Failed to create blog')
-    }
   }
 
   return (
-    <div className='max-w-xl mx-auto mt-10'>
+    <div className='max-w-xl mx-auto mt-10 px-2'>
       <Card>
         <CardContent className='space-y-4 p-6'>
           <h2 className='text-lg font-semibold'>Create New Blog</h2>
 
-          <div className='space-y-2'>
-            <Label>Title</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-
-          <div className='space-y-2'>
-            <Label>Content</Label>
-            <Textarea value={content} onChange={(e) => setContent(e.target.value)} />
-          </div>
-
-          <div className='space-y-2'>
-            <Label>Image URL</Label>
-            <Input value={imageurl} onChange={(e) => setImageurl(e.target.value)} placeholder="https://..." />
-          </div>
-
-          <div className='space-y-2'>
-            <Label>Status</Label>
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className='border rounded p-2 w-full'
-            >
-              <option value='Pending'>Pending</option>
-              <option value='Published'>Published</option>
-              <option value='Archived'>Archived</option>
-            </select>
-          </div>
-
-          <div className='space-y-2'>
-            <Label>Tags</Label>
-            <div className='flex gap-2'>
-              <Input
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                placeholder='Enter tag'
+          <form onSubmit={handleSubmit} className='space-y-4'>
+            <div className='space-y-2'>
+              <Label>Title</Label>
+              <Input 
+                name='title'
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
-              <Button type='button' onClick={handleAddTag}>Add</Button>
+              {errors.title && (
+                <p className='text-red-500 text-sm'>{errors.title[0]}</p>
+              )}
             </div>
-            <div className='flex flex-wrap gap-1 mt-2'>
-              {tags.map((tag, i) => (
-                <Badge key={i} variant='secondary'>{tag}</Badge>
-              ))}
-            </div>
-          </div>
 
-          <Button className='w-full' onClick={handleSubmit}>
-            Create Blog
-          </Button>
+            <div className='space-y-2'>
+              <Label>Content</Label>
+              <Textarea
+                name='content'
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder='Write your blog content here...'
+              />
+              {errors.content && (
+                <p className='text-red-500 text-sm'>{errors.content[0]}</p>
+              )}
+            </div>
+
+            <div className='space-y-2'>
+              <Label>Image URL</Label>
+              <Input
+                name='imageUrl'
+                type='url'
+                placeholder='https://...'
+                value={imageurl}
+                onChange={(e) => setImageurl(e.target.value)}
+              />
+              {errors.imageurl && (
+                <p className='text-red-500 text-sm'>{errors.imageurl[0]}</p>
+              )}
+            </div>
+
+            {errors._form && (
+              <p className='text-red-500 text-sm'>{errors._form[0]}</p>
+            )}
+            {success && <p className='text-green-600 text-sm'>Blog created!</p>}
+
+            <Button className='w-full' disabled={isPending}>
+              {isPending ? 'Creating...' : 'Create Blog'}
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </div>

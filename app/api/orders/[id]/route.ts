@@ -9,10 +9,11 @@ import { Order } from '@/lib/db/models/order'
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params // ✅ Await params
   await connectToDatabase;
-  const order = await Order.findByIdAndDelete(params.id)
+  const order = await Order.findByIdAndDelete(id)
   if (!order) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })
   }

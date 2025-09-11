@@ -61,18 +61,14 @@ export default function Filters() {
   }
 
   return (
-    <Card className='space-y-4 p-4 bg-gray-800 w-fit '>
+    <Card className='space-y-4 p-4 bg-gradient-to-r from-gray-200 via-white to-gray-100 shadow-lg overflow-hidden w-fit rounded-2xl'>
       <div>
-        <h2 className='font-semibold mb-2 text-lg text-yellow-300 '>
-          FILTER BY CATEGORIES
+        <h2 className='font-semibold mb-2 text-lg '>
+          CATEGORIES
         </h2>
         {categories.map((cat) => (
           <div key={cat.name} className='flex items-center space-x-2 mb-1.5'>
-            {/* <Checkbox
-              id={`cat-${cat.name}`}
-              checked={selectedCategory === cat.name}
-              onCheckedChange={() => handleChange(cat)}
-            /> */}
+            
             <Checkbox
               id={`cat-${cat.name}`}
               checked={selectedCategory === cat.name}
@@ -83,7 +79,7 @@ export default function Filters() {
 
             <label
               htmlFor={`cat-${cat.name}`}
-              className='text-[16px] cursor-pointer text-white'
+              className='text-[16px] cursor-pointer '
             >
               {cat.name}
             </label>
@@ -91,7 +87,7 @@ export default function Filters() {
         ))}
       </div>
 
-      <Button variant='destructive' className='w-full' onClick={handleReset}>
+      <Button variant='secondary' className='w-full' onClick={handleReset}>
         Reset All Filters
       </Button>
     </Card>

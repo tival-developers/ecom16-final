@@ -4,14 +4,14 @@ import { signInAction} from '@/lib/actions/auth'
 import { providerMap } from '@/auth'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import { FaTiktok, FaInstagram } from 'react-icons/fa'
-import { FcGoogle } from 'react-icons/fc'
+// import { FaTiktok, FaInstagram } from 'react-icons/fa'
+// import { FcGoogle } from 'react-icons/fc'
 
-const providerIcons: Record<string, JSX.Element> = {
-  google: <FcGoogle />,
-  tiktok: <FaTiktok />,
-  instagram: <FaInstagram className=' text-pink-600' />,
-}
+// const providerIcons: Record<string, JSX.Element> = {
+//   google: <FcGoogle />,
+//   tiktok: <FaTiktok />,
+//   instagram: <FaInstagram className=' text-pink-600' />,
+// }
 const handleOAuthLogin = async (provider: string, callbackUrl?: string) => {
   await signInAction(provider, callbackUrl)
 }
@@ -33,7 +33,7 @@ const Providers = ({searchParams}: FormProps) => {
               variant='outline'
               className='w-full items-center'
             >
-              {providerIcons[provider.id]}
+              {/* {providerIcons[provider.id]} */}
               <span className='sr-only'>{provider.name}</span>
             </Button>
           ))}

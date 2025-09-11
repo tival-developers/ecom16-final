@@ -273,12 +273,11 @@ export default function PromoManager() {
           return (
             <Card key={item._id} className='p-3'>
               <CardContent>
-                <div className='relative w-full h-40 sm:h-56 mb-4 rounded overflow-hidden group'>
+              <div className='relative w-full aspect-[3/3]'>
                   <Image
                     src={item.imageUrls}
                     alt={item.name}
                     fill
-                    priority
                     className='object-contain p-2'
                   />
                 </div>
@@ -301,7 +300,7 @@ export default function PromoManager() {
                   <Trash2 size={16} /> Remove
                 </Button>
               </CardContent>
-              price
+              
             </Card>
           )
         })}

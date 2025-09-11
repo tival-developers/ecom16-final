@@ -1,75 +1,28 @@
-
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getHomePageProducts } from '@/lib/actions/homepage/getHomePage'
-import AddToCartButton from '@/components/cartadd'
 import { ProductPrice } from '@/lib/utils/product-price'
-import HeroSection, { PromoBannerMini } from '@/components/homepage/banner'
-import PromoBannerLarge from '@/components/homepage/banner'
+import HeroSection, { PromoBannerLarge, PromoBannerMini } from '@/components/homepage/banner'
 import FlashsaleHomepage from '@/components/homepage/flashsale'
-import { ProductType } from '@/lib/types/product'
 import { Truck, ShieldCheck, Gift, Headset } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import HomePageData from '@/components/cards/home'
-import Link from 'next/link'
-import AddToFavoriteButton from '@/components/ux/favAdd'
-import Price from '@/lib/utils/format'
+import ProductCard from '@/components/cards/product-card'
+import AddToCartButton from '@/components/ux/cartadd'
+import { ProductType } from '@/lib/types/product'
+import DepartmentSection from '@/components/shared/departmentSection'
+import type { Metadata } from 'next'
 
-export function ProductCard({ product }: { product: ProductType }) {
-  return (
-    <Card className='hover:shadow-lg transition-shadow rounded-2xl overflow-hidden'>
-      <CardContent className='p-0'>
-        <div className='aspect-[4/3] bg-muted/30'>
-          <Link
-            href={`/product/${product._id}`}
-            className='relative aspect-square w-full mb-2 overflow-hidden rounded'
-          >
-            <img
-              src={product.imageUrls?.[0]}
-              alt={product.name}
-              className='h-full w-full object-cover'
-            />
-          </Link>
-        </div>
-        <div className='p-4 space-y-1.5 relative'>
-          <div className='place-items-end'>
-          <AddToFavoriteButton variant='icon' product={product} />
-          </div>
-        
-          <div className='flex items-center justify-between'>
-            <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
-              {product.name}
-            </h3>
-            <Badge variant={'secondary'} className='hidden md:uppercase'>
-              {product.brand}
-            </Badge>
-          </div>
-         
-          <p className='text-muted-foreground text-sm'>
-            Stock: {product.stock}{' '}
-          </p>
-          <p className='text-amber-600 font-medium text-lg'>
-            <Price amount={product.originalPrice} />
-          </p>
-          <div className='flex items-center justify-between'>
-            <Button size='sm' className='rounded-xl '>
-              <Link href={`/product/${product._id}`}>View </Link>
-            </Button>
-
-            <AddToCartButton product={product} />
-          </div>
-
-          
-        </div>
-      </CardContent>
-    </Card>
-  )
+export const metadata: Metadata = {
+  title: 'Home',
+  description: 'home',
 }
+
 function Feature({
   icon: Icon,
   title,
   desc,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any
   title: string
   desc: string
@@ -92,11 +45,15 @@ export default async function HomePage() {
 
   return (
     <main className='min-h-screen'>
+      <div className='flex md:hidden'>
+        <DepartmentSection />
+      </div>
+
       {/* 🔹 Hero Banner */}
       <HeroSection />
       {/* Service features */}
       <section className='max-w-7xl mx-auto px-4 mt-6 md:mt-8 relative z-10'>
-        <div className='grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 border-2 border-amber-600 p-2'>
+        <div className='hidden md:grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 border-2 border-amber-600 p-2'>
           <Feature
             icon={Truck}
             title='Free Shipping'
@@ -130,8 +87,8 @@ export default async function HomePage() {
         </div>
 
         <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
-          {recent.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {recent.map((product: ProductType) => (
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </section>
@@ -167,8 +124,8 @@ export default async function HomePage() {
       <section className='max-w-7xl mx-auto px-4 py-10'>
         <h2 className='text-xl md:text-2xl font-bold mb-7'>Featured Deals</h2>
         <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {featured.map((product: ProductType) => (
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </section>
@@ -178,8 +135,8 @@ export default async function HomePage() {
           Trending This Week
         </h2>
         <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4'>
-          {trending.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {trending.map((product: ProductType) => (
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </section>

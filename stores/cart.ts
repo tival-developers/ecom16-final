@@ -7,6 +7,7 @@ type CartItem = {
   categoryId: string
   name: string
   originalPrice: number
+  newPrice?: number
   quantity: number
   imageUrl: string
 }
@@ -78,12 +79,14 @@ export const useCartStore = create<CartState>()(
         if (!session) return
 
         const res = await fetch('/api/cart')
+
         if (res.ok) {
-          const items = await res.json()
+          const fetcheditems = await res.json()
+          const items = JSON.parse(JSON.stringify(fetcheditems))
           set({ items }) // ✅ Replace instead of add
         }
       },
-
+       
       saveCart: async (session) => {
         if (!session) return
         const res = await fetch('/api/cart', {

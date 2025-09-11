@@ -14,15 +14,13 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-
 interface Props {
-    id: string
+  id: string
 }
 
 export default function EditStatusButton({ id }: Props) {
   const [open, setOpen] = useState(false)
   const [deliveryStatus, setDeliveryStatus] = useState('pending')
-  const [fulfillmentStatus, setFulfillmentStatus] = useState('pending')
   const [paymentStatus, setPaymentStatus] = useState('pending')
 
   const router = useRouter()
@@ -32,18 +30,18 @@ export default function EditStatusButton({ id }: Props) {
       const res = await fetch(`/api/orders/${id}/update-status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deliveryStatus, fulfillmentStatus, paymentStatus })
-      });
+        body: JSON.stringify({ deliveryStatus, paymentStatus }),
+      })
 
       if (res.ok) {
-        toast('Status updated successfully!');
-        setOpen(false);
-        //revalidatePath('/admin/dashboard/products')
-        router.refresh();
+        toast('Status updated successfully!')
+        setOpen(false)
+        router.refresh()
       } else {
         toast('Failed to update.')
       }
     } catch (err) {
+      console.log(err)
       toast.error('Server Error.')
     }
   }
@@ -70,24 +68,6 @@ export default function EditStatusButton({ id }: Props) {
           >
             <option value='pending'>Pending</option>
             <option value='shipped'>Shipped</option>
-            <option value='cancelled'>Cancelled</option>
-            <option value='delivered'>Delivered</option>
-          </select>
-        </div>
-
-        {/* Fulfillment Section */}
-        <div>
-          <DialogHeader>
-            <DialogTitle>Fulfillment Status</DialogTitle>
-          </DialogHeader>
-
-          <select
-            value={fulfillmentStatus}
-            onChange={(e) => setFulfillmentStatus(e.target.value)}
-            className='p-2 my-4 border rounded w-full'
-          >
-            <option value='pending'>Pending</option>
-            <option value='fulfilled'>Fulfilled</option>
           </select>
         </div>
 

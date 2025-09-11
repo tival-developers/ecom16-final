@@ -17,6 +17,7 @@ interface Product {
 interface Review {
   _id: string
   rating: number
+  length: number
   feedback: string
   user: string
   createdAt: string

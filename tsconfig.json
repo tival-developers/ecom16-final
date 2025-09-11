@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,6 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    // "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -19,7 +24,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   },
   "include": [
@@ -45,7 +52,10 @@
     "app/(admin-side)/admin/dashboard1/products/create/page.tsx",
     "lib/db/models/product.model.ts",
     "../seed.ts",
-    "app/(admin-side)/admin/dashboard1/profile/page.tsx"
-, "app/api/auth/[...nextauth]/route.ts"  ],
-  "exclude": ["node_modules"]
+    "app/(admin-side)/admin/dashboard1/profile/page.tsx",
+    "app/api/auth/[...nextauth]/route.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import RecentSalesSkeleton from './recentSkeleton'
+import Price from '@/lib/utils/format'
 
 type Sale = {
   name: string
@@ -71,7 +72,7 @@ export function RecentSales() {
                 <p className='text-sm text-muted-foreground'>{sale.email}</p>
               </div>
               <div className='ml-auto font-medium'>
-                +${sale.total.toFixed(2)}
+                <Price amount={sale.total} />
               </div>
             </div>
           ))}

@@ -3,10 +3,12 @@
 import * as React from 'react'
 import {
   Book,
+  Globe,
   LaptopIcon,
   LayoutDashboardIcon,
   ListOrdered,
   User2,
+  UserPenIcon,
 } from 'lucide-react'
 
 import {
@@ -35,16 +37,7 @@ const data = {
       title: 'Analytics',
       url: '/admin/dashboard',
       icon: LayoutDashboardIcon,
-      items: [
-        {
-          title: 'Overview',
-          url: '/admin/dashboard/',
-        },
-        {
-          title: 'Insights',
-          url: '/admin/dashboard/analytics/insights',
-        },
-      ],
+      
     },
     {
       title: 'Products Dashboard',
@@ -67,13 +60,13 @@ const data = {
 
         {
           title: 'Categories',
-          url: '/admin/dashboard/products/categories',
+          url: '/admin/dashboard/products/product-categories',
         },
       ],
     },
     {
       title: 'Customers Dashboard',
-      url: '/admin/dashboard/',
+      url: '/admin/dashboard/customers',
       icon: User2,
       items: [
         {
@@ -83,8 +76,23 @@ const data = {
       ],
     },
     {
+      title: 'Admins Dashboard',
+      url: '/admin/dashboard/admins',
+      icon: UserPenIcon,
+      items: [
+        {
+          title: 'View Admins',
+          url: '/admin/dashboard/admins',
+        },
+        {
+          title: 'Create Admin',
+          url: '/admin/dashboard/admins/create',
+        },
+      ],
+    },
+    {
       title: 'Products Promotion',
-      url: '/admin/dashboard/promotions',
+      url: '/admin/dashboard/promotions/discount',
       icon: ArrowTrendingUpIcon,
       items: [
         {
@@ -112,6 +120,22 @@ const data = {
         {
           title: 'Add Blogs',
           url: '/admin/dashboard/blogs/create',
+        },
+      ],
+    },
+    {
+      title: 'Banners',
+      url: '/admin/dashboard/banners',
+      icon: Globe,
+      items: [
+        {
+          title: ' view Banners',
+          url: '/admin/dashboard/banners',
+        },
+
+        {
+          title: 'Create Banners',
+          url: '/admin/dashboard/site-layout/banners/create',
         },
       ],
     },

@@ -75,37 +75,74 @@ export const createCategory = async (formData: FormData) => {
 }
 
 /*update category */
-export const updateCategory = async (id: string, formData: FormData) => {
+// export const updateCategory = async (id: string, formData: FormData) => {
+//   try {
+//     await connectToDatabase()
+//     const rawName = formData.get('name') as string
+//     const name = capitalizeName(rawName) // capitalize
+//     const slug = formData.get('slug') as string
+//     const image = formData.get('image') as string
+//     const variationsRaw = formData.get('variations') as string
+
+//     const variations = JSON.parse(variationsRaw || '[]')
+
+//     const updatedCategory = await Category.findByIdAndUpdate(
+//       id,
+//       {
+//         name,
+//         slug,
+//         imageUrl: image,
+//         variations,
+//       },
+//       {
+//         new: true,
+//       }
+//     )
+
+//     await updatedCategory.save()
+//   } catch (err) {
+//     console.error(err)
+//     return { error: 'Failed to update category' }
+//   }
+//   revalidatePath('/products/categories')
+//   redirect('/products/categories')
+// }
+
+
+export const updateCategory = async (id: string, formData: FormData): Promise<void> => {
   try {
     await connectToDatabase
-    const rawName = formData.get('name') as string
-    const name = capitalizeName(rawName) // capitalize
-    const slug = formData.get('slug') as string
-    const image = formData.get('image') as string
-    const variationsRaw = formData.get('variations') as string
+    const rawName = formData.get("name") as string
+    const name = capitalizeName(rawName)
+    const slug = formData.get("slug") as string
+    const image = formData.get("image") as string
+    const variationsRaw = formData.get("variations") as string
 
-    const variations = JSON.parse(variationsRaw || '[]')
+    const variations = JSON.parse(variationsRaw || "[]")
 
     const updatedCategory = await Category.findByIdAndUpdate(
       id,
       {
         name,
         slug,
-        imageurl: image,
+        imageUrl: image,
         variations,
       },
-      {
-        new: true,
-      }
+      { new: true }
     )
+
+    if (!updatedCategory) {
+      throw new Error("Category not found")
+    }
 
     await updatedCategory.save()
   } catch (err) {
     console.error(err)
-    return { error: 'Failed to update category' }
+    throw new Error("Failed to update category")
   }
-  revalidatePath('/products/categories')
-  redirect('/products/categories')
+
+  revalidatePath("/products/categories")
+  redirect("/products/categories")
 }
 
 //delete category
@@ -114,9 +151,11 @@ export const deleteCategory = async (id: string) => {
     await connectToDatabase
     await Category.findByIdAndDelete(id)
     revalidatePath('/categories')
-    return { success: true }
+    revalidatePath('/admin/dashboard/products/product-categories')
+    
   } catch (err) {
     console.error(err)
-    return { error: 'Failed to delete category' }
+    throw new Error('Failed to delete category')
+    
   }
 }

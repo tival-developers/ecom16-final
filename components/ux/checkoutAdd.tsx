@@ -29,10 +29,7 @@ export default function AddToCheckout({ orderItem }: { orderItem: OrderItem }) {
   }
 
   return (
-    <button
-      onClick={handleCheckout}
-      className="w-full text-center"
-    >
+    <button onClick={handleCheckout} className='w-full text-center'>
       Checkout
     </button>
   )

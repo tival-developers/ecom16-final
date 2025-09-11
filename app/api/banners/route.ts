@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectToDatabase from '@/lib/db/dbConnection'
-import { Banner } from '@/lib/db/models/Banner.model'
+import Banner from '@/lib/db/models/Banner.model'
+
+export const dynamic = 'force-static'
 
 export async function POST(req: NextRequest) {
   await connectToDatabase
   const data = await req.json()
-  const { title, subtitle, imageUrl, productId, buttonText, price, bannerType } = data
+  const {
+    title,
+    subtitle,
+    imageUrl,
+    productId,
+    buttonText,
+    price,
+    bannerType,
+  } = data
 
   try {
     // Check if Banner already exists
@@ -26,7 +36,7 @@ export async function POST(req: NextRequest) {
       imageUrl,
       subtitle,
       price,
-      bannerType
+      bannerType,
     })
 
     return NextResponse.json({ banner, success: true })

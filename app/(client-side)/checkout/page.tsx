@@ -42,14 +42,14 @@ export default function CheckoutPage() {
     0
   )
 
-  const total = subtotal 
+  const total = subtotal
   useEffect(() => {
     async function fetchShippingAddress() {
       try {
         const res = await fetch('/api/shipping-address')
         if (!res.ok) return
         const savedAddress = await res.json()
-  
+
         setFirstName(savedAddress.firstName || '')
         setLastName(savedAddress.lastName || '')
         setEmail(savedAddress.email || '')
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
     }
     fetchShippingAddress()
   }, [])
-  
+
   // Show a loading UI while session is loading
   if (status === 'loading') {
     return (
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
       }
 
       toast.success('Order placed successfully!')
-      await clearCart(session);
+      await clearCart(session)
       router.push('/orders')
     } catch (error) {
       toast.error('Failed to place the order.')
@@ -289,7 +289,10 @@ export default function CheckoutPage() {
                           min={1}
                           value={item.quantity}
                           onChange={(e) =>
-                            onQuantityChange(item.productId, Number(e.target.value))
+                            onQuantityChange(
+                              item.productId,
+                              Number(e.target.value)
+                            )
                           }
                         />
                         <Button
@@ -317,11 +320,8 @@ export default function CheckoutPage() {
                 </div>
                 <div className='flex justify-between'>
                   <span>Delivery cost</span>
-                  <span className='text-green-600 ' >
-                    <Link href='/contacts'>
-                    Contact Seller
-                    </Link>
-                    
+                  <span className='text-green-600 '>
+                    <Link href='/contacts'>Contact Seller</Link>
                   </span>
                 </div>
                 <div className='flex justify-between'>

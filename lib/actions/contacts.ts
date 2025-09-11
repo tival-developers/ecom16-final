@@ -3,6 +3,10 @@
 import connectToDatabase from '@/lib/db/dbConnection'
 import { z } from 'zod'
 import HelpRequest from '../db/models/contact'
+import Notification from '../db/models/notification'
+import { auth } from '@/auth'
+import User from '../db/models/user.model'
+import { revalidatePath } from 'next/cache'
 
 const FormSchema = z.object({
   name: z
@@ -13,26 +17,42 @@ const FormSchema = z.object({
     .string({ required_error: 'Email is required' })
     .min(1, 'Email is required')
     .email('Invalid email'),
-  phone: z.string(),
-  subject: z.string(),
+  phone: z.string()
+  .regex(
+    /^(?:\+254|0)(7\d{8})$/,
+    "Invalid  mobile number (e.g. 0712345678 or +254712345678)"
+  ),
+  subject: z.string().min(3, { message: 'Must be 5 or more characters long' }),
   message: z
     .string()
     .min(10, { message: 'Must be 10 or more characters long' }),
 })
 
-const contacts = FormSchema
-
 //*****************create**********************
-export type ContactFormState = {
-  success: boolean | null
-  error?: string
-}
+export type ContactFormState =
+  | { success: true }
+  | { errors: Record<string, string[]> }
 
-export async function ContactUs(
-  prevState: ContactFormState,
-  formData: FormData
-): Promise<ContactFormState> {
-  const { name, email, phone, subject, message } = contacts.parse({
+export async function ContactUs(formData: FormData): Promise<ContactFormState> {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return {
+      errors: {
+        _form: [
+          'Unauthorized, check your login status and your admin priveleges then try again',
+        ],
+      },
+    }
+  }
+
+  await connectToDatabase
+  const user = await User.findOne({ email: session.user.email })
+  if (!user) {
+    return { errors: { _form: ['User not found'] } }
+  }
+
+  // ✅ Safe parse
+  const parsed = FormSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
     phone: formData.get('phone'),
@@ -40,14 +60,19 @@ export async function ContactUs(
     message: formData.get('message'),
   })
 
-  if (!name || !email || !phone || !subject || !message) {
-    throw new Error('All fields are required.')
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors }
   }
+  const { name, email, phone, subject, message } = parsed.data
 
   try {
-    await connectToDatabase
+    // 1) Get the user
+    const existingUser = await User.findOne({ email: session.user.email })
+    if (!existingUser) {
+      return { errors: { _form: ['User not found'] } }
+    }
 
-    const helpRequest = new HelpRequest({
+    const newHelpRequest = new HelpRequest({
       name,
       email,
       phone,
@@ -55,10 +80,25 @@ export async function ContactUs(
       message,
     })
 
-    await helpRequest.save()
+    await newHelpRequest.save()
+
+    await Notification.create({
+      type: 'helpRequest',
+      title: 'New helpRequest',
+      customerId: user._id,
+      message: `New helpRequest by ${user.name || user.email} }`,
+    })
+
+    revalidatePath('/admin/dashboard/mails')
     return { success: true }
-  } catch (error) {
-    return { success: false, error: 'Failed to submit form' }
-    console.error('Error requesting help:', error)
+  } catch (err) {
+    console.error('Error requesting help:', err)
+    return {
+      errors: {
+        _form: [
+          err instanceof Error ? err.message : 'Unexpected error occurred',
+        ],
+      },
+    }
   }
 }

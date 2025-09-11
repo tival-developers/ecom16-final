@@ -10,6 +10,7 @@ type FavItem = {
   description: string
   quantity: number
   imageUrl: string
+  category: string
 }
 
 type FavState = {
@@ -60,7 +61,8 @@ export const useFavStore = create<FavState>()(
 
         const res = await fetch('/api/favorite')
         if (res.ok) {
-          const items = await res.json()
+          const fetcheditems = await res.json()
+          const items = JSON.parse(JSON.stringify(fetcheditems))
           set({ items })
         }
       },

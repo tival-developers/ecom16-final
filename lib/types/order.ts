@@ -5,7 +5,7 @@ export interface OrderedItem {
   name: string
   description: string
   imageUrl: string
-  price: number
+  originalPrice: number
   quantity: number
   deliveredAt?: string // ISO date string, if delivered
 }

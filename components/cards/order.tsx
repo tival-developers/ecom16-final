@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { CheckCircle } from 'lucide-react'
 import { format } from 'date-fns'
-
 import Price from '@/lib/utils/format'
 import { typeOrder } from '@/lib/types/order'
 import Link from 'next/link'
@@ -88,7 +87,7 @@ export function OrderCard({
               <div className='flex justify-between'>
                 <p className='font-medium text-black'>{item.name}</p>
                 <p className='font-medium text-black'>
-                  <Price amount={item.price} /> &times; {item.quantity}
+                  <Price amount={item.originalPrice} /> &times; {item.quantity}
                 </p>
               </div>
               <p className='text-muted-foreground'>{item.description}</p>

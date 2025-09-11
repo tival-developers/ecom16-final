@@ -14,7 +14,7 @@ const BannerSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     bannerType: {
       type: String,
-      enum: ['hero', 'promoMini','promoLarge'],
+      enum: ['hero', 'promoMini', 'promoLarge'],
       default: 'hero',
       required: true,
     },
@@ -22,5 +22,5 @@ const BannerSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export const Banner =
-  mongoose.models.Banner || mongoose.model('Banner', BannerSchema)
+const Banner = mongoose.models?.Banner || mongoose.model('Banner', BannerSchema)
+export default Banner

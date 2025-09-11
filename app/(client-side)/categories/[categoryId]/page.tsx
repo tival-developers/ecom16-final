@@ -1,24 +1,33 @@
-// import ProductCategoryList from "@/components/products/productsList";
 import ProductCategoryList from '@/components/products/productsList'
+import connectToDatabase from '@/lib/db/dbConnection'
+import Category from '@/lib/db/models/category.model'
 
+export async function generateStaticParams() {
+  await connectToDatabase
+  const categories = await Category.find({}, '_id').lean()
+
+  return categories.map((category) => ({
+    id: String(category._id),
+  }))
+  
+}
 
 export default async function CategoriesPage({
   params,
   searchParams,
 }: {
-  params: { categoryId: string }
-  searchParams: { query?: string }
+  params: Promise<{ categoryId: string }>
+  searchParams: Promise<{ query?: string }>
 }) {
-  const { categoryId } = params
-  console.log(categoryId, 'categoryId')
-  const { query } = searchParams
-  const catId: string = JSON.parse(JSON.stringify(categoryId))
+  // ✅ Await both
+  const { categoryId } = await params
+  const { query } = await searchParams
 
   return (
     <div className='p-6'>
       <h1 className='text-2xl font-semibold mb-6'>{`Category: ${categoryId}`}</h1>
 
-      <ProductCategoryList categorySlug={catId} searchQuery={query} />
+      <ProductCategoryList categorySlug={categoryId} searchQuery={query} />
     </div>
   )
 }

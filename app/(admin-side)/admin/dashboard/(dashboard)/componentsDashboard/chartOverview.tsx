@@ -23,8 +23,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+export type ChartDataPoint = {
+  date: string
+} & Record<string, number>
 
-export function SalesAreaChart({ chartData }: { chartData: any[] }) {
+
+export function SalesAreaChart({ chartData }: { chartData: ChartDataPoint[] }) {
   const [timeRange, setTimeRange] = React.useState('90d')
 
   // Filter by date range
@@ -40,7 +44,7 @@ export function SalesAreaChart({ chartData }: { chartData: any[] }) {
   // Find categories dynamically
   const categories = React.useMemo(() => {
     if (!chartData?.length) return []
-    return Object.keys(chartData[0]).filter((k) => k !== 'date')
+    return Object.keys(chartData[0]).filter((k) => k !== "date") as (keyof ChartDataPoint)[]
   }, [chartData])
 
   // Build dynamic chart config

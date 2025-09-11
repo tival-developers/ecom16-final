@@ -2,13 +2,16 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import AddToCartButton from '@/components/cartadd'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import Image from 'next/image'
+import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
-import Price from '@/lib/utils/format'
 import { ProductType } from '@/lib/types/product'
 import PriceFilterSlider from '@/app/(client-side)/categories/components/priceFilter'
+import AddToCartButton from '../ux/cartadd'
+import { ProductPrice } from '@/lib/utils/product-price'
+import { Button } from '../ui/button'
+import { Badge } from '../ui/badge'
+import AddToFavoriteButton from '../ux/favAdd'
+import Image from 'next/image'
 
 type Props = {
   initialProducts: ProductType[]
@@ -55,36 +58,53 @@ export default function ProductCategoryGrid({ initialProducts }: Props) {
           filteredProducts.map((product) => (
             <Card
               key={product._id}
-              className='border border-gray-200 flex flex-col justify-between bg-white shadow-sm rounded-lg overflow-hidden h-full'
+              className='hover:shadow-lg transition-shadow  overflow-hidden'
             >
-              <CardContent className='p-4 flex flex-col flex-1'>
-                <div className='relative w-full h-48 sm:h-56 mb-4 rounded overflow-hidden group'>
-                  <Link href={`/product/${product._id}`} className='h-full'>
-                    <Image
-                      src={product.imageUrls?.[0] || '/placeholder.jpg'}
-                      alt={product.name}
-                      fill
-                      priority
-                      className='object-contain p-2'
-                    />
+              <CardContent className='p-0'>
+                <div className='aspect-[4/3] bg-muted/30'>
+                  <Link
+                    href={`/product/${product._id}`}
+                    className='relative aspect-square w-full mb-2 overflow-hidden '
+                  >
+                    <div className='relative w-full aspect-[3/3]'>
+                      <Image
+                        src={product.imageUrls?.[0] || '/placeholder.jpg'}
+                        alt={product.name}
+                        fill
+                        className=' object-cover'
+                      />
+                    </div>
                   </Link>
                 </div>
-                <p className='text-xl font-semibold mb-2 line-clamp-1'>
-                  {product.name}
-                </p>
-                <p className='text-[15px] text-gray-600 flex-grow line-clamp-3'>
-                  {product.description}
-                </p>
-              </CardContent>
+                <div className='p-4 space-y-1.5 relative'>
+                  <div>
+                    <AddToFavoriteButton variant='icon' product={product} />
+                  </div>
 
-              <CardFooter className='px-4 py-3 mt-auto'>
-                <div className='flex justify-between items-center w-full'>
-                  <p className='text-yellow-500 font-bold text-lg'>
-                    <Price amount={product.originalPrice} />
+                  <div className='flex items-center justify-between'>
+                    <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
+                      {product.name}
+                    </h3>
+                    <Badge variant={'secondary'} className='uppercase'>
+                      {product.brand}
+                    </Badge>
+                  </div>
+
+                  <p className='text-muted-foreground text-sm'>
+                    Stock: {product.stock}
                   </p>
+                  <ProductPrice
+                    originalPrice={product.originalPrice}
+                    newPrice={product.newPrice}
+                  />
+
                   <AddToCartButton product={product} />
+
+                  <Button className='rounded-xl w-full mt-2.5'>
+                    <Link href={`/product/${product._id}`}>View Product </Link>
+                  </Button>
                 </div>
-              </CardFooter>
+              </CardContent>
             </Card>
           ))
         ) : (

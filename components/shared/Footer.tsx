@@ -139,7 +139,7 @@ export default function FooterWithNewsletter() {
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className='text-muted-foreground hover:text-white transition-colors'
+                          className='text-muted-foreground hover:text-amber-600 transition-colors'
                         >
                           {link.label}
                         </Link>

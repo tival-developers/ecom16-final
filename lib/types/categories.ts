@@ -23,6 +23,7 @@ export type CategoryWithProducts = {
     category: string
     serialNumber: string
     originalPrice: number
+    newPrice: number
     stock: number
   }[]
 }

@@ -1,60 +1,74 @@
 // components/product-card.tsx
-import { ProductType } from '@/lib/types/product'
-import Image from 'next/image'
+
 import Link from 'next/link'
-import { Card, CardContent, CardFooter } from '../ui/card'
-import Price from '@/lib/utils/format'
-import AddToCartButton from '../cartadd'
+import { Card, CardContent } from '../ui/card'
 import AddToFavoriteButton from '../ux/favAdd'
+import { Badge } from '../ui/badge'
+import { Button } from '../ui/button'
+import AddToCartButton from '../ux/cartadd'
+import { ProductPrice } from '@/lib/utils/product-price'
+import Image from 'next/image'
+export type ProductType = {
+  _id: string
+  name: string
+  imageUrls: string[]
+  description: string
+  brand: string
+  category: string
+  serialNumber: string
+  newPrice: number
+  originalPrice: number
+  stock: number
+}
 
-export function ProductCard({ product }: { product: ProductType }) {
+export default function ProductCard({ product }: { product: ProductType }) {
   return (
-    <Card
-      className='
-                border border-gray-200
-                flex flex-col
-                justify-between
-                bg-white
-                shadow-sm
-                rounded-lg
-                overflow-hidden
-                h-full
-                hover:shadow-md transition
-              '
-    >
-      <CardContent className='p-4 flex flex-col flex-1'>
-        <Link
-          href={`/product/${product._id}`}
-          className='relative aspect-square w-full mb-2 overflow-hidden rounded'
-        >
-          <Image
-            src={product.imageUrls?.[0]}
-            alt={product.name}
-            layout='fill'
-            objectFit='cover'
-          />
-        </Link>
-        <div className='flex items-center justify-between'>
-          <p className='text-xl font-semibold mb-2 line-clamp-1'>
-            {product.name}
-          </p>
-          <AddToFavoriteButton variant='icon' product={product} />
+    <Card className='hover:shadow-lg transition-shadow  overflow-hidden'>
+      <CardContent className='p-0'>
+        <div className='aspect-[4/3] bg-muted/30'>
+          <Link
+            href={`/product/${product._id}`}
+            className='relative aspect-square w-full mb-2 overflow-hidden '
+          >
+            <div className='relative w-full aspect-[3/3]'>
+              <Image
+                src={product.imageUrls?.[0] || '/placeholder.jpg'}
+                alt={product.name}
+                fill
+                className=' object-contain'
+              />
+            </div>
+          </Link>
         </div>
+        <div className='p-4 space-y-1.5 relative'>
+          <div>
+            <AddToFavoriteButton variant='icon' product={product} />
+          </div>
 
-        <p className='text-[18px] text-green-600 flex-grow line-clamp-3'>
-          {product.description}
-        </p>
-        <p className='text-muted-foreground text-sm'>Stock: {product.stock} </p>
-      </CardContent>
-      <CardFooter className='px-4 py-3 mt-auto'>
-        <div className='flex justify-between items-center w-full'>
-          <p className='text-green-600 font-medium text-lg'>
-            <Price amount={product.originalPrice} />
+          <div className='flex items-center justify-between'>
+            <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
+              {product.name}
+            </h3>
+            <Badge variant={'secondary'} className='uppercase'>
+              {product.brand}
+            </Badge>
+          </div>
+
+          <p className='text-muted-foreground text-sm'>
+            Stock: {product.stock}
           </p>
+          <ProductPrice
+            originalPrice={product.originalPrice}
+            newPrice={product.newPrice}
+          />
 
           <AddToCartButton product={product} />
+
+          <Button className='rounded-xl w-full mt-2.5 '>
+            <Link href={`/product/${product._id}`}>View Product </Link>
+          </Button>
         </div>
-      </CardFooter>
+      </CardContent>
     </Card>
   )
 }
