@@ -5,7 +5,7 @@ import Product from '@/lib/db/models/product.model'
 import User from '@/lib/db/models/user.model'
 import { Order } from '@/lib/db/models/order'
 import Category from '@/lib/db/models/category.model'
-import { Admin } from '@/lib/db/models/admin'
+import Admin from '@/lib/db/models/admin'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

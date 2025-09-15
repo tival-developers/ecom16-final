@@ -8,16 +8,17 @@ import { z } from 'zod'
 import { auth } from '@/auth'
 import User from '../db/models/user.model'
 import Notification from '../db/models/notification'
+import { capitalizeAllLetters, capitalizeName } from '../helper/capitalize'
 
 const FormSchema = z.object({
-  name: z.string().min(5, { message: 'Must be 5 or more characters long' }),
+  rawName: z.string().min(5, { message: 'Must be 5 or more characters long' }),
   description: z
     .string()
     .min(10, { message: 'Must be 10 or more characters long' }),
   originalPrice: z.coerce.number(),
   stock: z.coerce.number(),
   brand: z.string(),
-  serialNumber: z.string(),
+  serialNumberRaw: z.string(),
   categoryId: z.string(),
   variations: z.string(),
   imageUrls: z
@@ -36,6 +37,21 @@ export async function createProduct(
   if (!session?.user?.id) {
     return { errors: { _form: ['Unauthorized'] } }
   }
+  const role = session.user.role
+  if (!role) {
+    return { errors: { _form: ['Unauthorized'] } }
+  }
+  const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+  if (!allowedRoles.includes(role || '')) {
+    return {
+      errors: {
+        _form: [
+          'Forbidden: Only superadmin, manager, or sales can create products',
+        ],
+      },
+    }
+  }
+
   await connectToDatabase
   const user = await User.findOne({ email: session.user.email })
   if (!user) {
@@ -43,12 +59,12 @@ export async function createProduct(
   }
   try {
     const parsed = FormSchema.safeParse({
-      name: formData.get('name'),
+      rawName: formData.get('name') as string,
       description: formData.get('description'),
       originalPrice: Number(formData.get('originalPrice')),
       stock: Number(formData.get('stock')),
       brand: formData.get('brand'),
-      serialNumber: formData.get('serialNumber'),
+      serialNumberRaw: formData.get('serialNumber'),
       categoryId: formData.get('categoryId'),
       variations: formData.get('variations'),
       imageUrls: formData.getAll('imageUrls[]').filter(Boolean) as string[],
@@ -58,12 +74,12 @@ export async function createProduct(
     }
 
     const {
-      name,
+      rawName,
       description,
       originalPrice,
       stock,
       brand,
-      serialNumber,
+      serialNumberRaw,
       categoryId,
       variations,
       imageUrls,
@@ -73,7 +89,7 @@ export async function createProduct(
     if (!categoryExists) {
       return { errors: { categoryId: ['Category not found.'] } }
     }
-
+    const name = capitalizeName(rawName)
     const existingProduct = await Product.findOne({ name })
 
     if (existingProduct)
@@ -87,6 +103,7 @@ export async function createProduct(
         return { errors: { variations: ['Invalid variations format.'] } }
       }
     }
+    const serialNumber = capitalizeAllLetters(serialNumberRaw)
 
     const newProduct = new Product({
       name,
@@ -104,7 +121,7 @@ export async function createProduct(
     await Notification.create({
       type: 'product',
       title: 'New product created',
-      customerId: user._id,
+      triggerId: user._id,
       message: 'New product created',
     })
 
@@ -134,19 +151,30 @@ export async function UpdateProductData(
   if (!session?.user?.id) {
     return { errors: { _form: ['Unauthorized'] } }
   }
-  await connectToDatabase
-  const user = await User.findOne({ email: session.user.email })
-  if (!user) {
-    return { errors: { _form: ['User not found'] } }
+  const role = session.user.role
+  if (!role) {
+    return { errors: { _form: ['Unauthorized'] } }
   }
+  const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+  if (!allowedRoles.includes(role || '')) {
+    return {
+      errors: {
+        _form: [
+          'Forbidden: Only superadmin, manager, or sales can create products',
+        ],
+      },
+    }
+  }
+  await connectToDatabase
+  
   try {
     const parsed = FormSchema.safeParse({
-      name: formData.get('name'),
+      rawName: formData.get('name'),
       description: formData.get('description'),
       originalPrice: Number(formData.get('originalPrice')),
       stock: Number(formData.get('stock')),
       brand: formData.get('brand'),
-      serialNumber: formData.get('serialNumber'),
+      serialNumberRaw: formData.get('serialNumber'),
       categoryId: formData.get('categoryId'),
       variations: formData.get('variations'),
       imageUrls: formData.getAll('imageUrls[]').filter(Boolean) as string[],
@@ -156,12 +184,12 @@ export async function UpdateProductData(
     }
 
     const {
-      name,
+      rawName,
       description,
       originalPrice,
       stock,
       brand,
-      serialNumber,
+      serialNumberRaw,
       categoryId,
       variations,
       imageUrls,
@@ -173,6 +201,7 @@ export async function UpdateProductData(
     if (!categoryExists) {
       return { errors: { categoryId: ['Category not found.'] } }
     }
+    const name = capitalizeName(rawName)
 
     const existingProduct = await Product.findOne({ name })
 
@@ -187,6 +216,7 @@ export async function UpdateProductData(
         return { errors: { variations: ['Invalid variations format.'] } }
       }
     }
+    const serialNumber = capitalizeAllLetters(serialNumberRaw)
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       {
@@ -205,12 +235,7 @@ export async function UpdateProductData(
 
     if (!updatedProduct) return { errors: { name: ['Product not found.'] } }
 
-    await Notification.create({
-      type: 'product',
-      title: 'Updated product',
-      customerId: user._id,
-      message: 'New product created',
-    })
+   
 
     revalidatePath('/products')
     revalidatePath('/admin/dashboard/products')

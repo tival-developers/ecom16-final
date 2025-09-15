@@ -20,19 +20,19 @@ export function MainNav({
       </Link>
       <Link
         href="/admin/dashboard/customers"
-        className="text-lg font-medium text-muted-foreground transition-colors hover:text-primary"
+        className="text-lg font-medium  transition-colors hover:text-primary"
       >
         Customers
       </Link>
       <Link
         href="/admin/dashboard/products"
-        className="text-lg font-medium text-muted-foreground transition-colors hover:text-primary"
+        className="text-lg font-medium  transition-colors hover:text-primary"
       >
         Products
       </Link>
       <Link
-        href="/admin/dashboard/orderss"
-        className="text-lg font-medium text-muted-foreground transition-colors hover:text-primary"
+        href="/admin/dashboard/orders"
+        className="text-lg font-medium  transition-colors hover:text-primary"
       >
         Orders
       </Link>

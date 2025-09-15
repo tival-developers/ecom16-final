@@ -115,6 +115,8 @@ export default function ProductsForm({ product }: { product: ProductType }) {
         setVariationValues({})
         setBrand('')
         setSerialNumber('')
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(false), 3000)
       }
     })
   }

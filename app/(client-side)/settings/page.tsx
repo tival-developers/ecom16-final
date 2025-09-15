@@ -5,12 +5,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+
 // Dynamically import heavy sections
-const GeneralSettings = dynamic(() => import('./(sections)/general/page'), )
-const AccountSettings = dynamic(() => import('./(sections)/account/page'), )
+const Profile = dynamic(() => import('./(sections)/profile/page'))
+const GeneralSettings = dynamic(() => import('./(sections)/general/page'))
+const AccountSettings = dynamic(() => import('./(sections)/account/page'))
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState('general')
+  const [activeTab, setActiveTab] = useState('profile')
   const [isPending, startTransition] = useTransition()
 
   function handleTabChange(value: string) {
@@ -20,7 +22,6 @@ export default function SettingsPage() {
   }
 
   return (
-    
     <div className='container mx-auto p-6'>
       <Card className='shadow-lg p-3.5'>
         <CardHeader>
@@ -33,6 +34,7 @@ export default function SettingsPage() {
             className='space-y-4 '
           >
             <TabsList>
+              <TabsTrigger value='profile'>Profile</TabsTrigger>
               <TabsTrigger value='general'>General</TabsTrigger>
               <TabsTrigger value='account'>Account</TabsTrigger>
             </TabsList>
@@ -46,6 +48,12 @@ export default function SettingsPage() {
             <TabsContent value='account'>
               <Suspense fallback={<div>Loading account settings...</div>}>
                 <AccountSettings />
+              </Suspense>
+            </TabsContent>
+
+            <TabsContent value='profile'>
+              <Suspense fallback={<div>Loading profile ...</div>}>
+                <Profile />
               </Suspense>
             </TabsContent>
           </Tabs>

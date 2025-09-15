@@ -83,7 +83,7 @@ export default function OrdersPage() {
           <CardContent className='flex flex-col p-2'>
             <span className='text-2xl font-bold'>
               {
-                orders.filter((order) => order.deliveryStatus === 'delivered')
+                orders.filter((order) => order.fulfillmentStatus === 'fulfilled')
                   .length
               }
             </span>

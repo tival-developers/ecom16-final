@@ -4,8 +4,10 @@ import connectToDatabase from '@/lib/db/dbConnection'
 import { revalidatePath } from 'next/cache'
 import { auth } from '@/auth'
 import Notification from '../db/models/notification'
-import User from '../db/models/user.model'
 import { BannerSchemaZ, BannerUpdateSchemaZ } from '../zod/schemasValidations'
+import User from '../db/models/user.model'
+
+
 
 export type ActionResult =
   | { success: true }
@@ -39,12 +41,26 @@ export async function createBanner(formData: FormData): Promise<ActionResult> {
     if (!session?.user?.id) {
       return { errors: { _form: ['Unauthorized'] } }
     }
+    const role = session.user.role
+  if (!role) {
+    return { errors: { _form: ['Unauthorized'] } }
+  }
+  const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+  if (!allowedRoles.includes(role || '')) {
+    return {
+      errors: {
+        _form: [
+          'Forbidden: Only superadmin, manager, or sales can create products',
+        ],
+      },
+    }
+  }
     await connectToDatabase
 
     const user = await User.findOne({ email: session.user.email })
-    if (!user) {
-      return { errors: { _form: ['User not found'] } }
-    }
+  if (!user) {
+    return { errors: { _form: ['User not found'] } }
+  }
 
     const parsed = BannerSchemaZ.safeParse({
       productId: formData.get('productId'),
@@ -86,7 +102,7 @@ export async function createBanner(formData: FormData): Promise<ActionResult> {
     await Notification.create({
       type: 'banner',
       title: 'New banner created',
-      customerId: user._id,
+      triggerId: user._id,
       message: 'New banner created',
     })
 
@@ -111,12 +127,24 @@ export async function updateBanner(formData: FormData): Promise<ActionResult> {
   if (!session?.user?.id) {
     return { errors: { _form: ['Unauthorized'] } }
   }
+  
+  const role = session.user.role
+  if (!role) {
+    return { errors: { _form: ['Unauthorized'] } }
+  }
+  const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+  if (!allowedRoles.includes(role || '')) {
+    return {
+      errors: {
+        _form: [
+          'Forbidden: Only superadmin, manager, or sales can create products',
+        ],
+      },
+    }
+  }
 
   await connectToDatabase
-  const user = await User.findOne({ email: session.user.email })
-  if (!user) {
-    return { errors: { _form: ['User not found'] } }
-  }
+  
 
     const parsed = BannerUpdateSchemaZ.safeParse({
       id: formData.get('id'),

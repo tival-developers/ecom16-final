@@ -20,20 +20,24 @@ const links = [
 
 export default async function NavMenu() {
   const session = await auth()
+  const allowedRoles = ["manager", "developer", "sales", "superadmin"]
+const isAdmin = allowedRoles.includes(session?.user?.role || "")
+ 
   return (
     <div className='sticky top-0 z-50'>
       {/* Desktop Header */}
       {/* Top bar */}
       <nav className='hidden md:flex items-center justify-between px-4 py-1.5  w-full bg-amber-200'>
-        <Link href='/admin/dashboard'>
-          <Button
-            variant={'outline'}
-            className='hover:text-red-600 text-yellow-800 rounded py-2 px-7'
-          >
-            Admin Panel
-          </Button>
-        </Link>
-
+        {isAdmin && (
+          <Link href='/admin/dashboard'>
+            <Button
+              variant={'outline'}
+              className='hover:text-red-600 text-yellow-800 rounded py-2 px-7'
+            >
+              Admin Panel
+            </Button>
+          </Link>
+        )}
         <div>
           <Marquee>
             <p className='text-lg font-semibold'>

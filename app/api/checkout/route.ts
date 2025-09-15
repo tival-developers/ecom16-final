@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     await Notification.create({
       type: 'order',
       title: 'Order completed',
-      customerId: user._id,
+      triggerId: user._id,
       message: `Order placed by ${user.name || user.email}  `,
     })
 

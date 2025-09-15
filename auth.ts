@@ -5,15 +5,14 @@ import Tiktok from 'next-auth/providers/tiktok'
 import Instagram from 'next-auth/providers/instagram'
 import type { Provider } from 'next-auth/providers'
 import NextAuth from 'next-auth'
-import User from './lib/db/models/user.model'
 import bcrypt from 'bcryptjs'
 import { signInSchema } from './lib/db/essentials/zod'
 import { ZodError } from 'zod'
-import mongoose from 'mongoose'
+import User from './lib/db/models/user.model'
 
-function isValidObjectId(id: string) {
-  return mongoose.Types.ObjectId.isValid(id)
-}
+// ✅ Hardcoded superadmin
+const SUPERADMIN_EMAIL = process.env.ADMIN_EMAIL
+const SUPERADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
 // ----- PROVIDERS -----
 const providers: Provider[] = [
@@ -23,46 +22,61 @@ const providers: Provider[] = [
       email: { label: 'Email', type: 'email', name: 'email' },
       password: { label: 'Password', type: 'password', name: 'password' },
     },
+
     authorize: async (credentials) => {
       try {
         const { email, password } = await signInSchema.parseAsync(credentials)
 
-        await connectToDatabase // ✅ fix
+        // ✅ Check for superadmin
+        if (email === SUPERADMIN_EMAIL && password === SUPERADMIN_PASSWORD) {
+          await connectToDatabase
 
-        let user = await User.findOne({ email })
+          // Check if superadmin already exists
+          let superadmin = await User.findOne({ email: SUPERADMIN_EMAIL })
 
-        if (!user) {
-          const hashedPassword = await bcrypt.hash(password, 10)
-          user = await User.create({
-            name: email.split('@')[0],
-            email,
-            password: hashedPassword,
-            provider: 'credentials',
-          })
-        } else {
-          if (!user.password) {
-            throw new Error(
-              'Account exists but no password is set. Try OAuth login.'
-            )
+          if (!superadmin) {
+            const hashedPassword = await bcrypt.hash(SUPERADMIN_PASSWORD, 10)
+            superadmin = await User.create({
+              name: 'Super Admin',
+              email: SUPERADMIN_EMAIL,
+              password: hashedPassword,
+              provider: 'credentials',
+              role: 'superadmin',
+            })
+            console.log('🆕 Superadmin created')
           }
 
-          const isPasswordValid = await bcrypt.compare(password, user.password)
-          if (!isPasswordValid) {
-            throw new Error('Invalid credentials.')
+          return {
+            id: superadmin._id.toString(),
+            name: superadmin.name,
+            email: superadmin.email,
+            role: superadmin.role,
+            image: superadmin.image || null,
           }
         }
 
-        // ✅ Always return a user object (both signup + login)
+        // ✅ Normal login flow
+        await connectToDatabase
+
+        const user = await User.findOne({ email })
+        if (!user) {
+          throw new Error('No user found. Please register first.')
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if (!isPasswordValid) {
+          throw new Error('Invalid credentials.')
+        }
+
         return {
           id: user._id.toString(),
           name: user.name,
           email: user.email,
+          role: user.role,
           image: user.image || null,
         }
       } catch (error) {
-        if (error instanceof ZodError) {
-          return null
-        }
+        if (error instanceof ZodError) return null
         console.error('Authorize Error:', error)
         return null
       }
@@ -113,9 +127,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   callbacks: {
-    
     async jwt({ token, user }) {
       if (user) {
+        token.role = user.role
         token.id = user.id
         token.name = user.name
         token.email = user.email
@@ -128,25 +142,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return {}
       }
 
-      // ✅ Check DB user existence
-      await connectToDatabase
-
-      let existingUser = null
-      if (token.id && isValidObjectId(token.id as string)) {
-        existingUser = await User.findById(token.id)
-      } else if (token.email) {
-        existingUser = await User.findOne({ email: token.email })
-      }
-
-      if (!existingUser) {
-        return {} // user deleted or not found
-      }
-
       return token
     },
 
     async session({ session, token }) {
       if (session.user && token.id) {
+        session.user.role = token.role
         session.user.id = token.id as string
         session.user.name = token.name as string
         session.user.email = token.email as string
@@ -156,7 +157,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async redirect({ url, baseUrl }) {
       // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`
+      if (url.startsWith('/')) return `${baseUrl}${url}`
       // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
@@ -176,6 +177,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           image: user.image,
           provider: account?.provider,
           providerAccountId: account?.providerAccountId,
+          role: 'customer',
         })
         console.log('🆕 New user created:', existingUser)
       } else {
@@ -197,5 +199,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // ✅ no return statement here
     },
   },
-  
 })

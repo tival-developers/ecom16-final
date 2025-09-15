@@ -17,7 +17,7 @@ export async function getCategoriesWithProducts(): Promise<
 
   for (const category of categories) {
     const products = await Product.find({ category: category._id })
-      .limit(4)
+      .limit(5)
       .lean<ProductType[]>()
 
     if (products.length === 0) continue

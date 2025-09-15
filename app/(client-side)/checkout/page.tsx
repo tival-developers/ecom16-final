@@ -14,9 +14,15 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 export default function CheckoutPage() {
-  const { data: session, status } = useSession()
-
   const router = useRouter()
+  // 🔒 Protect route
+   const { data: session, status } = useSession()
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      const currentPath = window.location.pathname
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentPath)}`)
+    }
+  }, [status, router])
   const {
     items,
     increaseQuantity,

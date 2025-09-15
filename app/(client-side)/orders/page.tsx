@@ -17,8 +17,16 @@ const fetcher = async (url: string) => {
 }
 
 export default function OrdersPage() {
-  const { status } = useSession()
   const router = useRouter()
+  const { status } = useSession()
+ 
+  // 🔒 Protect route
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      const currentPath = window.location.pathname
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentPath)}`)
+    }
+  }, [status, router])
   const addToCart = useCartStore((state) => state.addToCart)
 
   // ✅ Always call SWR, skip fetch if not authenticated
@@ -35,12 +43,7 @@ export default function OrdersPage() {
     }
   )
 
-  // ✅ Handle redirect in useEffect
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.replace('/login')
-    }
-  }, [status, router])
+  
 
   if (status === 'loading' || isLoading) {
     return (

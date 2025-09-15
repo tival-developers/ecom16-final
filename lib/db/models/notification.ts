@@ -6,11 +6,13 @@ const NotificationSchema = new mongoose.Schema({
     enum: ['review', 'helpRequest', 'order', 'product', 'admin', 'banner', 'blog'],
     required: true,
   },
-  customerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+  // triggerId: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'User',
+  //   required: true,
+  // },
+  triggerId: { type: String, required: true },
+
   title: { type: String, required: true },
   message: { type: String, required: true },
   read: { type: Boolean, default: false },

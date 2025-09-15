@@ -3,7 +3,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useEffect, useState } from 'react'
 import { getAllSales, getRecentSales } from '@/lib/actions/Sales'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import RecentSalesSkeleton from './recentSkeleton'
@@ -43,7 +42,8 @@ export function RecentSales() {
   }
 
   return (
-    <Card className='col-span-3 text-gray-800 py-2'>
+  
+    <div>
       <div>
         <h2 className='p-3'>Recent Sales</h2>
         <p className='text-sm text-muted-foreground px-4'>
@@ -83,6 +83,8 @@ export function RecentSales() {
           </Button>
         </div>
       </div>
-    </Card>
+    </div>
+      
+    
   )
 }

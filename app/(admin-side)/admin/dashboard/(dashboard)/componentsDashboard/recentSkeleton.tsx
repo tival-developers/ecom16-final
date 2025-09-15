@@ -1,11 +1,10 @@
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
 // Skeleton Component
 export default function RecentSalesSkeleton() {
   return (
-    <Card className='col-span-3 text-gray-800 py-2'>
+    <div className='col-span-3 text-gray-800 py-2'>
       <div>
         <h2 className='p-3'>Recent Sales</h2>
         <Skeleton className='h-4 w-48 mx-4' />
@@ -31,6 +30,6 @@ export default function RecentSalesSkeleton() {
           </Button>
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

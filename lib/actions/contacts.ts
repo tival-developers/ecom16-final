@@ -85,7 +85,7 @@ export async function ContactUs(formData: FormData): Promise<ContactFormState> {
     await Notification.create({
       type: 'helpRequest',
       title: 'New helpRequest',
-      customerId: user._id,
+      triggerId: user._id,
       message: `New helpRequest by ${user.name || user.email} }`,
     })
 

@@ -86,6 +86,7 @@ export default function CategoryPage() {
       setSlug('')
       setVariations([''])
       setImages([])
+      
     }
 
     setIsSubmitting(false)
@@ -102,6 +103,7 @@ export default function CategoryPage() {
             <Label>Name</Label>
             <Input
               autoFocus
+              className='capitalize'
               value={name}
               onChange={(e) => setName(e.target.value)}
               required

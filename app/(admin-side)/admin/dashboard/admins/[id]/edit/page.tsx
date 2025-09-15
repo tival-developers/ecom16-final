@@ -1,5 +1,5 @@
 
-import { Admin } from '@/lib/db/models/admin'
+import Admin  from '@/lib/db/models/admin'
 import UpdateAdminForm from './form'
 
 export default async function UpdateAdminPage(context: {

@@ -6,6 +6,8 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { CategoryType } from '../types/categories'
 import { capitalizeName } from '../helper/capitalize'
+import { auth } from '@/auth'
+
 
 //get all categories
 export const getAllCategories = async () => {
@@ -49,6 +51,24 @@ export const getCategoryById = async (id: string) => {
 
 //create category
 export const createCategory = async (formData: FormData) => {
+   const session = await auth()
+    if (!session?.user?.id) {
+      return { errors: { _form: ['Unauthorized'] } }
+    }
+    const role = session.user.role
+    if (!role) {
+      return { errors: { _form: ['Unauthorized'] } }
+    }
+    const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+    if (!allowedRoles.includes(role || '')) {
+      return {
+        errors: {
+          _form: [
+            'Forbidden: Only superadmin, manager, or sales can create products',
+          ],
+        },
+      }
+    }
   try {
     await connectToDatabase
 
@@ -110,6 +130,7 @@ export const createCategory = async (formData: FormData) => {
 
 
 export const updateCategory = async (id: string, formData: FormData): Promise<void> => {
+  
   try {
     await connectToDatabase
     const rawName = formData.get("name") as string

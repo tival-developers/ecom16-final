@@ -4,15 +4,16 @@ import connectToDatabase from '@/lib/db/dbConnection'
 import { revalidatePath } from 'next/cache'
 import Blog from '../db/models/blog'
 import { auth } from '@/auth'
-import User from '../db/models/user.model'
 import Notification from '../db/models/notification'
 import { BlogSchema, BlogUpdateSchema } from '../zod/schemasValidations'
+
+import User from '../db/models/user.model'
 
 export type BlogResult =
   | { success: true }
   | { errors: Record<string, string[]> }
 
-///get Admins////
+///get blogs////
 export async function getBlogs() {
   await connectToDatabase
   return await Blog.find().sort({ createdAt: -1 }).lean()
@@ -27,9 +28,24 @@ export async function CreateBlog(formData: FormData): Promise<BlogResult> {
   if (!session?.user?.id) {
     return { errors: { _form: ['Unauthorized'] } }
   }
+  const role = session.user.role
+  if (!role) {
+    return { errors: { _form: ['Unauthorized'] } }
+  }
+  const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+  if (!allowedRoles.includes(role || '')) {
+    return {
+      errors: {
+        _form: [
+          'Forbidden: Only superadmin, manager, or sales can create products',
+        ],
+      },
+    }
+  }
 
   await connectToDatabase
   console.log('✅ DB connected')
+
   const user = await User.findOne({ email: session.user.email })
   if (!user) {
     return { errors: { _form: ['User not found'] } }
@@ -48,7 +64,7 @@ export async function CreateBlog(formData: FormData): Promise<BlogResult> {
 
     console.log('Parsed result:', parsed)
 
-    console.log(parsed, 'tttttttttttttttttttttttttttttttttttt')
+    
 
     if (!parsed.success) {
       return { errors: parsed.error.flatten().fieldErrors }
@@ -74,7 +90,7 @@ export async function CreateBlog(formData: FormData): Promise<BlogResult> {
     await Notification.create({
       type: 'blog',
       title: 'New blog created',
-      customerId: user._id,
+      triggerId: user._id,
       message: 'New blog created',
     })
 
@@ -101,13 +117,23 @@ export async function UpdateBlog(formData: FormData): Promise<BlogResult> {
   if (!session?.user?.id) {
     return { errors: { _form: ['Unauthorized'] } }
   }
-
-  await connectToDatabase
-  const user = await User.findOne({ email: session.user.email })
-  if (!user) {
-    return { errors: { _form: ['User not found'] } }
+  const role = session.user.role
+  if (!role) {
+    return { errors: { _form: ['Unauthorized'] } }
+  }
+  const allowedRoles = ['developer', 'manager', 'sales', 'superadmin']
+  if (!allowedRoles.includes(role || '')) {
+    return {
+      errors: {
+        _form: [
+          'Forbidden: Only superadmin, manager, or sales can create products',
+        ],
+      },
+    }
   }
 
+  await connectToDatabase
+  
   try {
     // validate
     const parsed = BlogUpdateSchema.safeParse({

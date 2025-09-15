@@ -14,7 +14,7 @@ export async function signOutAction() {
 export async function signInAction(provider: string, callbackUrl?: string) {
     try {
       await signIn(provider, {
-        redirectTo: callbackUrl ?? '/', // ✅ Corrected property name
+        redirectTo: callbackUrl ?? "/",
       })
     } catch (error) {
       if (error instanceof AuthError) {

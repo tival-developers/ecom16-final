@@ -16,4 +16,5 @@ const AdminSchema = new Schema<IAdmin>({
   createdAt: { type: Date, default: Date.now }
 })
 
-export const Admin = mongoose.models.Admin || mongoose.model<IAdmin>("Admin", AdminSchema)
+ const Admin = mongoose.models.Admin || mongoose.model<IAdmin>("Admin", AdminSchema)
+export default Admin

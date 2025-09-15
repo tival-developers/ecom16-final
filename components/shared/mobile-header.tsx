@@ -23,6 +23,7 @@ export default function MobileHeader({
     { label: 'About Us', href: '/about-us' },
     { label: 'Categories', href: '/categories' },
     { label: 'Contacts', href: '/contacts' },
+    { label: 'Orders', href: '/orders' },
   ],
 }: {
   cartCount?: number
@@ -33,22 +34,22 @@ export default function MobileHeader({
       <div className='mx-auto max-w-screen-xl px-3 sm:px-4'>
         <div className='h-14 flex items-center justify-between'>
           {/* Left: Hamburger + Drawer */}
-          <Sheet>
+          <Sheet >
             <SheetTrigger asChild>
               <Button variant='ghost' size='icon' className='rounded-2xl'>
                 <Menu className='h-6 w-6 ' />
                 <span className='sr-only'>Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side='left' className='p-0 w-[90vw] max-w-sm'>
+            <SheetContent side='left' className='p-0 w-[90vw] max-w-sm bg-gradient-to-tr from-amber-600 via-amber-300 to-pink-300 rounded-r-2xl'>
               <div className='p-4'>
                 <SheetHeader className='items-start'>
                   <SheetTitle className='text-left text-xl font-semibold'>
                     <span className='inline-flex items-center gap-2'>
                       <span className='h-8 w-8 rounded-2xl bg-black text-white grid place-items-center font-bold'>
-                        e
+                        s
                       </span>
-                      <span>Trendz</span>
+                      <span>Stream</span>
                     </span>
                   </SheetTitle>
                 </SheetHeader>
@@ -84,8 +85,8 @@ export default function MobileHeader({
 
                 <div className='mt-4 p-3 rounded-2xl bg-muted/60'>
                   <p className='text-sm text-muted-foreground'>
-                    Free shipping on orders over{' '}
-                    <span className='font-semibold'>$50</span>.
+                    Stream Online Store
+                    
                   </p>
                 </div>
               </div>
@@ -100,9 +101,9 @@ export default function MobileHeader({
               transition={{ duration: 0.25 }}
               className='h-8 w-8 rounded-2xl bg-black text-white grid place-items-center font-bold'
             >
-              T
+              S
             </motion.span>
-            <span className='text-lg font-semibold text-white'>Trendz</span>
+            <span className='text-lg font-semibold text-white'>Stream</span>
           </Link>
 
           {/* Right: Actions */}
