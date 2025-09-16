@@ -1,6 +1,11 @@
 import connectToDatabase from '@/lib/db/dbConnection'
 import { Order } from '@/lib/db/models/order'
 import PreviousOrderCard from './orderDetail'
+
+
+export const dynamic = "force-dynamic";
+// or: export const revalidate = 60;
+
 export async function generateStaticParams() {
   await connectToDatabase
   const orders = await Order.find({}, '_id').lean()

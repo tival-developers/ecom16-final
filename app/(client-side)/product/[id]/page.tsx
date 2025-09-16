@@ -4,8 +4,11 @@ import ProductDetail from './productDetail'
 import RelatedProducts from '@/components/cards/relatedProducts'
 import { ReviewSummary } from '@/components/cards/reviewCard'
 
+export const dynamic = "force-dynamic";
+// or: export const revalidate = 60;
 
 export async function generateStaticParams() {
+  await connectToDatabase
   const products = await Product.find().lean()
 
   return products.map((product) => ({

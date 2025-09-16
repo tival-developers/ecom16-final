@@ -2,6 +2,10 @@ import ProductCategoryList from '@/components/products/productsList'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Category from '@/lib/db/models/category.model'
 
+
+export const dynamic = "force-dynamic";
+// or: export const revalidate = 60;
+
 export async function generateStaticParams() {
   await connectToDatabase
   const categories = await Category.find({}, '_id').lean()

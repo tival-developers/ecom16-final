@@ -3,6 +3,10 @@ import connectToDatabase from '@/lib/db/dbConnection'
 import Blog from '@/lib/db/models/blog'
 import Image from 'next/image'
 
+
+export const dynamic = "force-dynamic";
+// or: export const revalidate = 60;
+
 // Generate static params for all blog posts
 export async function generateStaticParams() {
   await connectToDatabase
