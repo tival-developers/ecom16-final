@@ -3,6 +3,8 @@ import connectToDatabase from '@/lib/db/dbConnection'
 import Category from '@/lib/db/models/category.model'
 
 
+
+
 export const dynamic = "force-dynamic";
 // or: export const revalidate = 60;
 

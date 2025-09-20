@@ -4,6 +4,13 @@ import Category from '@/lib/db/models/category.model'
 import mongoose from 'mongoose'
 import CategoryList from '../../components/lists/category-list'
 
+import { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Product categories',
+  description: 'view & add product categories ',
+}
 
 export default async function Home() {
   await connectToDatabase

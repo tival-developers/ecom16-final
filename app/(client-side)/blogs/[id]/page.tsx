@@ -1,7 +1,13 @@
 import { Card } from '@/components/ui/card'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Blog from '@/lib/db/models/blog'
+import { Metadata } from 'next'
 import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'view blog',
+}
 
 
 export const dynamic = "force-dynamic";
@@ -31,7 +37,7 @@ export default async function BlogPage({
   if (!Post) {
     return (
       <div className='container mx-auto p-4'>
-        <p>Post not found.</p>
+        <h2 className="text-3xl font-bold text-amber-600">Post not found.</h2>
       </div>
     )
   }

@@ -41,7 +41,7 @@ const data = {
     },
     {
       title: 'Products Dashboard',
-      url: '/admin/dashboard/products',
+      url: '#',
       icon: LaptopIcon,
 
       items: [
@@ -66,7 +66,7 @@ const data = {
     },
     {
       title: 'Customers Dashboard',
-      url: '/admin/dashboard/customers',
+      url: '#',
       icon: User2,
       items: [
         {
@@ -77,7 +77,7 @@ const data = {
     },
     {
       title: 'Admins Dashboard',
-      url: '/admin/dashboard/admins',
+      url: '#',
       icon: UserPenIcon,
       items: [
         {
@@ -92,7 +92,7 @@ const data = {
     },
     {
       title: 'Products Promotion',
-      url: '/admin/dashboard/promotions/discount',
+      url: '#',
       icon: ArrowTrendingUpIcon,
       items: [
         {
@@ -109,7 +109,7 @@ const data = {
 
     {
       title: 'Blogs',
-      url: '/admin/dashboard/blogs',
+      url: '#',
       icon: Book,
       items: [
         {
@@ -125,7 +125,7 @@ const data = {
     },
     {
       title: 'Banners',
-      url: '/admin/dashboard/banners',
+      url: '#',
       icon: Globe,
       items: [
         {
@@ -135,7 +135,7 @@ const data = {
 
         {
           title: 'Create Banners',
-          url: '/admin/dashboard/site-layout/banners/create',
+          url: '/admin/dashboard/banners/create',
         },
       ],
     },
@@ -149,7 +149,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <div className=' bg-yellow-600'>
+    <div >
       <Sidebar
         className='top-[--header-height] !h-[calc(100svh-var(--header-height))]'
         {...props}
@@ -169,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavMain items={data.navMain} />
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={data.user} />
+          <NavUser  />
         </SidebarFooter>
       </Sidebar>
     </div>

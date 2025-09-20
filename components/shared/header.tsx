@@ -9,6 +9,7 @@ import { FavIcon } from '../ux/favIcon'
 import DepartmentSection from './departmentSection'
 import MobileHeader from './mobile-header'
 import { Settings } from 'lucide-react'
+import CompanyLogo from './Brand-logo'
 
 const links = [
   { name: 'Home', href: '/' },
@@ -20,9 +21,9 @@ const links = [
 
 export default async function NavMenu() {
   const session = await auth()
-  const allowedRoles = ["manager", "developer", "sales", "superadmin"]
-const isAdmin = allowedRoles.includes(session?.user?.role || "")
- 
+  const allowedRoles = ['manager', 'developer', 'sales', 'superadmin']
+  const isAdmin = allowedRoles.includes(session?.user?.role || '')
+
   return (
     <div className='sticky top-0 z-50'>
       {/* Desktop Header */}
@@ -72,9 +73,7 @@ const isAdmin = allowedRoles.includes(session?.user?.role || "")
       {/* Header */}
       <header className='hidden md:block sticky top-0 z-30  backdrop-blur border-b'>
         <div className='flex max-w-7xl mx-auto px-4 py-4 items-center gap-4'>
-          <h2 className='text-2xl font-bold text-amber-600'>
-            ST<span className='text-black'>REAM</span>
-          </h2>
+          <CompanyLogo />
           <SearchComponent />
           <div className='p-3'>
             <FavIcon />

@@ -1,6 +1,13 @@
 // AdminsPage.tsx (server component)
 import { getAdmins } from "@/lib/actions/admins"
 import AdminsTable from "./AdminsTable"
+import { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Admins ',
+  description: ' View and add admins ',
+}
 
 
 export type AdminType = {

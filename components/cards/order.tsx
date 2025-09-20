@@ -9,23 +9,19 @@ import Price from '@/lib/utils/format'
 import { typeOrder } from '@/lib/types/order'
 import Link from 'next/link'
 
-
 interface OrderCardProps {
   order: typeOrder
   onViewOrder?: (orderId: string) => void
-  onViewInvoice?: (orderId: string) => void
   onBuyAgain?: (itemId: string) => void
 }
 
 export function OrderCard({
   order,
   onViewOrder,
-  onViewInvoice,
   onBuyAgain,
 }: OrderCardProps) {
   // Format the order date (e.g. "Jul 6, 2021")
   const orderDate = format(new Date(order.createdAt), 'MMM d, yyyy')
-  
 
   return (
     <div className='border rounded-xl p-6 space-y-4 shadow-sm'>
@@ -48,12 +44,9 @@ export function OrderCard({
           </div>
         </div>
 
-        <div className='flex gap-2'>
+        <div className='flex '>
           <Button variant='outline' onClick={() => onViewOrder?.(order._id)}>
             View Order
-          </Button>
-          <Button variant='outline' onClick={() => onViewInvoice?.(order._id)}>
-            View Invoice
           </Button>
         </div>
       </div>
@@ -114,8 +107,8 @@ export function OrderCard({
 
               {/* Actions */}
               <div className='flex gap-4 text-sm font-medium mt-2'>
-               
-                  <Link href={`/product/${item.productId}`}
+                <Link
+                  href={`/product/${item.productId}`}
                   className='text-purple-600 hover:underline'
                 >
                   View product
@@ -124,8 +117,7 @@ export function OrderCard({
                   onClick={() => onBuyAgain?.(item.productId)}
                   className='text-purple-600 hover:underline'
                 >
-                   Buy Again
-                  
+                  Buy Again
                 </button>
               </div>
             </div>

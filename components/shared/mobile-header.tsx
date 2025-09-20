@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+//import { motion } from 'framer-motion'
 import { Menu, ChevronRight, User } from 'lucide-react'
 import {
   Sheet,
@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import SearchComponent from './searcher'
 import { CartIcon } from '@/app/(client-side)/cart/cartIcon'
+import CompanyLogo from './Brand-logo'
 
 // Optional: pass cartCount and onSearch to make it reusable
 export default function MobileHeader({
@@ -45,12 +46,7 @@ export default function MobileHeader({
               <div className='p-4'>
                 <SheetHeader className='items-start'>
                   <SheetTitle className='text-left text-xl font-semibold'>
-                    <span className='inline-flex items-center gap-2'>
-                      <span className='h-8 w-8 rounded-2xl bg-black text-white grid place-items-center font-bold'>
-                        s
-                      </span>
-                      <span>Stream</span>
-                    </span>
+                   <CompanyLogo />
                   </SheetTitle>
                 </SheetHeader>
 
@@ -94,7 +90,8 @@ export default function MobileHeader({
           </Sheet>
 
           {/* Center: Logo */}
-          <Link href='/' className='flex items-center gap-2'>
+          <CompanyLogo />
+          {/* <Link href='/' className='flex items-center gap-2'>
             <motion.span
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -104,7 +101,7 @@ export default function MobileHeader({
               S
             </motion.span>
             <span className='text-lg font-semibold text-white'>Stream</span>
-          </Link>
+          </Link> */}
 
           {/* Right: Actions */}
           <div className='flex items-center gap-1.5 pl-1.5'>

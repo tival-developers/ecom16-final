@@ -1,22 +1,4 @@
-// import { BellAlertIcon } from '@heroicons/react/24/outline'
-// import Link from 'next/link'
-// import { UserNav } from './user-nav'
 
-// export function MailUser({ ...props }: React.ComponentProps<'form'>) {
-//   return (
-//     <form {...props}>
-//       <div className='relative p-5 flex items-center justify-items-center gap-4'>
-
-//         <Link href='/mail'>
-//           <BellAlertIcon className=' h-6 w-6' />
-//         </Link>
-//         <div>
-//           <UserNav />
-//         </div>
-//       </div>
-//     </form>
-//   )
-// }
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -85,26 +67,7 @@ export default function MailUser() {
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
-  // const getLink = (type: Notification['type']) => {
-  //   switch (type) {
-  //     case 'review':
-  //       return '/admin/products/reviews'
-  //     case 'helpRequest':
-  //       return '/admin/dashboard/mails'
-  //     case 'product':
-  //       return '/admin/dashboard/products'
-  //     case 'admin':
-  //       return '/admin/dashboard/admins'
-  //     case 'banner':
-  //       return '/admin/dashboard/banners'
-  //     case 'blog':
-  //       return '/admin/dashboard/blogs'
-  //     case 'order':
-  //       return '/admin/dashboard/orders'
-  //     default:
-  //       return '/admin'
-  //   }
-  // }
+  
 
   const getLink = (type: Notification['type']) => typeLinks[type] ?? '/admin'
   const markAsRead = async (id: string) => {
@@ -123,8 +86,8 @@ export default function MailUser() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className='relative p-2 rounded-full hover:bg-muted focus:outline-none'>
-          <Bell className='h-6 w-6 text-foreground' />
+        <button className='relative p-2 rounded-full bg-gray-800 hover:bg-muted focus:outline-none'>
+          <Bell className='h-6 w-6 text-white hover:text-foreground' />
           {unreadCount > 0 && (
             <span className='absolute top-1 right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center'>
               {unreadCount}

@@ -1,8 +1,12 @@
 import connectToDatabase from '@/lib/db/dbConnection'
 import { Order } from '@/lib/db/models/order'
 import PreviousOrderCard from './orderDetail'
+import { Metadata } from 'next';
 
-
+export const metadata: Metadata = {
+  title: 'Order',
+  description: 'view your order',
+}
 export const dynamic = "force-dynamic";
 // or: export const revalidate = 60;
 

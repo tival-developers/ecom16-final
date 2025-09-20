@@ -36,7 +36,7 @@ export default async function Blogs() {
 
   return (
     <div className='container mx-auto p-6'>
-      <h1 className='text-3xl font-bold mb-8'>Latest Posts</h1>
+      <h2 className="text-3xl font-bold text-amber-600">Latest Posts</h2>
 
       <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
         {posts.map((post: postType) => (

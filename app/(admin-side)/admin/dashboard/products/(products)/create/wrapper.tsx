@@ -13,33 +13,26 @@ import {
 } from '@/components/ui/select'
 import { toast } from 'sonner'
 import { getAllCategories, getCategoryById } from '@/lib/actions/category'
-import { CategoryData, ProductType, UploadedImage } from '@/lib/types/product'
+import { CategoryData, UploadedImage } from '@/lib/types/product'
 import { Textarea } from '@/components/ui/textarea'
 import Uploader from '@/lib/helper/upload'
 import Link from 'next/link'
 import { createProduct } from '@/lib/actions/products.actions'
 import { ArrowRight } from 'lucide-react'
 const BRANDS = ['HP', 'Dell', 'Lenovo', 'Apple', 'Asus', 'Acer']
-import { Metadata } from 'next'
 
-
-export const metadata: Metadata = {
-  title: 'Edit product',
-  description: 'edit product ',
-}
-
-export default function UpdateProductForm({product}: {product: ProductType }) {
+export default function CreateProductPage() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     []
   )
-  const [categoryId, setCategoryId] = useState(product.category)
+  const [categoryId, setCategoryId] = useState('')
   const [categoryData, setCategoryData] = useState<CategoryData | null>(null)
-  const [name, setName] = useState(product.name)
-  const [description, setDescription] = useState(product.description)
-  const [originalPrice, setPrice] = useState(product.originalPrice)
-  const [stock, setStock] = useState(product.stock)
-  const [brand, setBrand] = useState(product.brand)
-  const [serialNumber, setSerialNumber] = useState(product.serialNumber)
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [originalPrice, setPrice] = useState(0)
+  const [stock, setStock] = useState(0)
+  const [brand, setBrand] = useState('')
+  const [serialNumber, setSerialNumber] = useState('')
   const [images, setImages] = useState<UploadedImage[]>([])
   const [variationValues, setVariationValues] = useState<
     Record<string, string>
@@ -131,13 +124,11 @@ export default function UpdateProductForm({product}: {product: ProductType }) {
     <div className='max-w-4xl mx-auto p-4 space-y-4 my-10'>
       <Card className=' space-y-4 p-10  rounded-2xl m-1 md:mt-10 '>
         <CardHeader>
-          <h2 className='text-xl font-bold text-amber-600'>Update Product</h2>
+          <h2 className='text-xl font-bold text-amber-600'>Create Product</h2>
         </CardHeader>
         <CardContent>
           <form action={handleSubmit} className='space-y-4'>
             <div className='space-y-4'>
-                {/* Hidden field for product id */}
-          <input type='hidden' name='id' value={product._id} />
               <div className='flex items-center justify-between'>
                 <Label>Category</Label>
                 <Button variant={'link'}>

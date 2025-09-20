@@ -28,7 +28,7 @@ export default function DepartmentSection() {
   }, [])
 
   return (
-    <section className='gap-4 p-2'>
+    <section className='gap-4 p-2 w-full md:w-fit'>
       {/* Sidebar */}
       <aside className='w-full lg:w-64 bg-slate-50 shadow  rounded border border-gray-200'>
         <div className='flex items-center gap-2  px-4 py-1.5 relative '>

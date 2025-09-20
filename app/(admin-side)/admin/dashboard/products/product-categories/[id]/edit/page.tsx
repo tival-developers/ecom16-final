@@ -1,28 +1,14 @@
 import connectToDatabase from '@/lib/db/dbConnection'
 import { CategoryType } from '@/lib/types/categories'
 import Category from '@/lib/db/models/category.model'
-
 import CategoryFormWrapper from './form-wrapper'
+import { Metadata } from 'next'
 
-//pre-populate the form fields
 
-// export default async function Page(props: { params: { id: string } }) {
-//   const { id } = props.params
-
-//   await connectToDatabase
-//   const category = await Category.findById(id).lean<CategoryType>()
-//   if (!category) return <div>Category not found</div>
-//   const updateCategoryWithId = updateCategory.bind(null, id)
-
-//   return (
-//     <>
-//       <form action={updateCategoryWithId}>
-//         <CategoryForm category={category} />
-//       </form>
-//     </>
-//   )
-// }
-//********************************************* */
+export const metadata: Metadata = {
+  title: 'Edit category',
+  description: 'edit category ',
+}
 
 export default async function Page(context: {
   params: Promise<{ id: string }>

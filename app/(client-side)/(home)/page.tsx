@@ -5,7 +5,6 @@ import { ProductPrice } from '@/lib/utils/product-price'
 import HeroSection, { PromoBannerLarge, PromoBannerMini } from '@/components/homepage/banner'
 import FlashsaleHomepage from '@/components/homepage/flashsale'
 import { Truck, ShieldCheck, Gift, Headset } from 'lucide-react'
-//import HomePageData from '@/components/cards/home'
 import ProductCard from '@/components/cards/product-card'
 import AddToCartButton from '@/components/ux/cartadd'
 import { ProductType } from '@/lib/types/product'
@@ -51,7 +50,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen">
       {/* Department Section for mobile */}
-      <div className="flex md:hidden">
+      <div className="flex md:hidden w-full">
         <DepartmentSection />
       </div>
 

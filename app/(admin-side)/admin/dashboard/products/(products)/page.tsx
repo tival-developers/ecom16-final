@@ -5,6 +5,13 @@ import mongoose from 'mongoose'
 import ProductList from '../../components/lists/product-list'
 import Category from '@/lib/db/models/category.model'
 import Product from '@/lib/db/models/product.model'
+import { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'View and Add Products ',
+  description: ' View and Add Products ',
+}
 
 
 export default async function ProductsDashboard() {

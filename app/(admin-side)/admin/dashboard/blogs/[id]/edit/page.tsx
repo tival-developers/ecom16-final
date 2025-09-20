@@ -1,6 +1,11 @@
-
 import Blog from '@/lib/db/models/blog'
 import UpdateBlogForm from './form'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Edit Blog ',
+  description: ' edit blog ',
+}
 
 export default async function EditBlogPage(context: {
   params: Promise<{ id: string }>

@@ -1,67 +1,21 @@
-'use client'
-import { useState, Suspense, useTransition } from 'react'
-import dynamic from 'next/dynamic'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-
-// Dynamically import heavy sections
-const Profile = dynamic(() => import('./(sections)/profile/page'))
-const GeneralSettings = dynamic(() => import('./(sections)/general/page'))
-const AccountSettings = dynamic(() => import('./(sections)/account/page'))
-
-export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState('profile')
-  const [isPending, startTransition] = useTransition()
-
-  function handleTabChange(value: string) {
-    startTransition(() => {
-      setActiveTab(value)
-    })
+import { Metadata } from 'next'
+import SettingsPage from './wrapper'
+export const metadata: Metadata = {
+    title: 'Settings',
+    description: 'view and modify your profile settings',
   }
 
+const Wrapper = () => {
   return (
-    <div className='container mx-auto p-6'>
-      <Card className='shadow-lg p-3.5'>
-        <CardHeader>
-          <CardTitle className='text-2xl'>Settings</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs
-            value={activeTab}
-            onValueChange={handleTabChange}
-            className='space-y-4 '
-          >
-            <TabsList>
-              <TabsTrigger value='profile'>Profile</TabsTrigger>
-              <TabsTrigger value='general'>General</TabsTrigger>
-              <TabsTrigger value='account'>Account</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value='general'>
-              <Suspense fallback={<div>Loading general settings...</div>}>
-                <GeneralSettings />
-              </Suspense>
-            </TabsContent>
-
-            <TabsContent value='account'>
-              <Suspense fallback={<div>Loading account settings...</div>}>
-                <AccountSettings />
-              </Suspense>
-            </TabsContent>
-
-            <TabsContent value='profile'>
-              <Suspense fallback={<div>Loading profile ...</div>}>
-                <Profile />
-              </Suspense>
-            </TabsContent>
-          </Tabs>
-          {isPending && (
-            <div className='mt-2 text-sm text-gray-500'>Updating...</div>
-          )}
-        </CardContent>
-      </Card>
+    <div>
+    <SettingsPage />
     </div>
   )
 }
+
+export default Wrapper
+
+
+
+
+

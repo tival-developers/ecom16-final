@@ -4,6 +4,14 @@ import mongoose from 'mongoose'
 import { UpdateCustomer } from '@/components/ux/editButtons'
 import { Separator } from '@/components/ui/separator'
 import { UserType } from '@/lib/types/user'
+import { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Customers ',
+  description: ' View your customers ',
+}
+
 
 export default async function CustomersTable() {
   await connectToDatabase

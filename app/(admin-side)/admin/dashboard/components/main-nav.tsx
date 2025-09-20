@@ -14,25 +14,25 @@ export function MainNav({
     >
       <Link
         href="/admin/dashboard"
-        className="text-lg font-medium transition-colors hover:text-primary"
+        className="text-lg font-medium transition-colors hover:text-primary hover:bg-amber-600 rounded-xl p-1.5"
       >
         Dashboard
       </Link>
       <Link
         href="/admin/dashboard/customers"
-        className="text-lg font-medium  transition-colors hover:text-primary"
+        className="text-lg font-medium  transition-colors hover:text-primary  hover:bg-amber-600 rounded-xl p-1.5"
       >
         Customers
       </Link>
       <Link
         href="/admin/dashboard/products"
-        className="text-lg font-medium  transition-colors hover:text-primary"
+        className="text-lg font-medium  transition-colors hover:text-primary  hover:bg-amber-600 rounded-xl p-1.5"
       >
         Products
       </Link>
       <Link
         href="/admin/dashboard/orders"
-        className="text-lg font-medium  transition-colors hover:text-primary"
+        className="text-lg font-medium  transition-colors hover:text-primary  hover:bg-amber-600 rounded-xl p-1.5"
       >
         Orders
       </Link>

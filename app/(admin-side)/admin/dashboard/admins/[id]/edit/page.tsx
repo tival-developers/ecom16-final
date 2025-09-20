@@ -1,6 +1,13 @@
 
 import Admin  from '@/lib/db/models/admin'
 import UpdateAdminForm from './form'
+import { Metadata } from 'next'
+
+
+export const metadata: Metadata = {
+  title: 'Edit Admin ',
+  description: ' edit admin details ',
+}
 
 export default async function UpdateAdminPage(context: {
   params: Promise<{ id: string }>
