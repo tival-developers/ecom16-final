@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose"
 export interface IAdmin extends Document {
   name: string
   email: string
-  role: "manager" | "developer" | "sales"
+  role: "manager" | "developer" | "sales" | "superadmin"
   password: string
   createdAt: Date
 }
