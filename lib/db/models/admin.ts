@@ -1,14 +1,8 @@
-import mongoose, { Schema, Document } from "mongoose"
+import mongoose from 'mongoose'
+import { models, model } from 'mongoose'
 
-export interface IAdmin extends Document {
-  name: string
-  email: string
-  role: "manager" | "developer" | "sales" | "superadmin"
-  password: string
-  createdAt: Date
-}
 
-const AdminSchema = new Schema<IAdmin>({
+const AdminSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ["manager", "developer", "sales", "superadmin"], required: true },
@@ -16,5 +10,5 @@ const AdminSchema = new Schema<IAdmin>({
   createdAt: { type: Date, default: Date.now }
 })
 
- const Admin = mongoose.models.Admin || mongoose.model<IAdmin>("Admin", AdminSchema)
+ const Admin = models?.Admin || model("Admin", AdminSchema)
 export default Admin

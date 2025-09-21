@@ -2,7 +2,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getHomePageProducts } from '@/lib/actions/homepage/getHomePage'
 import { ProductPrice } from '@/lib/utils/product-price'
-import HeroSection, { PromoBannerLarge, PromoBannerMini } from '@/components/homepage/banner'
+import HeroSection, {
+  PromoBannerLarge,
+  PromoBannerMini,
+} from '@/components/homepage/banner'
 import FlashsaleHomepage from '@/components/homepage/flashsale'
 import { Truck, ShieldCheck, Gift, Headset } from 'lucide-react'
 import ProductCard from '@/components/cards/product-card'
@@ -48,9 +51,9 @@ export default async function HomePage() {
   const categoriesWithProducts = await getCategoriesWithProducts()
 
   return (
-    <main className="min-h-screen">
+    <main className='min-h-screen'>
       {/* Department Section for mobile */}
-      <div className="flex md:hidden w-full">
+      <div className='flex md:hidden w-full'>
         <DepartmentSection />
       </div>
 
@@ -58,26 +61,42 @@ export default async function HomePage() {
       <HeroSection />
 
       {/* Service Features */}
-      <section className="max-w-7xl mx-auto px-4 mt-6 md:mt-8 relative z-10">
-        <div className="hidden md:grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 border-2 border-amber-600 p-2">
-          <Feature icon={Truck} title="Free Shipping" desc="On orders over $50" />
-          <Feature icon={ShieldCheck} title="Secure Payment" desc="256‑bit encryption" />
-          <Feature icon={Gift} title="Special Gifts" desc="Save on every order" />
-          <Feature icon={Headset} title="Support 24/7" desc="Ready to help" />
-          <Feature icon={ShieldCheck} title="30‑Day Return" desc="Hassle‑free policy" />
+      <section className='max-w-7xl mx-auto px-4 mt-6 md:mt-8 relative z-10'>
+        <div className='hidden md:grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 border-2 border-amber-600 p-2'>
+          <Feature
+            icon={Truck}
+            title='Free Shipping'
+            desc='On orders over $50'
+          />
+          <Feature
+            icon={ShieldCheck}
+            title='Secure Payment'
+            desc='256‑bit encryption'
+          />
+          <Feature
+            icon={Gift}
+            title='Special Gifts'
+            desc='Save on every order'
+          />
+          <Feature icon={Headset} title='Support 24/7' desc='Ready to help' />
+          <Feature
+            icon={ShieldCheck}
+            title='30‑Day Return'
+            desc='Hassle‑free policy'
+          />
         </div>
       </section>
 
       {/* Recently Added */}
       {recent.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-10">
-          <div className="flex items-center justify-between mb-7">
-            <h2 className="text-xl md:text-2xl font-bold">Recently Added</h2>
-            <Button variant="ghost" className="rounded-xl">
+        <section className='max-w-7xl mx-auto px-4 py-10'>
+          <div className='flex items-center justify-between mb-7'>
+            <h2 className='text-xl md:text-2xl font-bold'>Recently Added</h2>
+            <Button variant='ghost' className='rounded-xl'>
               View all products
             </Button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
             {recent.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -90,21 +109,26 @@ export default async function HomePage() {
 
       {/* Bestselling Products */}
       {bestSelling.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-10">
-          <h2 className="text-2xl font-bold mb-7">Our Bestselling Products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {bestSelling.map((item) => (
+        <section className='max-w-7xl mx-auto px-4 py-10'>
+          <h2 className='text-2xl font-bold mb-7'>Our Bestselling Products</h2>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
+            {bestSelling.map((item: ProductType) => (
               <Card
-                key={item.product._id}
-                className="rounded-xl shadow hover:shadow-lg transition"
+                key={item._id}
+                className='rounded-xl shadow hover:shadow-lg transition'
               >
-                <CardContent className="p-4 flex flex-col items-center">
-                  <div className="w-24 h-24 bg-gray-200 rounded mb-3" />
-                  <h3 className="text-sm font-semibold text-center">{item.product.name}</h3>
-                  <p className="text-red-500 font-bold mt-1">
-                    <ProductPrice originalPrice={item.originalPrice} newPrice={item.newPrice} />
+                <CardContent className='p-4 flex flex-col items-center'>
+                  <div className='w-24 h-24 bg-gray-200 rounded mb-3' />
+                  <h3 className='text-sm font-semibold text-center'>
+                    {item.name}
+                  </h3>
+                  <p className='text-red-500 font-bold mt-1'>
+                    <ProductPrice
+                      originalPrice={item.originalPrice}
+                      newPrice={item.newPrice}
+                    />
                   </p>
-                  <AddToCartButton product={item.product} />
+                  <AddToCartButton product={item} />
                 </CardContent>
               </Card>
             ))}
@@ -114,9 +138,9 @@ export default async function HomePage() {
 
       {/* Featured Deals */}
       {featured.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-10">
-          <h2 className="text-xl md:text-2xl font-bold mb-7">Featured Deals</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <section className='max-w-7xl mx-auto px-4 py-10'>
+          <h2 className='text-xl md:text-2xl font-bold mb-7'>Featured Deals</h2>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
             {featured.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -126,9 +150,11 @@ export default async function HomePage() {
 
       {/* Trending This Week */}
       {trending.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-10">
-          <h2 className="text-xl md:text-2xl font-bold mb-7">Trending This Week</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
+        <section className='max-w-7xl mx-auto px-4 py-10'>
+          <h2 className='text-xl md:text-2xl font-bold mb-7'>
+            Trending This Week
+          </h2>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4'>
             {trending.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
             ))}

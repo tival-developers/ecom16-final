@@ -98,7 +98,6 @@ export default function BlogList({ blogs }: { blogs: BlogType[] }) {
             <>
               <Card className='grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3  2xl:grid-cols-6 gap-4 p-4'>
                 {paginatedBlogs.map((blog) => (
-                 
                   <Card key={blog._id} className='bg-white shadow-sm'>
                     <div className='relative w-full aspect-[3/3]'>
                       <Image

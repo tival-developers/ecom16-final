@@ -1,4 +1,4 @@
-// app/api/cart/route.ts
+// app/api/favorite/route.ts
 import { auth } from '@/auth'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Favorite from '@/lib/db/models/favorite'

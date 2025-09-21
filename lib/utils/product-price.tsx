@@ -7,7 +7,7 @@ interface ProductPriceProps {
 
 export function ProductPrice({ originalPrice, newPrice }: ProductPriceProps) {
   return (
-    <div className='flex items-center gap-2'>
+    <span className='flex items-center gap-2'>
       {newPrice ? (
         <>
           <span className='text-amber-600 font-medium  line-through text-sm'>
@@ -22,6 +22,6 @@ export function ProductPrice({ originalPrice, newPrice }: ProductPriceProps) {
           <Price amount={originalPrice} />
         </span>
       )}
-    </div>
+    </span>
   )
 }
