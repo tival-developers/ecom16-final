@@ -16,9 +16,10 @@ const dashboardData = {
   tabs: [{ value: 'overview', label: 'Overview' }],
 }
 
-const { bestSelling, totalSales, totalRevenue } = await fetchCardsData()
 
-export default function DashboardPage() {
+
+export default async function DashboardPage() {
+  const { bestSelling, totalSales, totalRevenue } = await fetchCardsData()
   return (
     <div className='flex flex-col mx-2 p-4 md:p-8'>
       {/* Header */}
