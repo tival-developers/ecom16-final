@@ -9,6 +9,7 @@ import bcrypt from 'bcryptjs'
 import { signInSchema } from './lib/db/essentials/zod'
 import { ZodError } from 'zod'
 import User from './lib/db/models/user.model'
+import Admin from './lib/db/models/admin'
 
 // ✅ Hardcoded superadmin
 const SUPERADMIN_EMAIL = process.env.ADMIN_EMAIL
@@ -44,6 +45,17 @@ const providers: Provider[] = [
               role: 'superadmin',
             })
             console.log('🆕 Superadmin created')
+          }
+          // ✅ Also ensure superadmin exists in Admin collection
+          let adminRecord = await Admin.findOne({ email: SUPERADMIN_EMAIL })
+          if (!adminRecord) {
+            adminRecord = await Admin.create({
+              name: 'Super Admin',
+              email: SUPERADMIN_EMAIL,
+              role: 'superadmin',
+              password: superadmin.password, // reuse hashed password
+            })
+            console.log('🆕 Superadmin created in Admin model')
           }
 
           return {

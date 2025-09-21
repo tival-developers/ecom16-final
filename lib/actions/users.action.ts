@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import bcrypt from 'bcryptjs'
 import User from '../db/models/user.model'
-//import Admin from '../db/models/admin'
+
 
 
 
@@ -65,17 +65,6 @@ export async function userCreate(formData: FormData) {
 
     await newUser.save()
 
-    //  // 2️⃣ Also create in admin collection (NextAuth)
-    //  const existingAdmin = await Admin.findOne({ role: "sales" })
-    //  if (!existingAdmin) {
-    //    await Admin.create({
-    //      name,
-    //      email,
-    //      password: hashedPassword,
-    //      role: ,
-    //      provider: "credentials",
-    //    })
-    //  }
     
     return { email, password } // ✅ return credentials for auto-login
 
