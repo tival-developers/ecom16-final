@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 }
 
 
-export const dynamic = "force-dynamic";
-// or: export const revalidate = 60;
+
+ export const revalidate = 60;
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
