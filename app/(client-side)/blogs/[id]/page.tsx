@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
-  await connectToDatabase
+  await connectToDatabase()
   const posts = await Blog.find({}, '_id').lean()
 
   return posts.map((post) => ({
@@ -26,7 +26,7 @@ export async function generateStaticParams() {
 export default async function BlogPage(context: {
   params: Promise<{ id: string }>
 }) {
-  await connectToDatabase
+  await connectToDatabase()
   const { id } = await context.params 
 
   const Post = await Blog.findById(id).lean()

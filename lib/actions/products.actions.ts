@@ -52,7 +52,7 @@ export async function createProduct(
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
   const user = await User.findOne({ email: session.user.email })
   if (!user) {
     return { errors: { _form: ['User not found'] } }
@@ -165,7 +165,7 @@ export async function UpdateProductData(
       },
     }
   }
-  await connectToDatabase
+  await connectToDatabase()
   
   try {
     const parsed = FormSchema.safeParse({
@@ -195,7 +195,7 @@ export async function UpdateProductData(
       imageUrls,
     } = parsed.data
 
-    await connectToDatabase
+    await connectToDatabase()
 
     const categoryExists = await Category.findById(categoryId)
     if (!categoryExists) {
@@ -254,7 +254,7 @@ export async function UpdateProductData(
 }
 ///////delete//////
 export async function deleteProduct(id: string): Promise<void> {
-  await connectToDatabase
+  await connectToDatabase()
   const deleted = await Product.findByIdAndDelete(id)
   if (!deleted) {
     console.error('Product not found')

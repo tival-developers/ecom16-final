@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     )
   }
 
-  await connectToDatabase
+  await connectToDatabase()
 
   try {
     // ✅ get MongoDB user ObjectId

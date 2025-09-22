@@ -12,7 +12,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase;
+  await connectToDatabase();
   const order = await Order.findByIdAndDelete(id)
   if (!order) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })

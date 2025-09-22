@@ -11,7 +11,7 @@ export async function GET(
 ) {
   const { productId } = await context.params; // 👈 must await
 
-  await connectToDatabase;
+  await connectToDatabase();
   const session = await auth();
 
   if (!session?.user?.email) {

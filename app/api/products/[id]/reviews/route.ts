@@ -9,7 +9,7 @@ export async function GET(
     context: { params: Promise<{ id: string }> }
   ) {
     const { id } = await context.params // ✅ Await params
-  await connectToDatabase;
+  await connectToDatabase();
 
   try {
     const reviews = await Review.find({ productId: id })

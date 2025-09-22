@@ -10,7 +10,7 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    await connectToDatabase;
+    await connectToDatabase();
     const body = await req.json();
     const {  email, currentPassword, newPassword, } = body;
 

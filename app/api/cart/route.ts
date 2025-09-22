@@ -16,7 +16,7 @@ type CartItemInput = {
 }
 
 export async function POST(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
 
   const { items } = await req.json()
   const session = await auth()
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
 
   const session = await auth()
   const userId = session?.user?.id
@@ -55,7 +55,7 @@ export async function GET() {
 }
 
 export async function DELETE() {
-  await connectToDatabase
+  await connectToDatabase()
 
   const session = await auth()
   const userId = session?.user?.id

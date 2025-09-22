@@ -5,7 +5,7 @@ import Notification from "@/lib/db/models/notification"
 
 
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
   const notifications = await Notification.find().sort({ date: -1 }).lean()
   return NextResponse.json(notifications)
 }

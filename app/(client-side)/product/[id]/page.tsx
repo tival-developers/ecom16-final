@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 // or: export const revalidate = 60;
 
 export async function generateStaticParams() {
-  await connectToDatabase
+  await connectToDatabase()
   const products = await Product.find().lean()
 
   return products.map((product) => ({
@@ -19,7 +19,7 @@ export async function generateStaticParams() {
 export default async function ProductPage(context: {params: Promise<{ id: string }>}) {
   const { id } = await context.params // ✅ Await params
 
-  await connectToDatabase
+  await connectToDatabase()
 
   const productData = await Product.findById(id).populate('category').lean()
 

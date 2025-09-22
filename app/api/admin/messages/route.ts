@@ -5,7 +5,7 @@ import HelpRequest from "@/lib/db/models/contact"
 
 export async function GET() {
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     // Fetch all help requests, newest first
     const helpRequests = await HelpRequest.find().sort({ date: -1 }).lean()

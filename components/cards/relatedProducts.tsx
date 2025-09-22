@@ -35,7 +35,7 @@ interface Props {
 }
 
 export default async function RelatedProducts({ categoryId }: Props) {
-  await connectToDatabase
+  await connectToDatabase()
 
   const ProductModel = mongoose.models.Product || Product
   const CategoryModel = mongoose.models.Category || Category

@@ -4,7 +4,7 @@ import { Order } from '@/lib/db/models/order'
 import Product from '@/lib/db/models/product.model'
 
 export async function getHomePageProducts() {
-  await connectToDatabase
+  await connectToDatabase()
 
   try {
     const bestSelling = await Order.aggregate([

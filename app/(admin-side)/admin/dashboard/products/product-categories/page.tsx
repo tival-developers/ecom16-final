@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  await connectToDatabase
+  await connectToDatabase()
   const CategoryModel = mongoose.models.Category || Category
   const categories = await CategoryModel.find().lean()
 

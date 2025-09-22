@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 
 export default async function ProductsDashboard() {
-  await connectToDatabase
+  await connectToDatabase()
    const category = mongoose.models.Category || Category
    console.log(category)
   const products = await Product.find().populate('category').lean()

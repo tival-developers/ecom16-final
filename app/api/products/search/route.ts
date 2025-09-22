@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     // Search products by name (case-insensitive, partial match)
     const products = await Product.find({

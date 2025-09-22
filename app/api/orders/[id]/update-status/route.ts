@@ -102,7 +102,7 @@ export async function PUT(req: Request, context: {params: Promise<{ id: string }
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  await connectToDatabase
+  await connectToDatabase()
 
   if (!id) {
     return NextResponse.json({ error: 'Order ID is required' }, { status: 400 })

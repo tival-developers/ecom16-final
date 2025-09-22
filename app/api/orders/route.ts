@@ -16,7 +16,7 @@ export async function GET() {
   }
 
   // 2) Connect to your MongoDB (Mongoose)
-  await connectToDatabase
+  await connectToDatabase()
 
   try {
     

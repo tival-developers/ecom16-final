@@ -66,7 +66,7 @@ export type AdminResult =
 
 ///get Admins////
 export async function getAdmins() {
-  await connectToDatabase
+  await connectToDatabase()
   return await Admin.find().sort({ createdAt: -1 }).lean()
 }
 
@@ -93,7 +93,7 @@ export async function createAdmin(formData: FormData): Promise<AdminResult> {
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
 
   // ✅ Only allow admins
   const user = await User.findOne({ email: session.user.email })
@@ -190,7 +190,7 @@ export async function updateAdmin(formData: FormData): Promise<AdminResult> {
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
 
   const parsed = UpdateSchema.safeParse({
     id: formData.get('id'),
@@ -246,7 +246,7 @@ export async function updateAdmin(formData: FormData): Promise<AdminResult> {
 
 export const deleteAdmin = async (id: string): Promise<void> => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     await Admin.findByIdAndDelete(id)
     revalidatePath('/admin/dashboard/admins')

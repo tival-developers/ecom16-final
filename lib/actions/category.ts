@@ -12,7 +12,7 @@ import { auth } from '@/auth'
 //get all categories
 export const getAllCategories = async () => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
     const categories = await Category.find()
       .sort({ name: 1 })
       .lean<CategoryType[]>()
@@ -32,7 +32,7 @@ export const getAllCategories = async () => {
 //getCategoryById
 export const getCategoryById = async (id: string) => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     const category = await Category.findById(id).lean<CategoryType>()
     if (!category) return null
@@ -70,7 +70,7 @@ export const createCategory = async (formData: FormData) => {
       }
     }
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     const rawName = formData.get('name') as string
     const name = capitalizeName(rawName) // capitalize
@@ -132,7 +132,7 @@ export const createCategory = async (formData: FormData) => {
 export const updateCategory = async (id: string, formData: FormData): Promise<void> => {
   
   try {
-    await connectToDatabase
+    await connectToDatabase()
     const rawName = formData.get("name") as string
     const name = capitalizeName(rawName)
     const slug = formData.get("slug") as string
@@ -169,7 +169,7 @@ export const updateCategory = async (id: string, formData: FormData): Promise<vo
 //delete category
 export const deleteCategory = async (id: string) => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
     await Category.findByIdAndDelete(id)
     revalidatePath('/categories')
     revalidatePath('/admin/dashboard/products/product-categories')

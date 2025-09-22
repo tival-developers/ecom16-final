@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 // or: export const revalidate = 60;
 
 export async function generateStaticParams() {
-  await connectToDatabase
+  await connectToDatabase()
   const categories = await Category.find({}, '_id').lean()
 
   return categories.map((category) => ({

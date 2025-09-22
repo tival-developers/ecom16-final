@@ -9,7 +9,7 @@ export type ChartData = {
 
 
 export async function getOverviewData(): Promise<ChartData[]> {
-  await connectToDatabase // ✅ call it
+  await connectToDatabase() // ✅ call it
 
   const salesData = await Order.aggregate<{
     _id: { day: number; month: number; year: number }

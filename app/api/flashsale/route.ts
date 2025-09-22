@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
   const flashsale = await FlashSale.find().sort({ createdAt: -1 })
   const formatted = flashsale.map((item) => ({
     ...item.toObject(),
@@ -15,7 +15,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
   const data = await req.json()
   const {
     productId,
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE() {
-  await connectToDatabase
+  await connectToDatabase()
   // Clear all
   await FlashSale.deleteMany({})
   return NextResponse.json(

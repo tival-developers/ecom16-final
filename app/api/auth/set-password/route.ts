@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   const { email, password } = await req.json();
-  await connectToDatabase;
+  await connectToDatabase()
   const hashed = await bcrypt.hash(password, 10);
   await User.updateOne({ email }, { $set: { password: hashed } });
   return new Response("OK", { status: 200 });

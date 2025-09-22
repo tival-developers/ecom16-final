@@ -1,7 +1,7 @@
 import { Order } from '../db/models/order'
 import connectToDatabase from '@/lib/db/dbConnection'
 export async function fetchCardsData() {
-  await connectToDatabase
+  await connectToDatabase()
 
   // Total Revenue & Total Sales
   const orders = await Order.find().lean()

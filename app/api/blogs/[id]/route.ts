@@ -6,7 +6,7 @@ import Blog from "@/lib/db/models/blog";
 // ✅ Get a single blog
 export async function GET(_: Request, context: {params: Promise<{ id: string }>}) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase;
+  await connectToDatabase();
 
   try {
     const blog = await Blog.findById(id);
@@ -23,7 +23,7 @@ export async function GET(_: Request, context: {params: Promise<{ id: string }>}
 // ✅ Update a blog
 export async function PUT(req: Request, context: {params: Promise<{ id: string }>}) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase;
+  await connectToDatabase();
 
   try {
     const data = await req.json();
@@ -41,7 +41,7 @@ export async function PUT(req: Request, context: {params: Promise<{ id: string }
 // ✅ Delete a blog
 export async function DELETE(_: Request, context: {params: Promise<{ id: string }>}) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase;
+  await connectToDatabase();
 
   try {
     const blog = await Blog.findByIdAndDelete(id);

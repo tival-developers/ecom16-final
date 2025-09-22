@@ -23,7 +23,7 @@ type OrderType = {
 }
 
 export async function getAnalytics(dateRange?: DateRangeInput) {
-  await connectToDatabase
+  await connectToDatabase()
 
   const filter: Record<string, unknown> = {}
   if (dateRange?.from && dateRange?.to) {

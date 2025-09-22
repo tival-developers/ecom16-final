@@ -11,7 +11,7 @@ export async function GET(
 ) {
   const { id } = await context.params // ✅ Await params
 
-  await connectToDatabase
+  await connectToDatabase()
   const review = await Review.findById(id)
     .populate('customerId', 'name email')
     .populate('productId', 'name')
@@ -61,7 +61,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const session = await auth()
 
   if (!session?.user) {
@@ -89,7 +89,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const session = await auth()
 
   if (!session?.user) {

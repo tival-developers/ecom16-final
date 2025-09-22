@@ -6,7 +6,7 @@ import { Order } from '../db/models/order'
 
 
 export async function getRecentSales(limit = 5) {
-    await connectToDatabase
+    await connectToDatabase()
   
     const orders = await Order.find()
       .sort({ createdAt: -1 })
@@ -22,7 +22,7 @@ export async function getRecentSales(limit = 5) {
   }
   
   export async function getAllSales() {
-    await connectToDatabase; // ✅ Call the function
+    await connectToDatabase(); // ✅ Call the function
   
     const totalOrders = await Order.countDocuments(); // ✅ Get total number of orders
   
@@ -30,7 +30,7 @@ export async function getRecentSales(limit = 5) {
   }
   
   export async function getTotalRevenue() {
-    await connectToDatabase; // ✅ Call the function
+    await connectToDatabase(); // ✅ Call the function
   
     const totalOrders = await Order.countDocuments(); // ✅ Get total number of orders
   
@@ -38,7 +38,7 @@ export async function getRecentSales(limit = 5) {
   }
 
   export async function getSalesChartData() {
-    await connectToDatabase
+    await connectToDatabase()
   
     const orders = await Order.find()
       .sort({ createdAt: -1 })
@@ -57,7 +57,7 @@ export async function getRecentSales(limit = 5) {
 
 
 export async function getSalesByCategory() {
-  await connectToDatabase;
+  await connectToDatabase();
 
   const result = await Order.aggregate([
     // Break down items array
@@ -132,7 +132,7 @@ console.log(result)
 
 // Fetch sales aggregated by category & date
 export async function getSalesByCategories() {
-  await connectToDatabase
+  await connectToDatabase()
 
   const results = await Order.aggregate([
     

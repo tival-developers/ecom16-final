@@ -30,7 +30,7 @@ const providers: Provider[] = [
 
         // ✅ Check for superadmin
         if (email === SUPERADMIN_EMAIL && password === SUPERADMIN_PASSWORD) {
-          await connectToDatabase
+          await connectToDatabase()
 
           // Check if superadmin already exists
           let superadmin = await User.findOne({ email: SUPERADMIN_EMAIL })
@@ -68,7 +68,7 @@ const providers: Provider[] = [
         }
 
         // ✅ Normal login flow
-        await connectToDatabase
+        await connectToDatabase()
 
         const user = await User.findOne({ email })
         if (!user) {
@@ -178,7 +178,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   events: {
     async signIn({ user, account }) {
-      await connectToDatabase
+      await connectToDatabase()
       console.log('EVENT SIGNIN FIRED', { user, account })
 
       let existingUser = await User.findOne({ email: user.email })

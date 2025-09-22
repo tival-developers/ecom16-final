@@ -5,7 +5,7 @@ import Blog from '@/lib/db/models/blog'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
   const blogs = await Blog.find()
     .select('title content imageurl status tags updatedAt, author')
     .lean()
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
   try {
-    await connectToDatabase
+    await connectToDatabase()
     const data = await req.json()
 
     // 👇 override the author with logged-in user

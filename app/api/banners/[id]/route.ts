@@ -8,7 +8,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const banner = await Banner.findById(id)
   return NextResponse.json(banner)
 }
@@ -19,7 +19,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   await Banner.findByIdAndDelete(id)
   return NextResponse.json({ success: true })
 }

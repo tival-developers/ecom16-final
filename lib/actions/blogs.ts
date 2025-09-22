@@ -15,7 +15,7 @@ export type BlogResult =
 
 ///get blogs////
 export async function getBlogs() {
-  await connectToDatabase
+  await connectToDatabase()
   return await Blog.find().sort({ createdAt: -1 }).lean()
 }
 
@@ -43,7 +43,7 @@ export async function CreateBlog(formData: FormData): Promise<BlogResult> {
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
   console.log('✅ DB connected')
 
   const user = await User.findOne({ email: session.user.email })
@@ -132,7 +132,7 @@ export async function UpdateBlog(formData: FormData): Promise<BlogResult> {
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
   
   try {
     // validate
@@ -183,7 +183,7 @@ export async function UpdateBlog(formData: FormData): Promise<BlogResult> {
 ////delete blog//////
 export const deleteBlog = async (id: string): Promise<void> => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
     await Blog.findByIdAndDelete(id)
 
     revalidatePath('/admin/dashboard/blogs')

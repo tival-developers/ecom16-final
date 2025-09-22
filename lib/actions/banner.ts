@@ -20,7 +20,7 @@ export type ActionResult =
  * Get all banners
  */
 export async function getBanners() {
-  await connectToDatabase
+  await connectToDatabase()
   return await Banner.find().populate('productId').lean()
 }
 
@@ -28,7 +28,7 @@ export async function getBanners() {
  * Get single banner
  */
 export async function getBannerById(id: string) {
-  await connectToDatabase
+  await connectToDatabase()
   return await Banner.findById(id).populate('productId').lean()
 }
 
@@ -55,7 +55,7 @@ export async function createBanner(formData: FormData): Promise<ActionResult> {
       },
     }
   }
-    await connectToDatabase
+    await connectToDatabase()
 
     const user = await User.findOne({ email: session.user.email })
   if (!user) {
@@ -143,7 +143,7 @@ export async function updateBanner(formData: FormData): Promise<ActionResult> {
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
   
 
     const parsed = BannerUpdateSchemaZ.safeParse({
@@ -185,7 +185,7 @@ export async function updateBanner(formData: FormData): Promise<ActionResult> {
  */
 export const deleteBanner = async (id: string): Promise<void> => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
     await Banner.findByIdAndDelete(id)
 
     //revalidatePath('/admin/dashboard/banners')

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 
 export default async function CustomersTable() {
-  await connectToDatabase
+  await connectToDatabase()
   const UserModel = mongoose.models.User || User
   const getUsers = await UserModel.find()
   const users = JSON.parse(JSON.stringify(getUsers))

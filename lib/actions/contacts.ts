@@ -45,7 +45,7 @@ export async function ContactUs(formData: FormData): Promise<ContactFormState> {
     }
   }
 
-  await connectToDatabase
+  await connectToDatabase()
   const user = await User.findOne({ email: session.user.email })
   if (!user) {
     return { errors: { _form: ['User not found'] } }

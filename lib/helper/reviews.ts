@@ -9,7 +9,7 @@ export async function canUserReviewProduct(
   productId: string
 ): Promise<boolean> {
   // 1) Connect DB
-  await connectToDatabase
+  await connectToDatabase()
 
   // 2) Find user
   const user = await User.findById(userId)

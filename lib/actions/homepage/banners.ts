@@ -7,7 +7,7 @@ import Banner from '@/lib/db/models/Banner.model'
 //get all categories
 export const getAllCategories = async () => {
   try {
-    await connectToDatabase
+    await connectToDatabase()
     const banners = await Banner.find()
       .sort({ title: 1 })
       //.limit(1)

@@ -10,7 +10,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  await connectToDatabase
+  await connectToDatabase()
 
   const shippingAddress = await ShippingAddress.findOne({ customerId: session.user.id }).lean()
 

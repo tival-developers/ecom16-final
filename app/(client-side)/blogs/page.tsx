@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Blogs() {
-  await connectToDatabase
+  await connectToDatabase()
 
   const fetchPosts = await Blog.find().lean()
   const posts = JSON.parse(JSON.stringify(fetchPosts))

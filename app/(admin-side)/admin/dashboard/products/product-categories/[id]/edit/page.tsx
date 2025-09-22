@@ -15,7 +15,7 @@ export default async function Page(context: {
 }) {
   const { id } = await context.params // ✅ Await params
 
-  await connectToDatabase
+  await connectToDatabase()
   const fetchCategory = await Category.findById(id).lean<CategoryType>()
   const category = JSON.parse(JSON.stringify(fetchCategory))
 

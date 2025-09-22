@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  await connectToDatabase
+  await connectToDatabase()
   const blogModel = mongoose.models.Blog || Blog
   const blogs = await blogModel.find().lean()
 

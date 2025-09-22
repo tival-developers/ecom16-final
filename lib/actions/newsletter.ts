@@ -21,7 +21,7 @@ export async function AddToNewsletter(formData: FormData) {
   })
 
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     const existingUser = await Newsletter.findOne({ email })
     if (existingUser) {

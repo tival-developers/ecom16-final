@@ -4,7 +4,7 @@ import Promo from '@/lib/db/models/promo'
 import Product from '@/lib/db/models/product.model'
 
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
   const promos = await Promo.find().sort({ createdAt: -1 })
   return NextResponse.json(promos)
 }
@@ -12,7 +12,7 @@ export async function GET() {
 
 
 export async function POST(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
   const data = await req.json()
 
   const {
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE() {
-  await connectToDatabase
+  await connectToDatabase()
   // Clear all
   await Promo.deleteMany({})
   return NextResponse.json(

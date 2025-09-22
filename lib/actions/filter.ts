@@ -15,7 +15,7 @@ export async function getFilteredProducts({
   min?: number
   max?: number
 }): Promise<ProductType[]> {
-  await connectToDatabase // ✅ FIXED: add parentheses to call the function
+  await connectToDatabase() // ✅ FIXED: add parentheses to call the function
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const filter: Record<string, any> = {}

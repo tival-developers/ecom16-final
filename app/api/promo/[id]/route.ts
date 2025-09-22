@@ -8,7 +8,7 @@ import Promo from '@/lib/db/models/promo'
 export async function GET(_: Request, context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const promoProduct = await Promo.findById(id)
   return NextResponse.json(promoProduct)
 }
@@ -18,7 +18,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const body = await req.json()
   const updated = await Promo.findByIdAndUpdate(id, body, {
     new: true,
@@ -31,7 +31,7 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   await Promo.findByIdAndDelete(id)
   return NextResponse.json({ message: 'promo item removed' }, { status: 200 })
 }

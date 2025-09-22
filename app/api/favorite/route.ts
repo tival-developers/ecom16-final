@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server'
 
 
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
 
   // TODO: Replace with real session user ID
   const session = await auth()
@@ -22,7 +22,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
 
   const body = await req.json()
 
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE() {
-  await connectToDatabase
+  await connectToDatabase()
   const session = await auth()
   console.log('Session:', session)
   const userId = session?.user?.id

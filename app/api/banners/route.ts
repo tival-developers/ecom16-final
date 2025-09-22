@@ -5,7 +5,7 @@ import Banner from '@/lib/db/models/Banner.model'
 export const dynamic = 'force-static'
 
 export async function POST(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
   const data = await req.json()
   const {
     title,
@@ -50,14 +50,14 @@ export async function POST(req: NextRequest) {
 }
 ///get
 export async function GET() {
-  await connectToDatabase
+  await connectToDatabase()
   const banners = await Banner.find().sort({ createdAt: -1 })
   return NextResponse.json(banners)
 }
 
 //delete
 export async function DELETE(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
   const { id } = await req.json()
 
   try {

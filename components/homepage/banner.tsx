@@ -18,7 +18,7 @@ export type BannerType = {
   bannerType: string
 }
 const HeroSection = async () => {
-  await connectToDatabase
+  await connectToDatabase()
   const fetchBanner = await Banner.find()
     .select('bannerType title subtitle buttonText price')
     .sort({ createdAt: -1 })

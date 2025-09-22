@@ -48,7 +48,7 @@ export async function userCreate(formData: FormData) {
   }
 
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     const existingUser = await User.findOne({ email })
     if (existingUser) {
@@ -89,7 +89,7 @@ export async function updateUser(id: string, formData: FormData) {
     const email = formData.get('email')?.toString()
     const password = formData.get('password')?.toString()
 
-    await connectToDatabase
+    await connectToDatabase()
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: Record<string, any> = {}
     if (name) updateData.name = name
@@ -116,7 +116,7 @@ export async function updateUser(id: string, formData: FormData) {
 // =========================
 
 export async function deleteUser(id: string): Promise<void> {
-  await connectToDatabase
+  await connectToDatabase()
   const deleted = await User.findByIdAndDelete(id)
   if (!deleted) {
     console.error('Failed to delete user')

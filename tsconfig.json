@@ -39,7 +39,7 @@
     "components1/pageComponents/hompage/titleBasedColumns.jsx",
     "components1/card.tsx",
     "app/otp",
-    "lib/db/dbConnection.js",
+    "lib/db/dbConnection.ts",
     "components1/forms/addProductForm.jsx",
     "components1/pageComponents/login-form.jsx",
     "components1/pageComponents/signupform.jsx",

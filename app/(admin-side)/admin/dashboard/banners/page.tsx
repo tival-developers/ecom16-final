@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  await connectToDatabase
+  await connectToDatabase()
   const BannerModel = mongoose.models.Banner || Banner
   const Banners = await BannerModel.find().lean()
 

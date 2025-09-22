@@ -8,7 +8,7 @@ export async function GET(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const flashsaleProduct = await FlashSale.findById(id)
   return NextResponse.json(flashsaleProduct)
 }
@@ -18,7 +18,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
   const body = await req.json()
   const updated = await FlashSale.findByIdAndUpdate(id, body, {
     new: true,

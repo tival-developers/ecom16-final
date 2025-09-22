@@ -40,7 +40,7 @@ function FlashsalePrice({
 }
 
 const FlashsaleHomepage = async () => {
-  await connectToDatabase
+  await connectToDatabase()
   const fetchFlashsale = await FlashSale.find()
     .sort({ createdAt: -1 })
     .limit(3)

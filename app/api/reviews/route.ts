@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Feedback too short' }, { status: 400 })
   }
 
-  await connectToDatabase
+  await connectToDatabase()
 
   try {
     // 1) Get the user
@@ -95,7 +95,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  await connectToDatabase
+  await connectToDatabase()
 
   try {
     const { searchParams } = new URL(req.url)

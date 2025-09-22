@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 // or: export const revalidate = 60;
 
 export async function generateStaticParams() {
-  await connectToDatabase
+  await connectToDatabase()
   const orders = await Order.find({}, '_id').lean()
 
   return orders.map((order) => ({
@@ -24,7 +24,7 @@ export async function generateStaticParams() {
 
 export default async function OrderPage(context: {params: Promise<{ id: string }>}) {
   const { id } = await context.params // ✅ Await params
-  await connectToDatabase
+  await connectToDatabase()
 
   const orderData = await Order.findById(id).lean()
 

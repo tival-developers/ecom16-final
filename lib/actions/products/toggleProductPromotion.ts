@@ -15,7 +15,7 @@ export async function toggleProductPromotion(
   productId: string,
   updates: { isTrending?: boolean; isFeatured?: boolean }
 ): Promise<TogglePromotionResponse> {
-  await connectToDatabase
+  await connectToDatabase()
 
   try {
     await Product.findByIdAndUpdate(productId, updates, { new: true })

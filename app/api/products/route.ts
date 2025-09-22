@@ -6,7 +6,7 @@ import { FormSchemaProduct } from '@/lib/zod/schemasValidations'
 
 
 export async function POST(req: NextRequest) {
-  await connectToDatabase
+  await connectToDatabase()
   
   const body = await req.json()
   const parse = FormSchemaProduct.safeParse(body)

@@ -8,7 +8,7 @@ import { ProductType } from '../types/product'
 export async function getCategoriesWithProducts(): Promise<
   CategoryWithProducts[]
 > {
-  await connectToDatabase
+  await connectToDatabase()
   const categories = await Category.find()
     .sort({ name: 1 })
     .lean<CategoryType[]>()

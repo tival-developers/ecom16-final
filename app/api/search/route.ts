@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    await connectToDatabase
+    await connectToDatabase()
 
     const regex = new RegExp(search, 'i')
 

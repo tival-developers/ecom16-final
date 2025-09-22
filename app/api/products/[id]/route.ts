@@ -16,7 +16,7 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
     }
 
-    await connectToDatabase// ✅ must call
+    await connectToDatabase() // ✅ must call
 
     const product = await Product.findById(id)
       .select('_id name originalPrice imageUrls stock variations')
@@ -55,7 +55,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
     }
 
-    await connectToDatabase
+    await connectToDatabase()
     const body = await req.json()
 
     const updated = await Product.findByIdAndUpdate(id, body, { new: true })
@@ -86,7 +86,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
     }
 
-    await connectToDatabase
+    await connectToDatabase()
     const deleted = await Product.findByIdAndDelete(id)
 
     if (!deleted) {
