@@ -3,12 +3,11 @@ import connectToDatabase from '@/lib/db/dbConnection'
 import { Order } from '@/lib/db/models/order'
 import Product from '@/lib/db/models/product.model'
 
-
 export async function getHomePageProducts() {
   await connectToDatabase
 
   try {
-    const bestsellingRaw = await Order.aggregate([
+    const bestSelling = await Order.aggregate([
       { $unwind: '$items' },
       {
         $group: {
@@ -29,22 +28,26 @@ export async function getHomePageProducts() {
       { $unwind: '$product' },
       { $project: { _id: 0, totalSold: 1, product: 1 } },
     ])
-
+    //console.log("bestttttttttt", bestsellingRaw)
     const recentRaw = await Product.find()
       .sort({ createdAt: -1 })
-      .limit(5)
+      .limit(6)
       .lean()
     const trendingRaw = await Product.find({ isTrending: true })
       .sort({ createdAt: -1 })
-      .limit(4)
+      .limit(6)
       .lean()
     const featuredRaw = await Product.find({ isFeatured: true })
       .sort({ createdAt: -1 })
-      .limit(5)
+      .limit(6)
       .lean()
 
     return {
-      bestSelling: JSON.parse(JSON.stringify(bestsellingRaw)),
+      bestSelling: bestSelling.map((b) => ({
+        ...b,
+        product: { ...b.product, _id: b.product._id.toString() },
+      })),
+    
       recent: JSON.parse(JSON.stringify(recentRaw)),
       trending: JSON.parse(JSON.stringify(trendingRaw)),
       featured: JSON.parse(JSON.stringify(featuredRaw)),

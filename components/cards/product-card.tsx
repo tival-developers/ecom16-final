@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { Card, CardContent } from '../ui/card'
 import AddToFavoriteButton from '../ux/favAdd'
 import { Badge } from '../ui/badge'
-import { Button } from '../ui/button'
 import AddToCartButton from '../ux/cartadd'
 import { ProductPrice } from '@/lib/utils/product-price'
 import Image from 'next/image'
@@ -23,21 +22,17 @@ export type ProductType = {
 
 export default function ProductCard({ product }: { product: ProductType }) {
   return (
-    <Card className='hover:shadow-lg transition-shadow  overflow-hidden'>
+    <Card className='hover:shadow-lg transition-shadow rounded-2xl overflow-hidden'>
       <CardContent className='p-0'>
-        <div className='aspect-[4/3] bg-muted/30'>
-          <Link
-            href={`/product/${product._id}`}
-            className='relative aspect-square w-full mb-2 overflow-hidden '
-          >
-            <div className='relative w-full aspect-[3/3]'>
-              <Image
-                src={product.imageUrls?.[0] || '/placeholder.jpg'}
-                alt={product.name}
-                fill
-                className=' object-contain'
-              />
-            </div>
+        <div className=' bg-muted/30'>
+          <Link href={`/product/${product._id}`}>
+            <Image
+              src={product.imageUrls?.[0] || '/placeholder.jpg'}
+              alt={product.name}
+              width={1000}
+              height={800}
+              className='h-full w-full object-cover'
+            />
           </Link>
         </div>
         <div className='p-4 space-y-1.5 relative'>
@@ -53,20 +48,12 @@ export default function ProductCard({ product }: { product: ProductType }) {
               {product.brand}
             </Badge>
           </div>
-
-          <p className='text-muted-foreground text-sm'>
-            Stock: {product.stock}
-          </p>
           <ProductPrice
             originalPrice={product.originalPrice}
             newPrice={product.newPrice}
           />
 
           <AddToCartButton product={product} />
-
-          <Button className='rounded-xl w-full mt-2.5 '>
-            <Link href={`/product/${product._id}`}>View Product </Link>
-          </Button>
         </div>
       </CardContent>
     </Card>

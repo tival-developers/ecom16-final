@@ -45,8 +45,10 @@ const FlashsaleHomepage = async () => {
     .sort({ createdAt: -1 })
     .limit(3)
     .lean()
+  console.log('ggggggggggggg', fetchFlashsale)
 
   const flashsales: FlashsaleType[] = JSON.parse(JSON.stringify(fetchFlashsale))
+  console.log('uuuuuuuuuuu', flashsales)
 
   if (flashsales.length === 0) return null // Hide section if empty
 
@@ -54,9 +56,7 @@ const FlashsaleHomepage = async () => {
     <section className='max-w-7xl mx-auto px-4 pb-12'>
       <div className='flex items-center justify-between mb-4'>
         <h2 className='text-xl md:text-2xl font-bold'>Deals Of The Day</h2>
-        <Button variant='ghost' className='rounded-xl'>
-          View all products
-        </Button>
+        
       </div>
       <div className='grid md:grid-cols-3 gap-5'>
         {flashsales.map((d: FlashsaleType) => (
@@ -64,14 +64,13 @@ const FlashsaleHomepage = async () => {
             <div className='grid grid-cols-3 gap-0'>
               <div className='col-span-1 bg-muted/30 p-3 flex items-center justify-center'>
                 <Link href={`/product/${d._id}`}>
-                  <div className='relative w-32 h-28 aspect-square'>
-                    <Image
-                      src={d.imageUrls || '/placeholder.jpg'}
-                      alt={d.name}
-                      fill
-                      className='object-cover rounded-t-2xl'
-                    />
-                  </div>
+                  <Image
+                    src={d.imageUrls?.[0] || '/placeholder.jpg'}
+                    alt={d.name}
+                    height={780}
+                    width={1000}
+                    className='className="relative h-28 w-full object-cover rounded-xl'
+                  />
                 </Link>
               </div>
               <div className='col-span-2 p-4 space-y-2'>

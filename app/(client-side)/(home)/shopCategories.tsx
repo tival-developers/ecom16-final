@@ -64,14 +64,17 @@ export default function ProductShowcase({ categoriesWithProducts }: Props) {
       </div>
       {/* View More Link */}
 
-      <div className='text-center my-8'>
-        <Link
-          href={`/categories/${selectedCategory.toLowerCase()}`}
-          className='text-yellow-600 font-medium hover:underline'
-        >
-          View more {' '}
-          {selectedCategory === 'All' ? 'products' : selectedCategory}
-        </Link>
+      <div className='flex items-center justify-between mt-8 mb-1.5'>
+        <div className=''></div>
+        <Button variant='ghost' className='rounded-xl hover:bg-white'>
+          <Link
+            href={`/categories/${selectedCategory.toLowerCase()}`}
+           
+          >
+            View more{' '}
+            {selectedCategory === 'All' ? 'products' : selectedCategory}
+          </Link>
+        </Button>
       </div>
       {/* Products Grid */}
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 border-2 p-6 rounded-lg'>

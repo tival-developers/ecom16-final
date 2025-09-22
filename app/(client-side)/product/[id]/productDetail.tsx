@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Card, CardContent } from '@/components/ui/card'
 import ReviewButton from '@/components/ux/addReview'
 import FavAddButton from '@/components/ux/favAdd'
 import { ProductPrice } from '@/lib/utils/product-price'
@@ -32,20 +31,9 @@ export default function ProductDetail({ product }: { product: Product }) {
     <div className='min-h-screen bg-yellow-50 text-gray-900 p-4 md:p-8'>
       <div className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8'>
         {/* Product Image */}
-        <div>
-          <Card className='flex justify-center items-center p-1.5 mb-2'>
-            <CardContent>
-              <Image
-                src={product.imageUrls[currentImage]}
-                alt={product.name}
-                width={600}
-                height={500}
-                className='rounded-xl object-contain'
-              />
-            </CardContent>
-          </Card>
-          {/* Thumbnails */}
-          <div className='flex gap-2 pb-2 w-1/3'>
+        <div className='block md:flex gap-2'>
+          {/* Thumbnails pc*/}
+          <div className='hidden md:block gap-2  w-1/4'>
             {product.imageUrls.map((src, idx) => (
               <button
                 key={idx}
@@ -56,12 +44,47 @@ export default function ProductDetail({ product }: { product: Product }) {
                     : 'border-transparent hover:border-yellow-300'
                 }`}
               >
-                <div className='relative w-[40px] h-[40px] md:w-[80px] md:h-[80px] rounded'>
+                <div className='relative w-16 h-16'>
                   <Image
                     src={src}
                     alt={`Thumbnail ${idx}`}
-                    fill
-                    className='object-contain rounded'
+                    width={1000}
+                    height={800}
+                    className='h-full w-full object-cover rounded-lg'
+                  />
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className='w-[300px] md:w-[500px]  mb-1'>
+            <Image
+              src={product.imageUrls[currentImage]}
+              alt={product.name}
+              width={1000}
+              height={800}
+              className='h-full w-full object-cover rounded-xl'
+            />
+          </div>
+
+          {/* Thumbnails mobile*/}
+          <div className='flex gap-2  w-1/4 md:hidden'>
+            {product.imageUrls.map((src, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentImage(idx)}
+                className={`border-2 p-1.5 rounded ${
+                  idx === currentImage
+                    ? 'border-yellow-500 ring-2 ring-yellow-300'
+                    : 'border-transparent hover:border-yellow-300'
+                }`}
+              >
+                <div className='relative w-10 h-13'>
+                  <Image
+                    src={src}
+                    alt={`Thumbnail ${idx}`}
+                    width={1000}
+                    height={800}
+                    className='h-full w-full object-cover rounded-lg'
                   />
                 </div>
               </button>

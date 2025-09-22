@@ -10,12 +10,15 @@ import FlashsaleHomepage from '@/components/homepage/flashsale'
 import { Truck, ShieldCheck, Gift, Headset } from 'lucide-react'
 import ProductCard from '@/components/cards/product-card'
 import AddToCartButton from '@/components/ux/cartadd'
-import { ProductType } from '@/lib/types/product'
 import DepartmentSection from '@/components/shared/departmentSection'
 import type { Metadata } from 'next'
-
 import { getCategoriesWithProducts } from '@/lib/actions/homepage'
 import ProductShowcase from './shopCategories'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ProductType } from '@/lib/types/product'
+import AddToFavoriteButton from '@/components/ux/favAdd'
+import { Badge } from '@/components/ui/badge'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -47,6 +50,7 @@ function Feature({
 export default async function HomePage() {
   const { bestSelling, recent, trending, featured } =
     await getHomePageProducts()
+  console.log('jjjjjjjiiiiiiiii', getHomePageProducts)
 
   const categoriesWithProducts = await getCategoriesWithProducts()
 
@@ -96,7 +100,7 @@ export default async function HomePage() {
               View all products
             </Button>
           </div>
-          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
             {recent.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -112,23 +116,49 @@ export default async function HomePage() {
         <section className='max-w-7xl mx-auto px-4 py-10'>
           <h2 className='text-2xl font-bold mb-7'>Our Bestselling Products</h2>
           <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
-            {bestSelling.map((item: ProductType) => (
+            {/* {bestSelling.map((product: ProductType) => (
+              <ProductCard key={product._id} product={product} />
+            ))} */}
+            {bestSelling.map((item) => (
               <Card
-                key={item._id}
+                key={item.product._id}
                 className='rounded-xl shadow hover:shadow-lg transition'
               >
-                <CardContent className='p-4 flex flex-col items-center'>
-                  <div className='w-24 h-24 bg-gray-200 rounded mb-3' />
-                  <h3 className='text-sm font-semibold text-center'>
-                    {item.name}
-                  </h3>
-                  <p className='text-red-500 font-bold mt-1'>
+                <CardContent className='flex flex-col items-center'>
+                  <div className='w-46 h-40 rounded mb-3'>
+                    <Link href={`/product/${item.product._id}`}>
+                      <Image
+                        src={item.product.imageUrls?.[0] || '/placeholder.jpg'}
+                        alt={item.product.name}
+                        height={780}
+                        width={1000}
+                        className='className="relative h-38 p-1 w-full object-cover rounded-xl'
+                      />
+                    </Link>
+                  </div>
+                  <div className='p-4 space-y-1.5 relative'>
+                    <div>
+                      <AddToFavoriteButton
+                        variant='icon'
+                        product={item.product}
+                      />
+                    </div>
+
+                    <div className='flex items-center justify-between'>
+                      <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
+                        {item.product.name}
+                      </h3>
+                      <Badge variant={'secondary'} className='uppercase'>
+                        {item.product.brand}
+                      </Badge>
+                    </div>
                     <ProductPrice
-                      originalPrice={item.originalPrice}
-                      newPrice={item.newPrice}
+                      originalPrice={item.product.originalPrice}
+                      newPrice={item.product.newPrice}
                     />
-                  </p>
-                  <AddToCartButton product={item} />
+
+                    <AddToCartButton product={item.product} />
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -140,7 +170,7 @@ export default async function HomePage() {
       {featured.length > 0 && (
         <section className='max-w-7xl mx-auto px-4 py-10'>
           <h2 className='text-xl md:text-2xl font-bold mb-7'>Featured Deals</h2>
-          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
             {featured.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -154,7 +184,7 @@ export default async function HomePage() {
           <h2 className='text-xl md:text-2xl font-bold mb-7'>
             Trending This Week
           </h2>
-          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
             {trending.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
             ))}
