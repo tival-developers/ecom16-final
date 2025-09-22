@@ -270,7 +270,7 @@ export default function UpdateProductForm({product}: {product: ProductType }) {
               <Uploader
                 onChange={(imgs) => {
                   setImages(imgs)
-                  console.log('Parent received images:', imgs)
+                  //console.log('Parent received images:', imgs)
                 }}
               />
               {errors.imageUrls && (

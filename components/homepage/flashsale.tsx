@@ -45,10 +45,10 @@ const FlashsaleHomepage = async () => {
     .sort({ createdAt: -1 })
     .limit(3)
     .lean()
-  console.log('ggggggggggggg', fetchFlashsale)
+  //console.log('ggggggggggggg', fetchFlashsale)
 
   const flashsales: FlashsaleType[] = JSON.parse(JSON.stringify(fetchFlashsale))
-  console.log('uuuuuuuuuuu', flashsales)
+ // console.log('uuuuuuuuuuu', flashsales)
 
   if (flashsales.length === 0) return null // Hide section if empty
 

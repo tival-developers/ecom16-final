@@ -33,7 +33,7 @@ export async function getOverviewData(): Promise<ChartData[]> {
     { $sort: { '_id.year': 1, '_id.month': 1, '_id.day': 1 } },
   ])
 
-  console.log("Sales data raw aggregation:", JSON.stringify(salesData, null, 2))
+//  console.log("Sales data raw aggregation:", JSON.stringify(salesData, null, 2))
 
   const chartData: ChartData[] = salesData.map((sale) => ({
     name: `${sale._id.day}/${sale._id.month}`,

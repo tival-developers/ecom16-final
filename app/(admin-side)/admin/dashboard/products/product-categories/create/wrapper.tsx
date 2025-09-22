@@ -54,7 +54,7 @@ export default function CategoryPage() {
       })
       setErrors(fieldErrors)
       toast.error('Please fix the errors and try again.')
-      console.error('Zod Validation Error:', result.error.format())
+      //console.error('Zod Validation Error:', result.error.format())
 
       return
     }
@@ -76,7 +76,7 @@ export default function CategoryPage() {
     formData.append('slug', slug)
     formData.append('image', image)
     formData.append('variations', JSON.stringify(cleanedVariations))
-    console.log(formData)
+    //console.log(formData)
     const res = await createCategory(formData)
     if (res?.error) {
       toast.error(res.error)
@@ -140,7 +140,7 @@ export default function CategoryPage() {
             <Uploader
               onChange={(imgs) => {
                 setImages(imgs)
-                console.log('Parent received images:', imgs)
+                //console.log('Parent received images:', imgs)
               }}
             />
             {errors.images && (

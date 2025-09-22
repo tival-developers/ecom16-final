@@ -24,7 +24,7 @@ export default async function Blogs() {
 
   const fetchPosts = await Blog.find().lean()
   const posts = JSON.parse(JSON.stringify(fetchPosts))
-  console.log('uuuuuuuuuuuuuuuuuuuuu', posts)
+ // console.log('uuuuuuuuuuuuuuuuuuuuu', posts)
 
   if (posts.length === 0) {
     return (

@@ -4,7 +4,7 @@ import { getSalesByCategories } from "@/lib/actions/Sales"
 
 const ChartAnalytic = async () => {
   const chartData = await getSalesByCategories()
-  console.log("Chart :", chartData)
+ // console.log("Chart :", chartData)
 
   return (
     <div>

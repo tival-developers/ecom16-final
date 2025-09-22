@@ -22,7 +22,7 @@ export async function GET(request: Request) {
     })
       .select('name originalPrice imageUrls') // only return needed fields
       .limit(10)
-      console.log("current",products)
+     // console.log("current",products)
 
     // Map _id to string
     const formatted = products.map((p) => ({

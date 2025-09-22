@@ -40,7 +40,7 @@ export default async function BlogPage(context: {
   }
 
   const post = JSON.parse(JSON.stringify(Post))
-  console.log('posts', post)
+ // console.log('posts', post)
 
   return (
     <Card className='max-w-4xl mx-auto p-6 prose border-2 bg-amber-100 '>

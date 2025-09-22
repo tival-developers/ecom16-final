@@ -44,7 +44,7 @@ const providers: Provider[] = [
               provider: 'credentials',
               role: 'superadmin',
             })
-            console.log('🆕 Superadmin created')
+         //   console.log('🆕 Superadmin created')
           }
           // ✅ Also ensure superadmin exists in Admin collection
           let adminRecord = await Admin.findOne({ email: SUPERADMIN_EMAIL })
@@ -55,7 +55,7 @@ const providers: Provider[] = [
               role: 'superadmin',
               password: superadmin.password, // reuse hashed password
             })
-            console.log('🆕 Superadmin created in Admin model')
+           // console.log('🆕 Superadmin created in Admin model')
           }
 
           return {
@@ -89,7 +89,7 @@ const providers: Provider[] = [
         }
       } catch (error) {
         if (error instanceof ZodError) return null
-        console.error('Authorize Error:', error)
+       // console.error('Authorize Error:', error)
         return null
       }
     },
@@ -179,7 +179,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   events: {
     async signIn({ user, account }) {
       await connectToDatabase()
-      console.log('EVENT SIGNIN FIRED', { user, account })
+      //console.log('EVENT SIGNIN FIRED', { user, account })
 
       let existingUser = await User.findOne({ email: user.email })
       if (!existingUser) {
@@ -191,7 +191,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           providerAccountId: account?.providerAccountId,
           role: 'customer',
         })
-        console.log('🆕 New user created:', existingUser)
+        //console.log('🆕 New user created:', existingUser)
       } else {
         await User.updateOne(
           { email: user.email },
@@ -204,7 +204,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
           }
         )
-        console.log('✏️ User updated')
+        //console.log('✏️ User updated')
       }
 
       user.id = existingUser._id.toString()

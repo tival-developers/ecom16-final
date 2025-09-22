@@ -257,7 +257,7 @@ export async function deleteProduct(id: string): Promise<void> {
   await connectToDatabase()
   const deleted = await Product.findByIdAndDelete(id)
   if (!deleted) {
-    console.error('Product not found')
+   // console.error('Product not found')
     return
   }
   revalidatePath('/products')

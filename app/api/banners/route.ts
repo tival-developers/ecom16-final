@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     // Check if Banner already exists
     const bannerExist = await Banner.findOne({ title })
     if (bannerExist) {
-      console.log('banner exist ')
+     //console.log('banner exist ')
       return NextResponse.json(
         { message: 'banner already exists' },
         { status: 409 }

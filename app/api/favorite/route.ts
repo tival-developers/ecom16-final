@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     { $set: { items } },
     { new: true, upsert: true }
   )
-  console.log('Saved cart:', favorite)
+  //console.log('Saved cart:', favorite)
 
   return Response.json({ success: true, items: favorite.items })
 }
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 export async function DELETE() {
   await connectToDatabase()
   const session = await auth()
-  console.log('Session:', session)
+  //console.log('Session:', session)
   const userId = session?.user?.id
 
   await Favorite.findOneAndDelete({ userId })

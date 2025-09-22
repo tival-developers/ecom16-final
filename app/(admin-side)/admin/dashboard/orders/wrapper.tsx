@@ -31,7 +31,7 @@ export default function OrdersPage() {
         if (Array.isArray(data)) {
           setOrders(data)
         } else {
-          console.error('Unexpected response:', data)
+         //console.error('Unexpected response:', data)
           setOrders([]) // fallback to empty array
         }
       } catch (error) {

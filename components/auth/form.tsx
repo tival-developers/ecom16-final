@@ -49,7 +49,7 @@ export function LoginForm({ className, searchParams, ...props }: FormProps) {
       redirect: false,
       callbackUrl: searchParams.callbackUrl || '/',
     })
-    console.log(res)
+    //console.log(res)
 
     if (res?.error === 'OAUTH_NO_PASSWORD') {
       // Redirect to set-password flow

@@ -77,7 +77,7 @@ export default function CategoryForm({category}:{category:CategoryType}) {
     formData.append('slug', slug)
     formData.append('image', image)
     formData.append('variations', JSON.stringify(cleanedVariations))
-    console.log(formData)
+    //console.log(formData)
     const res = await createCategory(formData)
     if (res?.error) {
       toast.error(res.error)
@@ -139,7 +139,7 @@ export default function CategoryForm({category}:{category:CategoryType}) {
             <Uploader
               onChange={(imgs) => {
                 setImages(imgs)
-                console.log('Parent received images:', imgs)
+                //console.log('Parent received images:', imgs)
               }}
             />
             {errors.images && (

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     const productexist = await FlashSale.findOne({ productId })
 
     if (productexist) {
-      console.log('flashsaleProducts exist bitch')
+      //console.log('flashsaleProducts exist bitch')
       return NextResponse.json(
         { message: 'flashsaleProducts already exists' },
         { status: 409 }

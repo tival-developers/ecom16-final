@@ -10,7 +10,7 @@ export async function GET() {
 
   // 1) Authenticate the user
   const session = await auth()
-  console.log(session)
+ //console.log(session)
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }

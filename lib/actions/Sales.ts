@@ -124,7 +124,7 @@ export async function getSalesByCategory() {
     // Sort by date
     { $sort: { date: 1 } }
   ]);
-console.log(result)
+//console.log(result)
   return result;
 }
 ////////////////////////
@@ -194,71 +194,6 @@ export async function getSalesByCategories() {
     },
     { $sort: { date: 1 } },
   ])
-console.log(results)
+//console.log(results)
   return results
 }
-// export async function getSalesByCategories() {
-//   await connectToDatabase
-
-//   await Order.aggregate([
-//     { $match: { items: { $exists: true, $ne: [] } } }, // ensure items exist
-//     { $unwind: '$items' },
-  
-//     // Lookup product to ensure categoryId is correct
-//     {
-//       $lookup: {
-//         from: 'products',
-//         localField: 'items.productId',
-//         foreignField: '_id',
-//         as: 'product',
-//       },
-//     },
-//     { $unwind: { path: '$product', preserveNullAndEmptyArrays: false } },
-  
-//     // Lookup category
-//     {
-//       $lookup: {
-//         from: 'categories',
-//         localField: 'items.categoryId',
-//         foreignField: '_id',
-//         as: 'category',
-//       },
-//     },
-//     { $unwind: { path: '$category', preserveNullAndEmptyArrays: false } },
-  
-//     // Group by date and category
-//     {
-//       $group: {
-//         _id: {
-//           date: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
-//           category: '$category.name',
-//         },
-//         totalSales: { $sum: '$items.quantity' },
-//       },
-//     },
-  
-//     // Group by date
-//     {
-//       $group: {
-//         _id: '$_id.date',
-//         categories: { $push: { k: '$_id.category', v: '$totalSales' } },
-//       },
-//     },
-  
-//     {
-//       $project: {
-//         _id: 0,
-//         date: '$_id',
-//         sales: { $arrayToObject: '$categories' },
-//       },
-//     },
-  
-//     {
-//       $replaceRoot: { newRoot: { $mergeObjects: ['$sales', { date: '$date' }] } },
-//     },
-  
-//     { $sort: { date: 1 } },
-//   ])
-  
-
-// }

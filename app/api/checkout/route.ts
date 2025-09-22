@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   }
 
   const { customer, paymentMethod, items, total } = await req.json()
-  console.log('Incoming checkout items:', items)
+ // console.log('Incoming checkout items:', items)
 
   if (!customer || typeof customer !== 'object') {
     return NextResponse.json(

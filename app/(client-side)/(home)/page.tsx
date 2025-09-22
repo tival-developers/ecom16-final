@@ -50,7 +50,7 @@ function Feature({
 export default async function HomePage() {
   const { bestSelling, recent, trending, featured } =
     await getHomePageProducts()
-  console.log('jjjjjjjiiiiiiiii', getHomePageProducts)
+  //console.log('jjjjjjjiiiiiiiii', getHomePageProducts)
 
   const categoriesWithProducts = await getCategoriesWithProducts()
 

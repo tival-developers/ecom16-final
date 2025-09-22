@@ -152,7 +152,7 @@ export default function CheckoutPage() {
       })
 
       const data = await res.json()
-      console.log('Checkout responseeeeeeeeeeeeeee:', data)
+     // console.log('Checkout responseeeeeeeeeeeeeee:', data)
 
       if (!res.ok) {
         console.error('Checkout error response:', data)

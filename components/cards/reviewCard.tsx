@@ -29,7 +29,7 @@ export function ReviewSummary({ product }: { product: Product }) {
   useEffect(() => {
     const fetchReviews = async () => {
       const res = await fetch(`/api/products/${product._id}/reviews`)
-      console.log(res, 'res')
+      //console.log(res, 'res')
       const data = await res.json()
       setReviews(data.reviews)
     }

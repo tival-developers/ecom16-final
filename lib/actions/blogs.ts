@@ -23,7 +23,7 @@ export async function getBlogs() {
 // Create Blog Action
 // ----------------
 export async function CreateBlog(formData: FormData): Promise<BlogResult> {
-  console.log('--- CreateBlog called ---')
+ //console.log('--- CreateBlog called ---')
   const session = await auth()
   if (!session?.user?.id) {
     return { errors: { _form: ['Unauthorized'] } }
@@ -44,7 +44,7 @@ export async function CreateBlog(formData: FormData): Promise<BlogResult> {
   }
 
   await connectToDatabase()
-  console.log('✅ DB connected')
+  //console.log('✅ DB connected')
 
   const user = await User.findOne({ email: session.user.email })
   if (!user) {

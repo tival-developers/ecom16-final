@@ -39,8 +39,8 @@ export default function ReviewButton({ productId }: Props) {
           fetch(`/api/products/${productId}`),
           
         ])
-        console.log(eligibilityRes)
-        console.log(productRes)
+        //console.log(eligibilityRes)
+       // console.log(productRes)
 
         if (!eligibilityRes.ok || !productRes.ok) {
           throw new Error('Failed to fetch data')

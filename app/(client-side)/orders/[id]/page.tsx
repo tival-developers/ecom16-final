@@ -37,7 +37,7 @@ export default async function OrderPage(context: {params: Promise<{ id: string }
   }
 
   const order = JSON.parse(JSON.stringify(orderData))
-  console.log("orderdata", order)
+ //console.log("orderdata", order)
 
   return (
     <main className='container mx-auto p-4'>

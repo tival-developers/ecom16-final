@@ -47,7 +47,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
             quantity: 1,
           }
 
-          console.log('Adding to cart:', item)
+          //console.log('Adding to cart:', item)
           addToCart(item)
         }}
       >
