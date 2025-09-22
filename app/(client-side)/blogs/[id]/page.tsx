@@ -21,16 +21,13 @@ export async function generateStaticParams() {
   return posts.map((post) => ({
     id: String(post._id),
   }))
-  
 }
 
-export default async function BlogPage({
-  params,
-}: {
+export default async function BlogPage(context: {
   params: Promise<{ id: string }>
 }) {
   await connectToDatabase
-  const { id } = await params
+  const { id } = await context.params 
 
   const Post = await Blog.findById(id).lean()
 
