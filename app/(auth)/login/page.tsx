@@ -1,5 +1,7 @@
 
-import { LoginForm } from "@/components/auth/form"
+//import { LoginForm } from "@/components/auth/form"
+
+import { LoginForm } from "@/components/auth/loginform"
 
 interface Props {
   searchParams: Promise<{ callbackUrl?: string }>
