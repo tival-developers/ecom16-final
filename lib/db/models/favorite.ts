@@ -1,4 +1,4 @@
-// models/Cart.ts
+// models/
 import mongoose from 'mongoose'
 const FavItemSchema=  new mongoose.Schema({
  
@@ -9,7 +9,6 @@ const FavItemSchema=  new mongoose.Schema({
   },
   name: String,
   originalPrice: Number,
-  quantity: Number,
   imageUrl: String
 }, 
 

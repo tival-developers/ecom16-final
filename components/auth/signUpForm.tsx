@@ -10,6 +10,7 @@ import { userCreate } from '@/lib/actions/users.action'
 import Providers from './providers'
 import { toast } from 'sonner'
 import { useTransition } from 'react'
+import { ChevronLeft } from 'lucide-react'
 interface FormProps extends React.ComponentProps<'div'> {
   searchParams: { callbackUrl: string | undefined }
 }
@@ -71,6 +72,13 @@ export default function SignUpForm({
               <div className='p-6 md:p-8'>
                 <form onSubmit={handleSubmit}>
                   <div className='flex flex-col gap-6'>
+                  <div className='flex justify-start w-full'>
+                    <Button variant={"link"} className='flex gap-1 items-center text-blue-600'>
+                      <ChevronLeft />
+                      <Link href="/"> Return to Homepage</Link>
+                     
+                    </Button>
+                  </div>
                     <div className='flex flex-col items-center text-center'>
                       <h1 className='text-2xl font-bold'>Hello Client</h1>
                       <p className='text-balance text-muted-foreground'>

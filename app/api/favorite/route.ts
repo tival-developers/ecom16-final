@@ -3,8 +3,7 @@ import { auth } from '@/auth'
 import connectToDatabase from '@/lib/db/dbConnection'
 import Favorite from '@/lib/db/models/favorite'
 
-import { NextRequest } from 'next/server'
-
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
   await connectToDatabase()
@@ -40,18 +39,16 @@ export async function POST(req: NextRequest) {
     { $set: { items } },
     { new: true, upsert: true }
   )
-  //console.log('Saved cart:', favorite)
 
   return Response.json({ success: true, items: favorite.items })
 }
 
 export async function DELETE() {
-  await connectToDatabase()
   const session = await auth()
-  //console.log('Session:', session)
-  const userId = session?.user?.id
+  if (!session?.user?.id)
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  await Favorite.findOneAndDelete({ userId })
-
-  return Response.json({ success: true })
+  await connectToDatabase()
+  await Favorite.deleteMany({ userId: session.user.id })
+  return NextResponse.json({ success: true })
 }

@@ -56,11 +56,18 @@ export const useCartStore = create<CartState>()(
           set({ items: [...get().items, { ...item, quantity: 1 }] })
         }
       },
-
+      
       removeFromCart: (_id) => {
         set({ items: get().items.filter((it) => it.productId !== _id) })
       },
+      // removeFromCart: async (_id, session) => {
+      //   const updated = get().items.filter((item) => item.productId !== _id)
+      //   set({ items: updated })
 
+      //   if (session) {
+      //     await fetch(`/api/cart/${_id}`, { method: 'DELETE' })
+      //   }
+      // },
       clearCart: async (session) => {
         set({ items: [] })
         try {

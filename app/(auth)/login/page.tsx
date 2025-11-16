@@ -1,8 +1,13 @@
 
-//import { LoginForm } from "@/components/auth/form"
+
 
 import { LoginForm } from "@/components/auth/loginform"
+import { Metadata } from "next"
 
+export const metadata: Metadata = {
+  title: 'Login',
+  description: 'sign in',
+}
 interface Props {
   searchParams: Promise<{ callbackUrl?: string }>
 }

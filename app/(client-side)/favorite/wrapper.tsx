@@ -1,13 +1,14 @@
 'use client'
 import React, { useEffect } from 'react'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import Price from '@/lib/utils/format'
+import { Card, CardContent } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useFavStore } from '@/stores/favorite'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { ProductPrice } from '@/lib/utils/product-price'
 
 const FavoritePage = () => {
   const { data: session, status } = useSession()
@@ -29,7 +30,7 @@ const FavoritePage = () => {
     <div className='my-5'>
       {/* Header */}
       <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6'>
-        <h2 className='text-2xl font-bold'>Your Favorite Products</h2>
+        <h2 className='text-2xl font-bold text-amber-600'>Your Favorite Products</h2>
         {items.length > 0 && (
           <Button
             onClick={() => {
@@ -44,15 +45,16 @@ const FavoritePage = () => {
       </div>
 
       {/* Favorites Grid */}
-      <div
+      <Card
         className='
           grid
           grid-cols-1
           sm:grid-cols-2
           md:grid-cols-3
-          lg:grid-cols-4
+          lg:grid-cols-5
           gap-6
-          p-4 sm:p-6
+          p-4 sm:p-6 
+          bg-gray-50
         '
       >
         {items.length === 0 ? (
@@ -63,53 +65,56 @@ const FavoritePage = () => {
           items.map((item) => (
             <Card
               key={item._id}
-              className='border border-gray-200 flex flex-col bg-white shadow-sm rounded-lg overflow-hidden h-full'
+              className='hover:shadow-lg transition-shadow rounded-2xl overflow-hidden'
             >
               {/* Product Image */}
-              <CardContent className='p-4 flex flex-col flex-1'>
-                <div className='relative w-full h-48 sm:h-56 mb-4 rounded overflow-hidden group'>
-                  <Link href={`/product/${item._id}`} className='h-full block'>
+              <CardContent className='p-0'>
+                <div className=' bg-muted/30'>
+                  <Link href={`/product/${item._id}`}>
                     <Image
                       src={item.imageUrl || '/placeholder.jpg'}
                       alt={item.name}
-                      fill
-                      priority
-                      className='object-contain p-2 bg-white'
+                      width={1000}
+                      height={800}
+                      className='h-full w-full object-cover'
                     />
                   </Link>
                 </div>
-
-                {/* Product Info */}
-                <p className='text-lg font-semibold mb-2 line-clamp-1'>
-                  {item.name}
-                </p>
-                <p className='text-sm text-gray-600 flex-grow line-clamp-3'>
-                  {item.description}
-                </p>
-              </CardContent>
-
-              {/* Footer with Price & Remove Button */}
-              <CardFooter className='px-4 py-3 mt-auto'>
-                <div className='flex justify-between items-center w-full'>
-                  <p className='text-yellow-500 font-bold text-lg'>
-                    <Price amount={item.originalPrice} />
+                <div className='p-4 space-y-1.5 relative'>
+                  <div className='flex items-center justify-between'>
+                    <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
+                      {item.name}
+                    </h3>
+                    <Badge variant={'secondary'} className='uppercase'>
+                      {item.brand}
+                    </Badge>
+                  </div>
+                  <p className='text-muted-foreground text-sm'>
+                    Stock: {item.stock}
                   </p>
+                  <ProductPrice
+                    originalPrice={item.originalPrice}
+                    newPrice={item.newPrice}
+                  />
+                </div>
+
+                <div className=' p-1.5'>
                   <Button
                     onClick={() => {
                       removeFromFav(item._id)
                       toast.success(`${item.name} removed`)
                     }}
-                    className='text-red-600'
+                    className='text-white bg-red-600 w-full '
                     variant='outline'
                   >
                     Remove
                   </Button>
                 </div>
-              </CardFooter>
+              </CardContent>
             </Card>
           ))
         )}
-      </div>
+      </Card>
     </div>
   )
 }

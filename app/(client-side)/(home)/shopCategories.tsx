@@ -40,7 +40,7 @@ export default function ProductShowcase({ categoriesWithProducts }: Props) {
       {/* Title */}
       <div className='text-center mb-8'>
         <h2 className='text-2xl md:text-3xl font-bold text-gray-800'>
-          Our <span className='text-yellow-600'>Products</span>
+          Our <span className='text-amber-600'>Products</span> Collection
         </h2>
       </div>
 
@@ -64,13 +64,15 @@ export default function ProductShowcase({ categoriesWithProducts }: Props) {
       </div>
       {/* View More Link */}
 
-      <div className='flex items-center justify-between mt-8 mb-1.5'>
-        <div className=''></div>
-        <Button variant='ghost' className='rounded-xl hover:bg-white'>
-          <Link
-            href={`/categories/${selectedCategory.toLowerCase()}`}
-           
-          >
+      <div className='hidden md:flex items-center justify-between mt-8 mb-1.5'>
+        <div className='capitalize text-xl font-medium text-amber-600'>
+          {selectedCategory === 'All' ? '' : selectedCategory}
+        </div>
+        <Button
+          variant='ghost'
+          className='rounded-xl hover:bg-white hover:text-amber-600'
+        >
+          <Link href={`/categories/${selectedCategory.toLowerCase()}`}>
             View more{' '}
             {selectedCategory === 'All' ? 'products' : selectedCategory}
           </Link>
@@ -112,6 +114,18 @@ export default function ProductShowcase({ categoriesWithProducts }: Props) {
             </CardContent>
           </Card>
         ))}
+      </div>
+      <div className='flex items-center justify-between mt-8 mb-1.5 md:hidden'>
+        <div className=''></div>
+        <Button
+          variant='ghost'
+          className='rounded-xl hover:bg-white hover:text-amber-600'
+        >
+          <Link href={`/categories/${selectedCategory.toLowerCase()}`}>
+            View more{' '}
+            {selectedCategory === 'All' ? 'products' : selectedCategory}
+          </Link>
+        </Button>
       </div>
     </section>
   )

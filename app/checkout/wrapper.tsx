@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import PayForm from '@/components/payment/payment-form'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -171,17 +172,17 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className='p-6 max-w-7xl mx-auto bg-red-50 min-h-screen'>
-      <h2 className='text-3xl font-extrabold text-amber-600 mb-10 text-center'>
-        Checkout
+    <main className='p-6 max-w-7xl mx-auto  h-screen'>
+      <h2 className='text-2xl font-extrabold text-amber-600 mb-10 '>
+        Almost There !!
       </h2>
 
-      <div className='grid md:grid-cols-2 gap-10'>
+      <div className='grid md:grid-cols-2 gap-50'>
         {/* LEFT SIDE: FORM */}
-        <div className='space-y-8 bg-white p-6 rounded-xl shadow-md border border-yellow-100'>
+        <div className='space-y-8 bg-white p-6 rounded-xl shadow-md border text-black'>
           {/* Contact Info */}
           <section>
-            <h2 className='text-xl font-semibold text-yellow-700 mb-4'>
+            <h2 className='text-xl font-semibold  mb-4'>
               Contact Information
             </h2>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -210,7 +211,7 @@ export default function CheckoutPage() {
 
           {/* Shipping Info */}
           <section>
-            <h2 className='text-xl font-semibold text-yellow-700 mb-4'>
+            <h2 className='text-xl font-semibold  mb-4'>
               Shipping Information
             </h2>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4 '>
@@ -239,43 +240,39 @@ export default function CheckoutPage() {
 
           {/* Payment Method */}
           <section>
-            <h2 className='text-xl font-semibold text-yellow-700 mb-4'>
+            <h2 className='text-xl font-semibold  mb-4'>
               Payment Method
             </h2>
             <div className='space-y-3'>
-              {['Visa', 'Mpesa', 'Google Pay', 'PayPal'].map((method) => (
+             
                 <label
-                  key={method}
-                  className={`flex items-center gap-2 border rounded-md px-4 py-2 cursor-pointer ${
-                    paymentMethod === method
-                      ? 'bg-yellow-100 border-yellow-500'
-                      : 'bg-white'
-                  }`}
+                  className='flex items-center gap-2 border rounded-md px-4 py-2 cursor-pointer' 
                 >
                   <input
                     type='radio'
                     name='payment'
-                    value={method}
-                    checked={paymentMethod === method}
+                    checked
                     onChange={(e) => setPaymentMethod(e.target.value)}
                   />
-                  <span className='font-medium'>{method}</span>
+                  <span className='font-medium'>Mpesa</span>
                 </label>
-              ))}
+               
+
+            
             </div>
           </section>
         </div>
 
         {/* RIGHT SIDE: ORDER SUMMARY */}
-        <aside className='space-y-4'>
-          <Card className='border border-yellow-200 shadow-lg'>
-            <CardContent className='p-6 bg-yellow-50'>
-              <h2 className='text-xl font-bold text-yellow-700 mb-6'>
+        <aside className='space-y-4 md:w-[400px]'>
+          <Card className='border border-yellow-200 shadow-lg text-white'>
+            <CardContent className='p-6 bg-black'>
+              <h2 className='text-xl font-bold  mb-6'>
                 Order Summary
               </h2>
 
               {items.length === 0 ? (
-                <p className='text-center text-gray-500'>Your cart is empty.</p>
+                <p className='text-center font-medium'>Your cart is empty.</p>
               ) : (
                 items.map((item) => (
                   <div key={item.productId} className='flex gap-4 mb-5'>
@@ -318,29 +315,31 @@ export default function CheckoutPage() {
               )}
 
               <div className='border-t pt-4 space-y-2 text-sm'>
-                <div className='flex justify-between'>
+                <div className='flex justify-between font-medium'>
                   <span>Subtotal</span>
                   <span>
                     <Price amount={subtotal} />
                   </span>
                 </div>
-                <div className='flex justify-between'>
-                  <span>Delivery cost</span>
-                  <span className='text-green-600 '>
-                    <Link href='/contacts'>Contact Seller</Link>
-                  </span>
-                </div>
-                <div className='flex justify-between'>
+                
+                <div className='flex justify-between font-medium'>
                   <span>Discount</span>
-                  <span className='text-red-600'>0.00</span>
+                  <span >
+                    <Price amount={0}/>
+                    </span>
                 </div>
-                <div className='flex justify-between font-bold text-lg text-yellow-800'>
+                <div className='flex justify-between font-medium'>
                   <span>Total to pay</span>
                   <span>
                     <Price amount={total} />
                   </span>
                 </div>
+                <h2 className='text-xl font-bold text-white mb-6 mt-5'>
+                Proceed to pay with Mpesa
+              </h2>
+                <PayForm />
               </div>
+              
 
               <div className='mt-6'>
                 <Button
@@ -348,7 +347,7 @@ export default function CheckoutPage() {
                   onClick={handleOrderSubmit}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Placing Order...' : 'Pay Now'}
+                  {isSubmitting ? 'Placing Order...' : 'Place Order'}
                 </Button>
                 <div className='mt-3 flex items-start gap-2 text-sm text-yellow-800'>
                   <Checkbox

@@ -7,12 +7,15 @@ import { Heart } from 'lucide-react'
 
 interface Props {
   product: {
-    _id: string
+    _id: string // This should uniquely identify the product, e.g. MongoDB _id
     name: string
+    newPrice: number
     originalPrice: number
-    imageUrls: string[]
     description: string
+    imageUrls: string[]
     category: string
+    brand: string
+    stock: number
   }
   variant: string
 }
@@ -25,7 +28,7 @@ export default function AddToFavoriteButton({
   const isFav = useFavStore((state) =>
     state.items.some((item) => item._id === product._id)
   )
-
+  const priceToUse = product.newPrice ?? product.originalPrice
   const handleClick = () => {
     if (isFav) {
       removeFav(product._id)
@@ -35,7 +38,9 @@ export default function AddToFavoriteButton({
         _id: product._id.toString() || product._id,
         name: product.name,
         category: product.category,
-        originalPrice: product.originalPrice,
+        originalPrice: priceToUse,
+        brand: product.brand,
+        stock: product.stock,
         description: product.description,
         imageUrl: product.imageUrls[0],
         quantity: 1,
@@ -51,7 +56,7 @@ export default function AddToFavoriteButton({
           variant='ghost'
           size='icon'
           onClick={handleClick}
-          className='w-4 h-4 -top-5 absolute'
+          className='w-4 h-4 -top-5 absolute hover:bg-red rounded-full'
         >
           <Heart fill={isFav ? 'red' : 'none'} color='red' />
         </Button>
@@ -59,7 +64,7 @@ export default function AddToFavoriteButton({
         <Button
           variant='outline'
           onClick={handleClick}
-          className={` sm:w-auto border-yellow-400 text-yellow-600 hover:bg-yellow-100 ${
+          className={` sm:w-auto border-yellow-400 text-yellow-600 hover:text-gray-800 ${
             isFav ? 'bg-yellow-500 text-white' : 'bg-white'
           }`}
         >

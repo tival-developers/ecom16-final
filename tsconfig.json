@@ -54,7 +54,7 @@
     "../seed.ts",
     "app/(admin-side)/admin/dashboard1/profile/page.tsx",
     "app/api/auth/[...nextauth]/route.ts"
-  ],
+, "app/(client-side)/check", "auth.ts", "auth.tsh"  ],
   "exclude": [
     "node_modules"
   ]

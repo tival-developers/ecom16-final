@@ -18,9 +18,7 @@ export default function CategoryList({
   categories: CategoryType[]
 }) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'all'>(
-    'all'
-  )
+  const [statusFilter, setStatusFilter] = useState<'all'>('all')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 8
 
@@ -29,7 +27,7 @@ export default function CategoryList({
     return categories.filter((category) => {
       if (lowerSearch && !category.name.toLowerCase().includes(lowerSearch))
         return false
-      
+
       return true
     })
   }, [categories, searchQuery])
@@ -107,14 +105,14 @@ export default function CategoryList({
                     key={category._id}
                     className='bg-white shadow-sm flex flex-col'
                   >
-                    <div className='relative w-full aspect-[3/3]'>
-                      <Image
-                        src={category.imageUrl || '/placeholder.jpg'}
-                        alt={category.name}
-                        fill
-                        className=' object-cover'
-                      />
-                    </div>
+                    <Image
+                      src={category.imageUrl || '/placeholder.jpg'}
+                      alt={category.name}
+                      width={1000}
+                      height={800}
+                      className='h-full w-full object-cover'
+                    />
+
                     <CardContent className='px-2 py-1 flex flex-col flex-grow'>
                       <p className='text-base sm:text-lg font-semibold mb-1 line-clamp-1'>
                         {category.name}
@@ -122,7 +120,6 @@ export default function CategoryList({
                       <p className='text-xs sm:text-sm text-gray-500 mb-2 line-clamp-3'>
                         {category.slug}
                       </p>
-                      
                     </CardContent>
                     <div className='px-4 py-1 mb-1'>
                       <div className='flex items-center justify-between mb-2 text-xs sm:text-sm'>
@@ -132,7 +129,6 @@ export default function CategoryList({
                           <DeleteCategory id={category._id} />
                         </div>
                       </div>
-                     
                     </div>
                   </Card>
                 ))}

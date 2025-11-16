@@ -1,4 +1,3 @@
-
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { Session } from 'next-auth'
@@ -7,21 +6,26 @@ type FavItem = {
   _id: string // This should uniquely identify the product, e.g. MongoDB _id
   name: string
   originalPrice: number
+  newPrice?: number
   description: string
   quantity: number
   imageUrl: string
   category: string
+  brand: string
+  stock: number
 }
 
 type FavState = {
   items: FavItem[]
   addToFav: (item: FavItem) => void
   removeFromFav: (_id: string) => void
-  clearFav: (session: Session | null) => Promise<void>;
+  clearFav: (session: Session | null) => Promise<void>
   loadFav: (session: Session | null) => Promise<void>
   saveFav: (session: Session | null) => Promise<void>
   mergeGuestFav: (session: Session) => Promise<void>
 }
+
+
 
 export const useFavStore = create<FavState>()(
   persist(
@@ -31,14 +35,11 @@ export const useFavStore = create<FavState>()(
       addToFav: (item) => {
         const existingItem = get().items.find((i) => i._id === item._id)
         if (existingItem) {
-          set({
-            items: get().items.map((i) =>
-              i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
-            ),
-          })
+          return
         } else {
           set({ items: [...get().items, { ...item, quantity: 1 }] })
         }
+        
       },
 
       removeFromFav: (_id) => {
@@ -47,13 +48,17 @@ export const useFavStore = create<FavState>()(
 
       clearFav: async (session) => {
         set({ items: [] })
-        
+
         if (session) {
           const res = await fetch('/api/favorite', { method: 'DELETE' })
           if (!res.ok) {
             console.error('Failed to clear backend favorites')
           }
         }
+        // clear merge guard so future logins can merge again
+        try {
+          localStorage.removeItem('fav-merged')
+        } catch {}
       },
 
       loadFav: async (session) => {
@@ -80,7 +85,13 @@ export const useFavStore = create<FavState>()(
       },
       mergeGuestFav: async (session) => {
         if (!session) return
-
+        // Idempotency guard: skip if we've already merged this session
+        try {
+          if (localStorage.getItem('fav-merged') === '1') {
+            console.log('[fav] mergeGuestFav: already merged, skipping')
+            return
+          }
+        } catch {}
         const guestItems = get().items
         const res = await fetch('/api/favorite')
         const userItems: FavItem[] = res.ok ? await res.json() : []
@@ -90,8 +101,7 @@ export const useFavStore = create<FavState>()(
         guestItems.forEach((guestItem) => {
           const existing = merged.find((i) => i._id === guestItem._id)
           if (existing) {
-            existing.quantity += guestItem.quantity
-            
+            return
           } else {
             merged.push(guestItem)
           }
@@ -107,7 +117,7 @@ export const useFavStore = create<FavState>()(
 
         localStorage.removeItem('fav-storage')
         console.log('Guest fav merged with account')
-        //toast.success('Guest cart merged with account')
+        
       },
     }),
     {

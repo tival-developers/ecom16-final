@@ -11,6 +11,7 @@ import { cn } from '@/lib/db/essentials/utils'
 import { useState } from 'react'
 import Link from 'next/link'
 import Providers from './providers'
+import { ChevronLeft } from 'lucide-react'
 
 // const providerIcons: Record<string, React.ReactNode> = {
 //   google: <FcGoogle />,
@@ -84,6 +85,13 @@ export function LoginForm({ className, searchParams, ...props }: FormProps) {
             <form onSubmit={handleCredentialLogin}>
               <div className='flex flex-col gap-6'>
                 <div className='flex flex-col items-center text-center'>
+                  <div className='flex justify-start w-full'>
+                    <Button variant={"link"} className='flex gap-1 items-center text-blue-600'>
+                      <ChevronLeft />
+                      <Link href="/"> Return to Homepage</Link>
+                     
+                    </Button>
+                  </div>
                   <h1 className='text-2xl font-bold'>Welcome back</h1>
                   <p className='text-balance text-muted-foreground'>
                     Login to your Stream account

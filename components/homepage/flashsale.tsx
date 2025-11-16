@@ -7,6 +7,7 @@ import CountdownTimer from '@/components/countdown'
 import Price from '@/lib/utils/format'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Flame} from 'lucide-react'
 
 type FlashsaleType = {
   _id: string
@@ -48,28 +49,35 @@ const FlashsaleHomepage = async () => {
   //console.log('ggggggggggggg', fetchFlashsale)
 
   const flashsales: FlashsaleType[] = JSON.parse(JSON.stringify(fetchFlashsale))
- // console.log('uuuuuuuuuuu', flashsales)
+  // console.log('uuuuuuuuuuu', flashsales)
 
   if (flashsales.length === 0) return null // Hide section if empty
 
   return (
     <section className='max-w-7xl mx-auto px-4 pb-12'>
       <div className='flex items-center justify-between mb-4'>
-        <h2 className='text-xl md:text-2xl font-bold'>Deals Of The Day</h2>
-        
+        <div className='flex items-center gap-3'>
+          <h2 className='text-xl md:text-2xl font-bold text-red-600  '>
+            Deals Of The Day
+          </h2>
+          <div className='flex items-center gap-1'>
+            <Flame className='  h-10 w-10 text-red-600 ' />
+            <Flame className='  h-10 w-10 text-red-600' />
+          </div>
+        </div>
       </div>
       <div className='grid md:grid-cols-3 gap-5'>
         {flashsales.map((d: FlashsaleType) => (
           <Card key={d._id} className='rounded-2xl overflow-hidden'>
-            <div className='grid grid-cols-3 gap-0'>
-              <div className='col-span-1 bg-muted/30 p-3 flex items-center justify-center'>
+            <div className='grid grid-cols-4 gap-0'>
+              <div className='col-span-2 bg-muted/30  flex items-center justify-center'>
                 <Link href={`/product/${d._id}`}>
                   <Image
                     src={d.imageUrls?.[0] || '/placeholder.jpg'}
                     alt={d.name}
                     height={780}
                     width={1000}
-                    className='className="relative h-28 w-full object-cover rounded-xl'
+                    className='className="relative h-full w-full object-cover rounded-xl'
                   />
                 </Link>
               </div>

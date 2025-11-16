@@ -22,7 +22,7 @@ export default function MobileHeader({
     { label: 'Home', href: '/' },
     { label: 'Blogs', href: '/blogs' },
     { label: 'About Us', href: '/about-us' },
-    { label: 'Categories', href: '/categories' },
+    { label: 'Products', href: '/categories' },
     { label: 'Contacts', href: '/contacts' },
     { label: 'Orders', href: '/orders' },
   ],
@@ -31,18 +31,18 @@ export default function MobileHeader({
   links?: { label: string; href: string }[]
 }) {
   return (
-    <header className='sticky top-0 z-50 bg-amber-600 backdrop-blur supports-[backdrop-filter]:bg-amber-600 border-b md:hidden'>
-      <div className='mx-auto max-w-screen-xl px-3 sm:px-4'>
+    <header className='sticky top-0 z-50 bg-amber-600 backdrop-blur supports-[backdrop-filter]:bg-amber-600 border-b md:hidden rounded-[2px]'>
+      <div className='mx-0.5 max-w-screen-xl px-1'>
         <div className='h-14 flex items-center justify-between'>
           {/* Left: Hamburger + Drawer */}
           <Sheet >
             <SheetTrigger asChild>
               <Button variant='ghost' size='icon' className='rounded-2xl'>
-                <Menu className='h-6 w-6 ' />
+                <Menu className='h-6 w-6 text-white' />
                 <span className='sr-only'>Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side='left' className='p-0 w-[90vw] max-w-sm bg-gradient-to-tr from-amber-600 via-amber-300 to-pink-300 rounded-r-2xl'>
+            <SheetContent side='left' className=' w-[90vw] max-w-sm bg-white text-black rounded-r-2xl'>
               <div className='p-4'>
                 <SheetHeader className='items-start'>
                   <SheetTitle className='text-left text-xl font-semibold'>
@@ -80,7 +80,7 @@ export default function MobileHeader({
                 </div>
 
                 <div className='mt-4 p-3 rounded-2xl bg-muted/60'>
-                  <p className='text-sm text-muted-foreground'>
+                  <p className='text-sm text-muted-foreground text-center'>
                     Stream Online Store
                     
                   </p>
@@ -91,20 +91,10 @@ export default function MobileHeader({
 
           {/* Center: Logo */}
           <CompanyLogo />
-          {/* <Link href='/' className='flex items-center gap-2'>
-            <motion.span
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className='h-8 w-8 rounded-2xl bg-black text-white grid place-items-center font-bold'
-            >
-              S
-            </motion.span>
-            <span className='text-lg font-semibold text-white'>Stream</span>
-          </Link> */}
+         
 
           {/* Right: Actions */}
-          <div className='flex items-center gap-1.5 pl-1.5'>
+          <div className='flex items-center gap-1.5 ml-1'>
             <SearchComponent />
             <CartIcon />
           </div>

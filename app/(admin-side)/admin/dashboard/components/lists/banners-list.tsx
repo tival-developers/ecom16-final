@@ -8,17 +8,15 @@ import { Plus } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Price from '@/lib/utils/format'
-import { DeleteProduct, UpdateBanner} from '@/components/ux/editButtons'
+import { DeleteProduct, UpdateBanner } from '@/components/ux/editButtons'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BannerType } from '@/components/homepage/banner'
 
-
-
 export default function BannerList({ banners }: { banners: BannerType[] }) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'all' | 'hero' | 'promoMini' | 'promoLarge'>(
-    'all'
-  )
+  const [statusFilter, setStatusFilter] = useState<
+    'all' | 'hero' | 'promoMini' | 'promoLarge'
+  >('all')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
@@ -28,8 +26,10 @@ export default function BannerList({ banners }: { banners: BannerType[] }) {
       if (lowerSearch && !banner.title.toLowerCase().includes(lowerSearch))
         return false
       if (statusFilter === 'hero' && banner.bannerType !== 'hero') return false
-      if (statusFilter === 'promoMini' && banner.bannerType !== 'promoMini') return false
-      if (statusFilter === 'promoLarge' && banner.bannerType !== 'promoLarge') return false
+      if (statusFilter === 'promoMini' && banner.bannerType !== 'promoMini')
+        return false
+      if (statusFilter === 'promoLarge' && banner.bannerType !== 'promoLarge')
+        return false
       return true
     })
   }, [banners, searchQuery, statusFilter])
@@ -46,7 +46,9 @@ export default function BannerList({ banners }: { banners: BannerType[] }) {
         {/* Sticky Filters */}
         <div className='bg-slate-50 sticky top-0 z-50 p-4 sm:p-6 border-b'>
           <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4'>
-            <h1 className='text-lg sm:text-xl font-semibold'>Promotional Banners</h1>
+            <h1 className='text-lg sm:text-xl font-semibold'>
+              Promotional Banners
+            </h1>
             <div className='flex flex-col sm:flex-row gap-2 w-full sm:w-auto'>
               <Input
                 placeholder='Search banners...'
@@ -71,7 +73,9 @@ export default function BannerList({ banners }: { banners: BannerType[] }) {
           <Tabs
             value={statusFilter}
             onValueChange={(val) => {
-              setStatusFilter(val as 'all' | 'hero'| 'promoMini' | 'promoLarge')
+              setStatusFilter(
+                val as 'all' | 'hero' | 'promoMini' | 'promoLarge'
+              )
               setCurrentPage(1)
             }}
           >
@@ -110,14 +114,14 @@ export default function BannerList({ banners }: { banners: BannerType[] }) {
                     key={banner._id}
                     className='bg-white shadow-sm flex flex-col'
                   >
-                    <div className='relative w-full aspect-[3/3]'>
-                      <Image
-                        src={banner.imageUrl || '/placeholder.jpg'}
-                        alt={banner.title}
-                        fill
-                        className=' object-cover'
-                      />
-                    </div>
+                    <Image
+                      src={banner.imageUrl || '/placeholder.jpg'}
+                      alt={banner.title}
+                      width={1000}
+                      height={800}
+                      className='h-full w-full object-cover'
+                    />
+                   
                     <CardContent className='px-2 py-1 flex flex-col flex-grow'>
                       <h2 className='text-lg sm:text-lg font-semibold mb-1 line-clamp-1'>
                         {banner.title}
@@ -131,8 +135,6 @@ export default function BannerList({ banners }: { banners: BannerType[] }) {
                       <p className='text-green-600 font-bold text-sm sm:text-lg'>
                         <Price amount={banner.price} />
                       </p>
-
-                      
                     </CardContent>
                     <div className='px-4 py-1 mb-1'>
                       <div className='flex items-center justify-between mb-2 text-xs sm:text-sm'>
@@ -142,7 +144,6 @@ export default function BannerList({ banners }: { banners: BannerType[] }) {
                           <DeleteProduct id={banner._id} />
                         </div>
                       </div>
-                      
                     </div>
                   </Card>
                 ))}

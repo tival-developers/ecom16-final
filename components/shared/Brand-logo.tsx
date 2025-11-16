@@ -7,8 +7,8 @@ export default function CompanyLogo() {
       <div
       className='flex flex-row items-center leading-none text-black font-semibold rounded-2xl'
       >
-        <GlobeAltIcon className='h-10 w-10 rotate-[15deg] text-white md:text-amber-600'  />
-        <h2 className=' text-2xl font-bold text-white md:text-amber-600'>
+        <GlobeAltIcon className='flex h-10 w-10  rotate-[15deg] text-gray-800'  />
+        <h2 className=' text-2xl font-bold text-blue-600'>
             ST<span className='text-gray-800'>REAM</span>
           </h2>
       </div>

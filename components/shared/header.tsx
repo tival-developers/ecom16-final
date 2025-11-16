@@ -10,6 +10,7 @@ import DepartmentSection from './departmentSection'
 import MobileHeader from './mobile-header'
 import { Settings } from 'lucide-react'
 import CompanyLogo from './Brand-logo'
+import { Separator } from '../ui/separator'
 
 const links = [
   { name: 'Home', href: '/' },
@@ -28,12 +29,11 @@ export default async function NavMenu() {
     <div className='sticky top-0 z-50'>
       {/* Desktop Header */}
       {/* Top bar */}
-      <nav className='hidden md:flex items-center justify-between px-4 py-1.5  w-full bg-amber-200'>
+      <nav className='hidden md:flex items-center justify-between px-4 py-1.5  w-full bg-white '>
         {isAdmin && (
           <Link href='/admin/dashboard'>
             <Button
-              variant={'outline'}
-              className='hover:text-red-600 text-yellow-800 rounded py-2 px-7'
+              className='hover:text-red-600 text-white rounded py-2 px-7'
             >
               Admin Panel
             </Button>
@@ -46,12 +46,16 @@ export default async function NavMenu() {
             </p>
           </Marquee>
         </div>
-        <div className='flex items-center gap-4 text-sm'>
-          <Link className='hover:underline' href='/contacts'>
-            Help
+        <div className='flex items-center gap-0.5 text-sm'>
+          <Link href='/contacts'>
+            <Button variant={'link'} size={"sm"} className='text-sm'>
+              Help
+            </Button>
           </Link>
-          <Link className='hover:underline' href='/orders'>
-            Orders
+          <Link href='/orders'>
+            <Button variant={'link'} size={"sm"} className='text-sm'>
+              Orders
+            </Button>
           </Link>
           <span className='cursor-pointer hover:underline'>
             {session ? (
@@ -70,8 +74,9 @@ export default async function NavMenu() {
           </span>
         </div>
       </nav>
+      <Separator className='text-black ' />
       {/* Header */}
-      <header className='hidden md:block sticky top-0 z-30  backdrop-blur border-b'>
+      <header className='hidden md:block sticky top-0 z-3000  bg-white border-b'>
         <div className='flex max-w-7xl mx-auto px-4 py-4 items-center gap-4'>
           <CompanyLogo />
           <SearchComponent />

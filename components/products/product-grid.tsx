@@ -1,17 +1,11 @@
-// ProductCategoryGrid.tsx
+
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import Link from 'next/link'
 import { ProductType } from '@/lib/types/product'
 import PriceFilterSlider from '@/app/(client-side)/categories/components/priceFilter'
-import AddToCartButton from '../ux/cartadd'
-import { ProductPrice } from '@/lib/utils/product-price'
-import { Button } from '../ui/button'
-import { Badge } from '../ui/badge'
-import AddToFavoriteButton from '../ux/favAdd'
-import Image from 'next/image'
+import ProductCard from '../cards/product-card'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   initialProducts: ProductType[]
@@ -33,6 +27,10 @@ export default function ProductCategoryGrid({ initialProducts }: Props) {
   const [filteredProducts, setFilteredProducts] =
     useState<ProductType[]>(initialProducts)
 
+  // pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 8
+
   useEffect(() => {
     const [min, max] = priceRange
     setFilteredProducts(
@@ -40,7 +38,15 @@ export default function ProductCategoryGrid({ initialProducts }: Props) {
         (p) => p.originalPrice >= min && p.originalPrice <= max
       )
     )
+    setCurrentPage(1) // reset page when filter changes
   }, [priceRange, initialProducts])
+
+  // calculate pagination
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
 
   return (
     <div>
@@ -49,63 +55,14 @@ export default function ProductCategoryGrid({ initialProducts }: Props) {
         minPrice={0}
         maxPrice={maxProductPrice}
         onChange={setPriceRange}
-        productCount={filteredProducts.length} // pass count
+        productCount={filteredProducts.length}
       />
 
       {/* Products grid */}
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-4'>
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <Card
-              key={product._id}
-              className='hover:shadow-lg transition-shadow  overflow-hidden'
-            >
-              <CardContent className='p-0'>
-                <div className='aspect-[4/3] bg-muted/30'>
-                  <Link
-                    href={`/product/${product._id}`}
-                    className='relative aspect-square w-full mb-2 overflow-hidden '
-                  >
-                    <div className='relative w-full aspect-[3/3]'>
-                      <Image
-                        src={product.imageUrls?.[0] || '/placeholder.jpg'}
-                        alt={product.name}
-                        fill
-                        className=' object-cover'
-                      />
-                    </div>
-                  </Link>
-                </div>
-                <div className='p-4 space-y-1.5 relative'>
-                  <div>
-                    <AddToFavoriteButton variant='icon' product={product} />
-                  </div>
-
-                  <div className='flex items-center justify-between'>
-                    <h3 className='text-sm font-medium leading-tight line-clamp-2 mr-2'>
-                      {product.name}
-                    </h3>
-                    <Badge variant={'secondary'} className='uppercase'>
-                      {product.brand}
-                    </Badge>
-                  </div>
-
-                  <p className='text-muted-foreground text-sm'>
-                    Stock: {product.stock}
-                  </p>
-                  <ProductPrice
-                    originalPrice={product.originalPrice}
-                    newPrice={product.newPrice}
-                  />
-
-                  <AddToCartButton product={product} />
-
-                  <Button className='rounded-xl w-full mt-2.5'>
-                    <Link href={`/product/${product._id}`}>View Product </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+        {paginatedProducts.length > 0 ? (
+          paginatedProducts.map((product) => (
+            <ProductCard key={product._id} product={product} />
           ))
         ) : (
           <p className='text-sm text-muted-foreground col-span-full'>
@@ -113,6 +70,40 @@ export default function ProductCategoryGrid({ initialProducts }: Props) {
           </p>
         )}
       </div>
+
+      {/* Pagination controls */}
+      {totalPages > 1 && (
+        <div className='flex justify-center items-center gap-2 mt-6'>
+          <Button
+            variant='outline'
+            size='sm'
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((p) => p - 1)}
+          >
+            Previous
+          </Button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <Button
+              key={page}
+              size='sm'
+              variant={page === currentPage ? 'default' : 'outline'}
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </Button>
+          ))}
+
+          <Button
+            variant='outline'
+            size='sm'
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((p) => p + 1)}
+          >
+            Next
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

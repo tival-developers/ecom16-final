@@ -30,7 +30,7 @@ export default function Account() {
   }
 
   return (
-    <div className='flex justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4'>
+    <div className='flex justify-center mt-10 p-4'>
       <Card className='w-full max-w-md shadow-lg rounded-2xl p-2'>
         <CardHeader className='flex flex-col items-center text-center p-2'>
           <Avatar className='h-20 w-20 mb-4'>

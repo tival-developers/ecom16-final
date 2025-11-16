@@ -48,6 +48,9 @@ export default function ProductCard({ product }: { product: ProductType }) {
               {product.brand}
             </Badge>
           </div>
+          <p className='text-muted-foreground text-sm'>
+            Stock: {product.stock}
+          </p>
           <ProductPrice
             originalPrice={product.originalPrice}
             newPrice={product.newPrice}

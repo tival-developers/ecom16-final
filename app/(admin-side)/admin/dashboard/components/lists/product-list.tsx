@@ -100,19 +100,22 @@ export default function ProductList({ products }: { products: ProductType[] }) {
             </div>
           ) : (
             <>
-              <Card className='grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 p-4'>
+              <Card className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 pt-4 p-4'>
                 {paginatedProducts.map((product) => (
                   <Card
                     key={product._id}
                     className='bg-white shadow-sm flex flex-col'
                   >
-                    <div className='relative w-full aspect-[3/3]'>
-                      <Image
-                        src={product.imageUrls?.[0] || '/placeholder.jpg'}
-                        alt={product.name}
-                        fill
-                        className=' object-cover'
-                      />
+                    <div className=' bg-muted/30'>
+                      <Link href={`/product/${product._id}`}>
+                        <Image
+                          src={product.imageUrls?.[0] || '/placeholder.jpg'}
+                          alt={product.name}
+                          width={1000}
+                          height={800}
+                          className='h-full w-full object-cover'
+                        />
+                      </Link>
                     </div>
                     <CardContent className='px-2 py-1 flex flex-col flex-grow'>
                       <p className='text-base sm:text-lg font-semibold mb-1 line-clamp-1'>

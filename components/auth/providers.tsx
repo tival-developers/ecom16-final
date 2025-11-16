@@ -1,109 +1,59 @@
-// "use client"
-// //providerMap is imported and contains only non-"credentials" providers.
-// import { signInAction} from '@/lib/actions/auth'
-// import { providerMap } from '@/auth'
-// import { Button } from '@/components/ui/button'
-// import Link from 'next/link'
-// import { FaTiktok, FaInstagram } from 'react-icons/fa'
-// import { FcGoogle } from 'react-icons/fc'
-
-// const providerIcons: Record<string, React.ReactNode> = {
-//   google: <FcGoogle />,
-//   tiktok: <FaTiktok />,
-//   instagram: <FaInstagram className=' text-pink-600' />,
-// }
-// const handleOAuthLogin = async (provider: string, callbackUrl?: string) => {
-//   await signInAction(provider, callbackUrl)
-// }
-
-// interface FormProps extends React.ComponentProps<'div'> {
-//     searchParams: { callbackUrl: string | undefined }
-//   }
-// const Providers = ({searchParams}: FormProps) => {
-//   return (
-//     <div>
-//       <div className='flex flex-col gap-6'>
-//         <div className='grid grid-cols-3 gap-4'>
-//           {providerMap.map((provider) => (
-//             <Button
-//               key={provider.id}
-//               onClick={() =>
-//                 handleOAuthLogin(provider.id, searchParams?.callbackUrl)
-//               }
-//               variant='outline'
-//               className='w-full items-center'
-//             >
-//               {providerIcons[provider.id]}
-//               <span className='sr-only'>{provider.name}</span>
-//             </Button>
-//           ))}
-//         </div>
-//         <div className='text-center text-sm'>
-//           Have an account?{' '}
-//           <Link href='/login' className='underline underline-offset-4'>
-//             Sign in
-//           </Link>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default Providers
 
 'use client'
-//providerMap is imported and contains only non-"credentials" providers.
-import { providerMap } from '@/auth'
+
+import { useEffect, useState } from 'react'
+import { signIn, getProviders } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
-import { FaTiktok, FaInstagram } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
-import { signIn } from 'next-auth/react'
+import { FaTiktok, FaInstagram } from 'react-icons/fa'
+
+interface ProvidersProps {
+  searchParams: { callbackUrl?: string }
+}
+
 const providerIcons: Record<string, React.ReactNode> = {
-  google: <FcGoogle />,
-  tiktok: <FaTiktok />,
-  instagram: <FaInstagram className=' text-pink-600' />,
+  google: <FcGoogle className='text-xl' />,
+  tiktok: <FaTiktok className='text-xl text-black' />,
+  instagram: <FaInstagram className='text-xl text-pink-600' />,
 }
 
-interface FormProps extends React.ComponentProps<'div'> {
-  searchParams: { callbackUrl: string | undefined }
-}
-const Providers = ({ searchParams }: FormProps) => {
-  const [error, setError] = useState('')
-  const handleSocialLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError('')
-    const res = await signIn('provider', {
-      redirect: false,
-      callbackUrl: searchParams.callbackUrl || '/',
-    })
+export default function Providers({ searchParams }: ProvidersProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [providers, setProviders] = useState<any[]>([])
 
-    if (res?.error) {
-      setError(
-        'error occurred while logging in. Kindly use another login method.'
-      )
-    } else if (res?.url) {
-      window.location.href = res.url
-    } else {
-      window.location.href = searchParams.callbackUrl || '/'
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const res = await getProviders()
+      if (res) {
+        const mapped = Object.values(res)
+          .map((p) => ({ id: p.id, name: p.name }))
+          .filter((p) => p.id !== 'credentials')
+        setProviders(mapped)
+      }
     }
-  }
+
+    fetchProviders()
+  }, [])
+
+  if (providers.length === 0) return null
+
   return (
     <div className='grid grid-cols-3 gap-4'>
-      {providerMap.map((provider) => (
+      {providers.map((provider) => (
         <Button
           key={provider.id}
-          onClick={() => handleSocialLogin}
           variant='outline'
-          className='w-full items-center'
+          onClick={() =>
+            signIn(provider.id, {
+              callbackUrl: searchParams.callbackUrl || '/',
+            })
+          }
+          className='flex justify-center items-center gap-2'
         >
-          {providerIcons[provider.id]}
+          {providerIcons[provider.id] ?? provider.name[0]}
           <span className='sr-only'>{provider.name}</span>
         </Button>
       ))}
-      {error && <p className='text-red-500'>{error}</p>}
     </div>
   )
 }
-
-export default Providers

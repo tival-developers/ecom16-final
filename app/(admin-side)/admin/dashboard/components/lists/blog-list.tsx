@@ -99,14 +99,13 @@ export default function BlogList({ blogs }: { blogs: BlogType[] }) {
               <Card className='grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3  2xl:grid-cols-6 gap-4 p-4'>
                 {paginatedBlogs.map((blog) => (
                   <Card key={blog._id} className='bg-white shadow-sm'>
-                    <div className='relative w-full aspect-[3/3]'>
-                      <Image
-                        src={blog.imageUrl || '/placeholder.jpg'}
-                        alt={blog.title}
-                        fill
-                        className='object-cover'
-                      />
-                    </div>
+                    <Image
+                      src={blog.imageUrl || '/placeholder.jpg'}
+                      alt={blog.title}
+                      width={1000}
+                      height={800}
+                      className='h-full w-full object-cover'
+                    />
 
                     <CardContent className='px-2 py-1'>
                       <p className='text-base sm:text-lg font-semibold mb-1 line-clamp-1'>

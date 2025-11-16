@@ -1,5 +1,11 @@
-import { SignOut } from '@/components/auth/form'
 
+import { SignOut } from '@/components/auth/logoutForm'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Logout',
+  description: 'sign out',
+}
 export default function SignOutPage() {
   return (
     <div className='flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10'>

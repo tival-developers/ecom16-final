@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Price from '@/lib/utils/format'
 import { Card } from '../ui/card'
 import Image from 'next/image'
+
 export type BannerType = {
   _id: string
   title: string
@@ -20,7 +21,6 @@ export type BannerType = {
 const HeroSection = async () => {
   await connectToDatabase()
   const fetchBanner = await Banner.find()
-    .select('bannerType title subtitle buttonText price')
     .sort({ createdAt: -1 })
     .where({ bannerType: 'hero' })
     .limit(1)
@@ -34,7 +34,7 @@ const HeroSection = async () => {
         {heroBanner.map((banner: BannerType) => (
           <div
             key={banner._id}
-            className='max-w-7xl px-7 py-2.5  mb-10 grid md:grid-cols-2 gap-8 items-center'
+            className='max-w-7xl px-7 py-2.5  mb-10 grid md:grid-cols-2 gap-8  items-center'
           >
             <div className='space-y-5'>
               <Badge className='rounded-full p-2'>Flat 15% Discount</Badge>
@@ -57,13 +57,14 @@ const HeroSection = async () => {
                 </Button>
               </div>
             </div>
-            <div className='relative w-full h-auto'>
+
+            <div className='flex relative w-full h-auto justify-center md:justify-end '>
               <Image
-                src='/images/Hisense.webp'
+                src={banner.imageUrl}
                 alt={banner.title}
-                width={400}
-                height={400}
-                className=' object-contain  w-[300px] '
+                width={1000}
+                height={800}
+                className=' object-contain  w-[300px] rounded-xl'
               />
             </div>
           </div>
@@ -78,7 +79,6 @@ export default HeroSection
 export async function PromoBannerMini() {
   await connectToDatabase
   const fetchBanner = await Banner.find()
-    .select('bannerType title subtitle buttonText price')
     .sort({ createdAt: -1 })
     .where({ bannerType: 'promoMini' })
     .limit(2)
@@ -107,13 +107,14 @@ export async function PromoBannerMini() {
                   </Link>
                 </Button>
               </div>
-              <div className='relative w-full'>
+              <div className='flex relative w-full h-auto justify-center md:justify-end '>
                 <Image
-                  src='/images/Hisense.webp'
+                  src={promo.imageUrl}
                   alt={promo.title}
-                  width={400}
-                  height={400}
-                  className=' object-contain  w-[300px] '
+                  width={1000}
+                  height={800}
+                   className='h-full w-[250px] object-contain  pr-2 md:p-0'
+                  //className=' object-contain  w-[300px] '
                 />
               </div>
             </div>
@@ -128,13 +129,12 @@ export async function PromoBannerLarge() {
   await connectToDatabase
 
   const fetchBanner = await Banner.find()
-    .select('bannerType title subtitle buttonText price')
     .sort({ createdAt: -1 })
     .where({ bannerType: 'promoLarge' })
     .limit(1)
     .lean()
   const promoBannerLarge = JSON.parse(JSON.stringify(fetchBanner))
-  
+
   return (
     <div>
       {/* Hero */}
@@ -165,13 +165,13 @@ export async function PromoBannerLarge() {
                 </Button>
               </div>
             </div>
-            <div className='relative w-full h-auto'>
+            <div className='flex relative w-full h-auto justify-center md:justify-end '>
               <Image
-                src='/images/Hisense.webp'
+                src={banner.imageUrl}
                 alt={banner.title}
-                width={400}
-                height={400}
-                className=' object-contain  w-[300px] '
+                width={1000}
+                height={800}
+                className=' object-contain  w-[300px] rounded-xl'
               />
             </div>
           </div>

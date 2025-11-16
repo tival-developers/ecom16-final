@@ -25,14 +25,14 @@ export function SiteHeader() {
           >
             <SidebarIcon className='h-5 w-5' />
           </Button>
+          <Link href='/'>
+            <h2 className='text-xl font-medium border-2 rounded-lg p-0.5 text-white hover:text-gray-800 bg-amber-600'>
+              View Shop
+            </h2>
+          </Link>
         </div>
         {/* Nav */}
         <div className='flex  items-center justify-center gap-3.5'>
-          <Link href='/'>
-            <h2 className='text-2xl font-bold border-2 rounded-xl p-1.5 text-white hover:text-black bg-amber-600'>
-              Shop
-            </h2>
-          </Link>
           <div className='hidden sm:flex'>
             <MainNav />
           </div>

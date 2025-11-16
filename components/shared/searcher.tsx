@@ -79,8 +79,9 @@ export default function SearchComponent() {
       <div className='hidden md:flex items-center gap-2 flex-1 mx-4'>
         <Input
           id='product-search'
+          type='search'
           placeholder='Search entire store...'
-          className='rounded-xl border-amber-600'
+          className='rounded-xl border-2 border-amber-600'
           aria-label='Search Input'
           value={searchQuery}
           onChange={(e) => {
@@ -109,8 +110,9 @@ export default function SearchComponent() {
       <div className='flex md:hidden'>
         <Input
           id='product-search'
+          type='search'
           placeholder='Search store...'
-          className='w-full text-sm text-white'
+          className='w-full text-sm text-gray-800  bg-white'
           aria-label='Search Input Mobile'
           value={searchQuery}
           onChange={(e) => {

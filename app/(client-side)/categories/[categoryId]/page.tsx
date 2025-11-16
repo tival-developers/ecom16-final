@@ -31,7 +31,7 @@ export default async function CategoriesPage({
 
   return (
     <div className='p-6'>
-      <h1 className='text-2xl font-semibold mb-6'>{`Category: ${categoryId}`}</h1>
+      <h1 className='text-2xl text-amber-600 font-semibold mb-6 capitalize '>{categoryId}:</h1>
 
       <ProductCategoryList categorySlug={categoryId} searchQuery={query} />
     </div>

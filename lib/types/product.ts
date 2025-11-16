@@ -22,12 +22,7 @@ export type UploadedImage = {
   public_id: string
 }
 
-// export type CreateProductResult = {
-//   success: boolean
-//   redirectUrl: string
-//   error?: string
-//   fieldErrors?: Record<string, string[]>
-// }
+
 export type CreateProductResult =
   | {
       success: true

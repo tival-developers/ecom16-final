@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { getHomePageProducts } from '@/lib/actions/homepage/getHomePage'
 import { ProductPrice } from '@/lib/utils/product-price'
@@ -36,13 +35,13 @@ function Feature({
   desc: string
 }) {
   return (
-    <div className='flex items-center gap-4 p-4 rounded-2xl bg-card border'>
-      <div className='p-3 rounded-xl bg-muted'>
-        <Icon className='h-6 w-6' />
+    <div className='flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 p-0.5 md:p-3 rounded-2xl bg-slate-50 border'>
+      <div className='p-1 rounded-xl bg-muted flex-shrink-0'>
+        <Icon className='h-6 w-6 text-amber-600' />
       </div>
-      <div>
-        <p className='text-sm font-semibold'>{title}</p>
-        <p className='text-xs text-muted-foreground'>{desc}</p>
+      <div className='text-center sm:text-left'>
+        <p className='text-sm md:text-base font-semibold'>{title}</p>
+        <p className='text-xs md:text-sm text-muted-foreground'>{desc}</p>
       </div>
     </div>
   )
@@ -50,7 +49,6 @@ function Feature({
 export default async function HomePage() {
   const { bestSelling, recent, trending, featured } =
     await getHomePageProducts()
-  //console.log('jjjjjjjiiiiiiiii', getHomePageProducts)
 
   const categoriesWithProducts = await getCategoriesWithProducts()
 
@@ -66,16 +64,16 @@ export default async function HomePage() {
 
       {/* Service Features */}
       <section className='max-w-7xl mx-auto px-4 mt-6 md:mt-8 relative z-10'>
-        <div className='hidden md:grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 border-2 border-amber-600 p-2'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4  p-2 md:p-4 rounded-lg'>
           <Feature
             icon={Truck}
             title='Free Shipping'
-            desc='On orders over $50'
+            desc='On orders over Ksh 30,000'
           />
           <Feature
             icon={ShieldCheck}
             title='Secure Payment'
-            desc='256‑bit encryption'
+            desc='256-bit encryption'
           />
           <Feature
             icon={Gift}
@@ -85,8 +83,8 @@ export default async function HomePage() {
           <Feature icon={Headset} title='Support 24/7' desc='Ready to help' />
           <Feature
             icon={ShieldCheck}
-            title='30‑Day Return'
-            desc='Hassle‑free policy'
+            title='30-Day Return'
+            desc='Hassle-free policy'
           />
         </div>
       </section>
@@ -94,11 +92,10 @@ export default async function HomePage() {
       {/* Recently Added */}
       {recent.length > 0 && (
         <section className='max-w-7xl mx-auto px-4 py-10'>
-          <div className='flex items-center justify-between mb-7'>
-            <h2 className='text-xl md:text-2xl font-bold'>Recently Added</h2>
-            <Button variant='ghost' className='rounded-xl'>
-              View all products
-            </Button>
+          <div className='text-center mb-7'>
+            <h2 className=' text-2xl font-bold text-amber-600  p-2'>
+              Recently <span className='text-black'>Added</span>
+            </h2>
           </div>
           <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
             {recent.map((product: ProductType) => (
@@ -114,25 +111,27 @@ export default async function HomePage() {
       {/* Bestselling Products */}
       {bestSelling.length > 0 && (
         <section className='max-w-7xl mx-auto px-4 py-10'>
-          <h2 className='text-2xl font-bold mb-7'>Our Bestselling Products</h2>
+          <div className=' text-center mb-7'>
+            <h2 className=' text-2xl font-bold text-amber-600  p-2'>
+              Bestselling <span className='text-black'> Products</span>
+            </h2>
+          </div>
+
           <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
-            {/* {bestSelling.map((product: ProductType) => (
-              <ProductCard key={product._id} product={product} />
-            ))} */}
             {bestSelling.map((item) => (
               <Card
                 key={item.product._id}
-                className='rounded-xl shadow hover:shadow-lg transition'
+                className='hover:shadow-lg transition-shadow rounded-2xl overflow-hidden'
               >
-                <CardContent className='flex flex-col items-center'>
-                  <div className='w-46 h-40 rounded mb-3'>
+                <CardContent className='p-0'>
+                  <div className=' bg-muted/30'>
                     <Link href={`/product/${item.product._id}`}>
                       <Image
                         src={item.product.imageUrls?.[0] || '/placeholder.jpg'}
                         alt={item.product.name}
-                        height={780}
                         width={1000}
-                        className='className="relative h-38 p-1 w-full object-cover rounded-xl'
+                        height={800}
+                        className='h-full w-full object-cover'
                       />
                     </Link>
                   </div>
@@ -152,6 +151,9 @@ export default async function HomePage() {
                         {item.product.brand}
                       </Badge>
                     </div>
+                    <p className='text-muted-foreground text-sm'>
+                      Stock: {item.product.stock}
+                    </p>
                     <ProductPrice
                       originalPrice={item.product.originalPrice}
                       newPrice={item.product.newPrice}
@@ -169,7 +171,11 @@ export default async function HomePage() {
       {/* Featured Deals */}
       {featured.length > 0 && (
         <section className='max-w-7xl mx-auto px-4 py-10'>
-          <h2 className='text-xl md:text-2xl font-bold mb-7'>Featured Deals</h2>
+          <div className='text-center mb-7'>
+            <h2 className=' text-2xl font-bold text-amber-600  p-2'>
+              Featured <span className='text-black'>Deals</span>
+            </h2>
+          </div>
           <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
             {featured.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />
@@ -181,9 +187,11 @@ export default async function HomePage() {
       {/* Trending This Week */}
       {trending.length > 0 && (
         <section className='max-w-7xl mx-auto px-4 py-10'>
-          <h2 className='text-xl md:text-2xl font-bold mb-7'>
-            Trending This Week
-          </h2>
+          <div className='text-center mb-7'>
+            <h2 className=' text-2xl font-bold text-amber-600  p-2'>
+              Trending <span className='text-black'>Products</span>
+            </h2>
+          </div>
           <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4'>
             {trending.map((product: ProductType) => (
               <ProductCard key={product._id} product={product} />

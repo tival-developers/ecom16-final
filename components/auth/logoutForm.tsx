@@ -1,23 +1,28 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { signOutAction } from '@/lib/actions/auth'
 import { Separator } from '../ui/separator'
 import { useCartStore } from '@/stores/cart'
-import { signOut } from 'next-auth/react'
+import { useFavStore } from '@/stores/favorite'
+
 export function SignOut() {
   const { clearCart } = useCartStore()
-  const handleSignOut = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const { clearFav } = useFavStore()
 
+  const handleSignOut = async () => {
     // Clear the cart for guest
     await clearCart(null)
-    await signOut({ redirectTo: '/' })
+    await clearFav(null)
+
+    // Sign out via next-auth
+    await signOutAction()
   }
 
   return (
     <Card
       className='bg-gradient-to-tr from-amber-600 via-amber-300 to-pink-300
-   rounded-2xl'
+ rounded-2xl'
     >
       <CardHeader>
         <h3 className='text-xl font-md text-white p-4'>Logout</h3>

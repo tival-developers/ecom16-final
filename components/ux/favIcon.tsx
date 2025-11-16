@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useFavStore } from '@/stores/favorite'
-import { Heart } from 'lucide-react'
+import { Circle, Heart } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export const FavIcon = () => {
@@ -11,7 +11,14 @@ export const FavIcon = () => {
 
   return (
     <Link href='/favorite' className='relative '>
-      <Heart className='w-5 h-5' />
+      <div className='relative '>
+        <Heart className='w-5 h-5' />
+        {items.length === 0 ? (
+          <p></p>
+        ) : (
+        <Circle className='absolute  w-4 h-4 -top-1 left-3 bg-black rounded-full' />
+      )}
+      </div>
 
       <AnimatePresence>
         {totalQuantity > 0 && (
@@ -23,7 +30,7 @@ export const FavIcon = () => {
             transition={{ duration: 0.3 }}
             exit={{ scale: 0, opacity: 0 }}
             //transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            className='absolute -top-2 -right-2 bg-amber-600 text-white text-xs font-semibold p-0.5  z-10 rounded-full'
+            className='absolute -top-1 -right-1  text-white text-xs font-semibold   z-10 rounded-full '
           >
             {totalQuantity}
           </motion.span>
